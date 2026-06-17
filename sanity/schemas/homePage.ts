@@ -1,0 +1,208 @@
+import { defineType, defineField } from "sanity";
+
+export default defineType({
+  name: "homePage",
+  title: "Home Page",
+  type: "document",
+  fields: [
+    defineField({
+      name: "heroSubtitle",
+      title: "Hero Subtitle",
+      type: "string",
+      initialValue: "A NDH HOUSE PARTNERSHIP",
+    }),
+    defineField({
+      name: "heroHeadline",
+      title: "Hero Headline",
+      type: "string",
+      initialValue: "Where beauty exist without effort",
+    }),
+    defineField({
+      name: "heroItalicWord",
+      title: "Hero Italic Word",
+      type: "string",
+      initialValue: "without effort",
+    }),
+    defineField({
+      name: "heroVideo",
+      title: "Hero Video",
+      type: "file",
+      options: { accept: "video/mp4" },
+    }),
+    defineField({
+      name: "heroScrollText",
+      title: "Hero Scroll Text",
+      type: "string",
+      initialValue: "Scroll",
+    }),
+    defineField({
+      name: "philosophyTitle",
+      title: "Philosophy Section Title",
+      type: "string",
+      initialValue: "Why The Name Sahaj ?",
+    }),
+    defineField({
+      name: "philosophySubtitle",
+      title: "Philosophy Subtitle",
+      type: "string",
+      initialValue: "So here's the story.",
+    }),
+    defineField({
+      name: "philosophyBody",
+      title: "Philosophy Body",
+      type: "array",
+      of: [{ type: "text" }],
+      initialValue: [
+        "Sahaj, in its simplest form, means natural. Effortless. The way things are meant to be… without force, without noise.",
+        "And that's exactly how we see art.",
+        'Not something that should feel complicated or intimidating. Not something you have to "understand" to appreciate. But something you feel instantly. Something that just fits… into your space, into your life.',
+      ],
+    }),
+    defineField({
+      name: "logoSymbol",
+      title: "Logo Symbol Image",
+      type: "image",
+    }),
+    defineField({
+      name: "logoTItle",
+      title: "Logo Section Title",
+      type: "string",
+      initialValue: "Why These Logo ?",
+    }),
+    defineField({
+      name: "logoBody",
+      title: "Logo Description",
+      type: "array",
+      of: [{ type: "text" }],
+      initialValue: [
+        'And then there\'s our logo… the Hansa.',
+        "In Indian philosophy, the Hansa (swan) symbolizes purity, grace, and the rare ability to separate the essential from the trivial. It's often seen as a symbol of wisdom and higher taste.",
+      ],
+    }),
+    defineField({
+      name: "logoGoldWord",
+      title: "Logo Gold Highlight Word",
+      type: "string",
+      initialValue: "Hansa",
+    }),
+    defineField({
+      name: "ndhLogo",
+      title: "NDH House Logo",
+      type: "image",
+    }),
+    defineField({
+      name: "ndhLabel",
+      title: "NDH Label",
+      type: "string",
+      initialValue: "A NDH HOUSE PARTNERSHIP",
+    }),
+    defineField({
+      name: "featuredKicker",
+      title: "Featured Works Kicker",
+      type: "string",
+      initialValue: "II — Selected Works",
+    }),
+    defineField({
+      name: "featuredTitle",
+      title: "Featured Works Title",
+      type: "text",
+      initialValue: "A measured silence,\nhung in light.",
+    }),
+    defineField({
+      name: "featuredCtaText",
+      title: "Featured CTA Text",
+      type: "string",
+      initialValue: "View the catalogue →",
+    }),
+    defineField({
+      name: "featuredWorks",
+      title: "Featured Artworks",
+      type: "array",
+      of: [{
+        type: "object",
+        fields: [
+          { name: "image", title: "Image", type: "image" },
+          { name: "title", title: "Title", type: "string" },
+          { name: "artist", title: "Artist", type: "string" },
+          { name: "year", title: "Year", type: "string" },
+          { name: "note", title: "Note", type: "string" },
+        ],
+        preview: {
+          select: { title: "title", subtitle: "artist" },
+        },
+      }],
+    }),
+    defineField({
+      name: "galleryKicker",
+      title: "Full Gallery Kicker",
+      type: "string",
+      initialValue: "Explore",
+    }),
+    defineField({
+      name: "galleryTitle",
+      title: "Full Gallery Title",
+      type: "string",
+      initialValue: "Full Gallery",
+    }),
+    defineField({
+      name: "galleryButtonText",
+      title: "Gallery Button Text",
+      type: "string",
+      initialValue: "View Full Gallery",
+    }),
+    defineField({
+      name: "contactKicker",
+      title: "Contact Section Kicker",
+      type: "string",
+      initialValue: "GET IN TOUCH",
+    }),
+    defineField({
+      name: "contactTitle",
+      title: "Contact Section Title",
+      type: "text",
+      initialValue: "We'd love\nto hear\nfrom you",
+    }),
+    defineField({
+      name: "contactTitleItalic",
+      title: "Contact Title Italic Word",
+      type: "string",
+      initialValue: "from you",
+    }),
+    defineField({
+      name: "addressLabel",
+      title: "Address Label",
+      type: "string",
+      initialValue: "Address",
+    }),
+    defineField({
+      name: "phoneLabel",
+      title: "Phone Label",
+      type: "string",
+      initialValue: "Phone",
+    }),
+    defineField({
+      name: "emailLabel",
+      title: "Email Label",
+      type: "string",
+      initialValue: "Email",
+    }),
+    defineField({
+      name: "hoursLabel",
+      title: "Hours Label",
+      type: "string",
+      initialValue: "Hours",
+    }),
+    defineField({
+      name: "directionButtonText",
+      title: "Directions Button Text",
+      type: "string",
+      initialValue: "Get Directions",
+    }),
+    defineField({
+      name: "mapUrl",
+      title: "Google Maps URL",
+      type: "url",
+      initialValue: "https://www.google.com/maps?um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KWNN2o4_m145MTOJ5URhNfzK&daddr=Shop+-+02,+Palak+Prime,+Ambli+Rd,+opp.+DoubleTree+by+Hilton+Hotel,+nr.+Antriksh+colony+BRTS+Bus+Stand,+Ambli,+Ahmedabad,+Gujarat+380058",
+    }),
+  ],
+});
