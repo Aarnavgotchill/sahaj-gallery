@@ -71,10 +71,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Sahaj Gallery — Art Gallery in Ahmedabad" },
-      { name: "description", content: "Sahaj Gallery is an art gallery in Ahmedabad, Gujarat — featuring contemporary artworks, commissioned pieces, and architectural art integration." },
+      { title: "Sahaj Gallery   Art Gallery in Ahmedabad" },
+      { name: "description", content: "Sahaj Gallery is an art gallery in Ahmedabad, Gujarat   featuring contemporary artworks, commissioned pieces, and architectural art integration." },
       { name: "author", content: "Sahaj Gallery" },
-      { property: "og:title", content: "Sahaj Gallery — Art Gallery in Ahmedabad" },
+      { property: "og:title", content: "Sahaj Gallery   Art Gallery in Ahmedabad" },
       { property: "og:description", content: "Visit Sahaj Gallery in Ahmedabad for contemporary art, curated collections, and architectural integration." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

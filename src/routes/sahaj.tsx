@@ -15,11 +15,11 @@ import handsVideo from "@/assets/The Hands of Sahaj.mp4";
 export const Route = createFileRoute("/sahaj")({
   head: () => ({
     meta: [
-      { title: "About Sahaj — Sahaj Gallery" },
+      { title: "About Sahaj   Sahaj Gallery" },
       {
         name: "description",
         content:
-          "Sahaj is a sanctuary for contemporary art — a quiet collaboration between NDH House and Sahaj Gallery in Ahmedabad.",
+          "Sahaj is a sanctuary for contemporary art   a quiet collaboration between NDH House and Sahaj Gallery in Ahmedabad.",
       },
     ],
   }),
@@ -35,7 +35,7 @@ function Sahaj() {
     <main className="relative min-h-screen bg-background text-foreground">
       <Nav />
 
-      {/* HERO — Partnership Branding */}
+      {/* HERO   Partnership Branding */}
       <section className="relative flex min-h-[90svh] items-center justify-center overflow-hidden px-8 pt-32 pb-20 md:px-14">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
@@ -76,7 +76,7 @@ function Sahaj() {
             <p className="mx-auto mt-6 max-w-3xl text-[clamp(1.05rem,1.2vw,1.2rem)] leading-[1.9] text-muted-foreground">
               Founded on the belief that meaningful spaces are enriched by stories, culture, and art.
               Emerging from an architectural practice, SAHAJ serves as a gallery and creative destination
-              where architecture meets art and craftsmanship — showcasing thoughtfully curated artworks
+              where architecture meets art and craftsmanship   showcasing thoughtfully curated artworks
               that complement and elevate contemporary interiors.
             </p>
             <p className="mx-auto mt-6 max-w-3xl text-[clamp(1.05rem,1.2vw,1.2rem)] leading-[1.9] text-muted-foreground">
@@ -246,7 +246,7 @@ function Sahaj() {
                 An imprint of passion, crafted by the artists of SAHAJ.
               </p>
               <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                Every creation carries the touch of its maker — a reflection of skill, dedication, and artistic spirit. More than an object, each piece tells a story, shaped not only by hands but also by imagination, emotion, and heart.
+                Every creation carries the touch of its maker   a reflection of skill, dedication, and artistic spirit. More than an object, each piece tells a story, shaped not only by hands but also by imagination, emotion, and heart.
               </p>
               <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                 At SAHAJ, we celebrate the human connection behind every artwork, where craftsmanship transforms materials into meaningful expressions. Through the hands of our artists, ideas become creations that enrich spaces, evoke emotions, and inspire lasting connections.
@@ -277,12 +277,12 @@ function Sahaj() {
               {
                 n: "02",
                 title: "Vision to Artwork",
-                body: "We don't simply place art in spaces — we curate stories. Through thoughtful conversations, we translate your vision, personality, and aspirations into meaningful artworks that belong to the architecture and the people who experience it.",
+                body: "We don't simply place art in spaces   we curate stories. Through thoughtful conversations, we translate your vision, personality, and aspirations into meaningful artworks that belong to the architecture and the people who experience it.",
               },
               {
                 n: "03",
                 title: "White Glove Installation",
-                body: "From our studio to your space, every detail is thoughtfully managed. With meticulous handling, precision installation, and seamless execution, we ensure each artwork finds its perfect place — because exceptional art deserves an exceptional experience.",
+                body: "From our studio to your space, every detail is thoughtfully managed. With meticulous handling, precision installation, and seamless execution, we ensure each artwork finds its perfect place   because exceptional art deserves an exceptional experience.",
               },
             ].map((s, i) => (
               <Reveal key={s.n} delay={i * 120}>

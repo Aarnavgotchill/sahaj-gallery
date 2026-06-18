@@ -38,7 +38,7 @@ export function AdminPortal({ onLogout }: AdminPortalProps) {
               Manage Website Content
             </h2>
             <p className="mx-auto mt-6 max-w-lg text-[15px] leading-relaxed text-muted-foreground">
-              Edit all text, upload images and videos, manage gallery artworks, update testimonials, and more — all changes go live instantly.
+              Edit all text, upload images and videos, manage gallery artworks, update testimonials, and more   all changes go live instantly.
             </p>
           </div>
 

@@ -10,7 +10,7 @@ import { Send, MapPin, Clock, Phone, Mail } from "lucide-react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Sahaj Gallery" },
+      { title: "Contact   Sahaj Gallery" },
       { name: "description", content: "Get in touch with Sahaj Gallery. Submit an inquiry for art purchases, collaborations, exhibitions, and more." },
     ],
   }),
@@ -29,12 +29,12 @@ const inquiryTypes = [
 const features = [
   {
     title: "Curated Art Experiences",
-    desc: "Each interaction is shaped around your vision — whether acquiring a piece or commissioning something entirely new.",
+    desc: "Each interaction is shaped around your vision   whether acquiring a piece or commissioning something entirely new.",
     icon: "✦",
   },
   {
     title: "Emerging & Established Artists",
-    desc: "We represent voices from across the creative spectrum — from rising talents to masters with decades of practice.",
+    desc: "We represent voices from across the creative spectrum   from rising talents to masters with decades of practice.",
     icon: "✦",
   },
   {

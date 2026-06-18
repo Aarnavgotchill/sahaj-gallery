@@ -45,7 +45,7 @@ export const Route = createFileRoute("/work")({
   },
   head: () => ({
     meta: [
-      { title: "Gallery — Sahaj Gallery" },
+      { title: "Gallery   Sahaj Gallery" },
       {
         name: "description",
         content: "Browse the full collection of works at Sahaj Gallery in Ahmedabad.",
@@ -85,16 +85,16 @@ function mkPlaceholders(
     title: `${baseTitle} ${startAt + i}`,
     sub: `${baseSub}  ${String(startAt + i).padStart(2, "0")}`,
     desc: "coming soon",
-    dim: "—",
+    dim: " ",
     glow,
     placeholder: true,
   }));
 }
 
-// S — 1 real image + 9 coming-soon placeholders
+// S   1 real image + 9 coming-soon placeholders
 const EYE_ART: EyeArtwork[] = [
   {
-    title: "Iris I \u2014 Dawn",
+    title: "Iris I  Dawn",
     sub: "I R I S  I",
     desc: "oil on linen \u00b7 2023",
     dim: "120 \u00d7 160 cm",
@@ -121,22 +121,22 @@ const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
     title: `Shreenathji ${SHRG_IMGS.length + i + 1}`,
     sub: `S H R E E N A T H J I  ${String(SHRG_IMGS.length + i + 1).padStart(2, "0")}`,
     desc: "coming soon",
-    dim: "—",
+    dim: " ",
     glow: "#c9a96e",
     placeholder: true,
   })),
 ];
 
-// H — 10 coming-soon placeholders
+// H   10 coming-soon placeholders
 const THE_SIKSHAPATRI_ART: EyeArtwork[] = mkPlaceholders(10, "Sikshapatri Study", "S I K S H A P A T R I", "#8a6020");
 
-// A (index 3) — 10 coming-soon placeholders
+// A (index 3)   10 coming-soon placeholders
 const THE_REFLECTION_ART: EyeArtwork[] = mkPlaceholders(10, "Reflection Series", "R E F L E C T I O N", "#206a8a");
 
-// J — 10 coming-soon placeholders
+// J   10 coming-soon placeholders
 const CHERRY_BLOSSOM_ART: EyeArtwork[] = mkPlaceholders(10, "Cherry Blossom", "C H E R R Y  B L O S S O M", "#d08080");
 
-// Category mapping — explicit IDs link panels to their artwork datasets
+// Category mapping   explicit IDs link panels to their artwork datasets
 const CATEGORIES = [
   { id: "eyes",      label: "The Eyes",              artworks: EYE_ART,                letter: "S",  img: "S"  },
   { id: "shreenathji", label: "The Shreenathji Grace", artworks: THE_SHREENATHJI_GRACE_ART, letter: "A",  img: "A"  },
@@ -165,7 +165,7 @@ const GALLERY_CSS = `
   cursor:default;
 }
 
-/* Centered content wrapper — holds SAHAJ panels + Essentials */
+/* Centered content wrapper   holds SAHAJ panels + Essentials */
 #gallery-root .gallery-content{
   flex:1;min-height:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -255,7 +255,7 @@ const GALLERY_CSS = `
 #gallery-root .btn-close svg{stroke:var(--muted);width:12px;height:12px;transition:stroke .3s}
 #gallery-root .btn-close:hover svg{stroke:var(--accent)}
 
-/* L3 — Elegant fade + scale entrance */
+/* L3   Elegant fade + scale entrance */
 #gallery-root #l3{
   position:fixed;inset:0;
   z-index:30;
@@ -365,7 +365,7 @@ const GALLERY_CSS = `
   #gallery-root .artwork{padding:0 20px}
   #gallery-root .art-frame{width:min(85vmin,calc(100vh - 240px))}
 }
-/* Gallery footer — SAHAJ GALLERY branding on front page only */
+/* Gallery footer   SAHAJ GALLERY branding on front page only */
 #gallery-root .gallery-footer{
   transition:opacity .55s var(--ease-soft);
 }
@@ -532,7 +532,7 @@ function Work() {
 
         {/* Centered content: SAHAJ panels + Essentials */}
         <div className="gallery-content">
-          {/* L1: Catalogue strips — each panel maps to a category via its explicit ID */}
+          {/* L1: Catalogue strips   each panel maps to a category via its explicit ID */}
           <div id="l1" className={galleryOpen ? "out" : ""}>
             <div className="strip-row">
               {CATEGORIES.map((cat, i) => (

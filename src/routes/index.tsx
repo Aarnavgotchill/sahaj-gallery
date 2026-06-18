@@ -17,13 +17,13 @@ import ndhLogo from "@/assets/NDH_logo_4K.png";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Sahaj Gallery — A Sanctuary for Contemporary Art" },
+      { title: "Sahaj Gallery   A Sanctuary for Contemporary Art" },
       {
         name: "description",
         content:
           "Sahaj is a quiet gallery devoted to emotional storytelling, architectural integration, and the timeless presence of contemporary art.",
       },
-      { property: "og:title", content: "Sahaj Gallery — A Sanctuary for Contemporary Art" },
+      { property: "og:title", content: "Sahaj Gallery   A Sanctuary for Contemporary Art" },
       {
         property: "og:description",
         content:
@@ -40,12 +40,12 @@ const services = [
   {
     n: "01",
     title: "Commissioned Works",
-    body: "Original pieces conceived in dialogue with you — shaped by space, intention, and the quiet language of your everyday rituals.",
+    body: "Original pieces conceived in dialogue with you   shaped by space, intention, and the quiet language of your everyday rituals.",
   },
   {
     n: "02",
     title: "Architectural Integration",
-    body: "We work alongside your architect to weave art into walls, light, and proportion — so that nothing feels placed, only inevitable.",
+    body: "We work alongside your architect to weave art into walls, light, and proportion   so that nothing feels placed, only inevitable.",
   },
   {
     n: "03",
@@ -216,10 +216,10 @@ function Index() {
                 A symbol of peace, purity, and quiet beauty, the Hansa has long held a special place in Indian philosophy. It represents grace in movement, clarity in thought, and a gentle connection to what is true and meaningful.
               </p>
               <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                We chose the Hansa because it reflects the feeling we want our art to evoke — calm, effortless, and timeless. Much like a swan gliding across still waters, true beauty doesn't seek attention; it simply exists, serene and natural.
+                We chose the Hansa because it reflects the feeling we want our art to evoke   calm, effortless, and timeless. Much like a swan gliding across still waters, true beauty doesn't seek attention; it simply exists, serene and natural.
               </p>
               <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                For us, the Hansa is a reminder that the most meaningful things are often the most peaceful. It embodies the spirit of SAHAJ — art that brings harmony to a space, softness to a moment, and beauty that feels naturally at home.
+                For us, the Hansa is a reminder that the most meaningful things are often the most peaceful. It embodies the spirit of SAHAJ   art that brings harmony to a space, softness to a moment, and beauty that feels naturally at home.
               </p>
             </div>
           </Reveal>
@@ -255,7 +255,7 @@ function Index() {
             </div>
           </Reveal>
 
-          {/* ROW 1: Image left, text right — Burrows Beneath the Cracks */}
+          {/* ROW 1: Image left, text right   Burrows Beneath the Cracks */}
           <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-40 md:grid-cols-[1fr_1.8fr]">
             <Reveal className="flex justify-center">
               <div onContextMenu={(e) => e.preventDefault()}>
@@ -275,10 +275,10 @@ function Index() {
                   Burrows Beneath the Cracks
                 </h3>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                  We often see the cracked earth as a symbol of dryness and hardship, admiring the patterns it leaves behind. Yet beneath those fractures lies a hidden world — tiny homes, quiet shelters, and lives that continue to thrive against all odds. The rabbit burrows in this artwork reveal that even when the surface appears broken, life finds a way to endure.
+                  We often see the cracked earth as a symbol of dryness and hardship, admiring the patterns it leaves behind. Yet beneath those fractures lies a hidden world   tiny homes, quiet shelters, and lives that continue to thrive against all odds. The rabbit burrows in this artwork reveal that even when the surface appears broken, life finds a way to endure.
                 </p>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                  These gentle rabbits remind us of our own journey through difficult times — that beneath every scar, every crack, and every challenge, there remains warmth, hope, and a place to belong. What seems broken from above may, in fact, be protecting a life below. Sometimes, the deepest strength is found in the most fragile places.
+                  These gentle rabbits remind us of our own journey through difficult times   that beneath every scar, every crack, and every challenge, there remains warmth, hope, and a place to belong. What seems broken from above may, in fact, be protecting a life below. Sometimes, the deepest strength is found in the most fragile places.
                 </p>
                 <p className="font-sans text-[13px] leading-relaxed text-muted-foreground/70 italic">
                   Size of the Artwork: 8'2"(H) X 3'2"(W)
@@ -287,7 +287,7 @@ function Index() {
             </Reveal>
           </div>
 
-          {/* ROW 2: Text left, image right — Coffee on Canvas */}
+          {/* ROW 2: Text left, image right   Coffee on Canvas */}
           <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 pb-40 md:grid-cols-[1fr_1.5fr]">
             <Reveal delay={200}>
               <div className="space-y-5 text-left">
@@ -322,7 +322,7 @@ function Index() {
             </Reveal>
           </div>
 
-          {/* ROW 3: Image left, text right — Ayodhya Alok */}
+          {/* ROW 3: Image left, text right   Ayodhya Alok */}
           <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
             <Reveal className="w-full">
               <div className="w-full" onContextMenu={(e) => e.preventDefault()}>
@@ -342,7 +342,7 @@ function Index() {
                   Ayodhya Alok
                 </h3>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                  There are moments in history that are remembered, and there are moments that are felt. This artwork captures the emotion of an Ayodhya where every heart chants "Shri Ram" — not merely as a prayer, but as a profound connection to faith, memory, and belonging.
+                  There are moments in history that are remembered, and there are moments that are felt. This artwork captures the emotion of an Ayodhya where every heart chants "Shri Ram"   not merely as a prayer, but as a profound connection to faith, memory, and belonging.
                 </p>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                   As Shri Ram, Sita, and Lakshman walk toward the sacred temple, they embody the hopes, devotion, and unwavering love of countless generations. The resonating chant of "Shri Ram" becomes a collective heartbeat, uniting millions in a shared feeling of homecoming, grace, and divine presence.
