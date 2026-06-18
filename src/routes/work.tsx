@@ -199,11 +199,11 @@ const GALLERY_CSS = `
   cursor:pointer;
   border:1.2px solid transparent;
   border-radius:7px;
-  transition:width .65s var(--ease-cin), border-color .3s ease, box-shadow .3s ease;
+  transition:border-color .7s ease;
   filter:brightness(.7);
   flex-shrink:0;
 }
-#gallery-root .strip:hover{width:260px;border-color:rgba(201,169,110,.8);box-shadow:0 0 32px rgba(201,169,110,.12)}
+#gallery-root .strip:hover{border-color:rgba(201,169,110,.35)}
 #gallery-root .strip-letter{
   position:absolute;
   top:50%;left:50%;
@@ -215,25 +215,17 @@ const GALLERY_CSS = `
   -webkit-text-stroke:2px #F0EFEB;
   line-height:1;
   user-select:none;
-  transition:transform .5s cubic-bezier(0.34,1.56,0.64,1), color .4s ease, -webkit-text-stroke-color .4s ease;
+  transition:opacity .7s ease;
   z-index:10;
 }
 #gallery-root .strip:hover .strip-letter{
-  color:rgba(201,169,110,.35);
-  -webkit-text-stroke-color:rgba(201,169,110,.9);
-  transform:translate(-50%,-50%) scale(1.08);
+  opacity:.65;
 }
 #gallery-root .strip-num{
   position:absolute;top:10px;right:9px;
   font-size:8px;font-weight:200;letter-spacing:.28em;
   color:rgba(201,169,110,.25);z-index:10;
 }
-#gallery-root .strip::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;
-  height:2px;background:var(--accent);opacity:0;
-  transition:opacity .3s;
-}
-#gallery-root .strip:hover::after{opacity:.4}
 
 /* Gallery close button */
 #gallery-root .gallery-close-wrap{
@@ -358,7 +350,7 @@ const GALLERY_CSS = `
   #gallery-root .strip-row{flex-direction:column;width:100%;padding:0 12px;gap:6px;height:auto}
   #gallery-root .sahaj-panel-wrap{height:auto}
   #gallery-root .strip{width:100%;height:auto;aspect-ratio:auto;max-height:none;min-height:48px}
-  #gallery-root .strip:hover{width:100%;filter:brightness(1);transform:none}
+  #gallery-root .strip:hover{width:100%}
   #gallery-root .strip-letter{font-size:28px}
   #gallery-root .strip-num{font-size:7px;top:8px;right:8px}
   #gallery-root #g-stage{padding:0 20px}
@@ -393,8 +385,7 @@ const GALLERY_CSS = `
   opacity:1;transform:translateY(0);
 }
 #gallery-root .strip:hover{
-  border-color:rgba(201,169,110,1);
-  box-shadow:0 0 24px rgba(201,169,110,.12);
+  border-color:rgba(201,169,110,.35);
 }
 
 /* Hide essentials when gallery opens */
