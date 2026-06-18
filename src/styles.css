@@ -16,9 +16,8 @@
 }
 
 @theme {
-  --font-sans: "Gambetta", Georgia, serif;
+  --font-sans: "Micross", "Microsoft Sans Serif", sans-serif;
   --font-display: "Gambetta", Georgia, serif;
-  --font-micross: "Micross", "Microsoft Sans Serif", sans-serif;
 
   --color-background: #413152;
   --color-foreground: #ece6dc;
