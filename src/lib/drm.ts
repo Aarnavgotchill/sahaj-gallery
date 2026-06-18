@@ -7,21 +7,18 @@ export function useDRM() {
     const keydown = (e: KeyboardEvent) => {
       const mod = isMac ? e.metaKey : e.ctrlKey;
 
-      // PrintScreen — intercepted here on most browsers
       if (e.key === "PrintScreen" || e.code === "PrintScreen") {
         e.preventDefault();
         e.stopPropagation();
         return false;
       }
 
-      // F12 — DevTools
       if (e.key === "F12") {
         e.preventDefault();
         e.stopPropagation();
         return false;
       }
 
-      // Ctrl/Meta + (S, P, U, C, Shift+I/J/C)
       if (mod) {
         if (["s", "S", "p", "P", "u", "U"].includes(e.key)) {
           e.preventDefault();
@@ -35,7 +32,6 @@ export function useDRM() {
         }
       }
 
-      // macOS Cmd+Shift+3 or 4 — may be intercepted by OS, but attempt anyway
       if (isMac && e.metaKey && e.shiftKey && (e.key === "3" || e.key === "4")) {
         e.preventDefault();
         e.stopPropagation();
@@ -43,7 +39,6 @@ export function useDRM() {
       }
     };
 
-    // PrintScreen often fires on keyup rather than keydown
     const keyup = (e: KeyboardEvent) => {
       if (e.key === "PrintScreen" || e.code === "PrintScreen") {
         e.preventDefault();
@@ -53,23 +48,16 @@ export function useDRM() {
     };
 
     const contextmenu = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest(".protect")) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
+      e.preventDefault();
+      e.stopPropagation();
     };
 
     const copy = (e: ClipboardEvent) => {
-      if ((e.target as HTMLElement)?.closest(".protect")) {
-        e.preventDefault();
-      }
+      e.preventDefault();
     };
 
     const dragStart = (e: DragEvent) => {
-      if ((e.target as HTMLElement)?.closest(".protect")) {
-        e.preventDefault();
-      }
+      e.preventDefault();
     };
 
     window.addEventListener("keydown", keydown, true);

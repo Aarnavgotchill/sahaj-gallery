@@ -37,36 +37,39 @@ function Sahaj() {
 
       {/* HERO — Partnership Branding */}
       <section className="relative flex min-h-[90svh] items-center justify-center overflow-hidden px-8 pt-32 pb-20 md:px-14">
-        <div className="absolute inset-0 glow-warm opacity-40" />
+        <div className="bloom" />
+        <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative z-10 mx-auto max-w-[1200px] text-center">
-          <Reveal>
-            <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:gap-12">
+          <Reveal className="shape">
+            <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-10">
               <div className="flex flex-col items-center gap-3">
                 <img
                   src={sahajLogo}
                   alt="Sahaj Gallery"
-                  className="h-20 w-auto object-contain md:h-28"
+                  className="h-24 w-auto object-contain md:h-29"
                 />
                 <span className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground">
                   SAHAJ GALLERY
                 </span>
               </div>
-              <span className="font-display text-3xl tracking-[0.15em] text-[color:var(--gold)] md:text-4xl">
+              <span className="font-display text-3xl tracking-[0.15em] text-[color:var(--gold)] md:text-4xl flex items-center justify-center h-24 md:h-29 flex-shrink-0">
                 ×
               </span>
               <div className="flex flex-col items-center gap-3">
                 <img
                   src={ndhLogo}
                   alt="NDH House"
-                  className="h-20 w-auto object-contain md:h-28"
+                  className="h-24 w-auto object-contain md:h-29"
                 />
-                <span className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground">
-                  NDH HOUSE PRIVATE LIMITED
-                </span>
+                <div className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground leading-relaxed">
+                  <span>NDH HOUSE</span>
+                  <br />
+                  <span className="text-[10px] tracking-[0.25em]">Private Limited</span>
+                </div>
               </div>
             </div>
           </Reveal>
-          <Reveal delay={200}>
+          <Reveal delay={200} className="shape">
               <h2 className="mx-auto mt-12 max-w-3xl font-display text-[clamp(1.1rem,4vw,25px)] leading-[1.4] text-[color:var(--gold)] md:mt-20">
                 SAHAJ Gallery is the artistic extension of NDH House
               </h2>
@@ -82,7 +85,7 @@ function Sahaj() {
               and bespoke artistic expressions, SAHAJ transforms walls into narratives and spaces into experiences.
             </p>
           </Reveal>
-            <Reveal delay={400}>
+            <Reveal delay={400} className="shape">
             <div className="mt-12 flex flex-wrap items-center justify-center gap-6">
               <a
                 href="/contact"
@@ -97,7 +100,7 @@ function Sahaj() {
       </section>
 
       {/* PARTNERSHIP STORY */}
-      <section className="relative border-t border-border px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
         <div className="relative mx-auto max-w-[1100px]">
           <div className="grid gap-16 md:grid-cols-2 md:gap-24">
             <Reveal>
@@ -168,8 +171,9 @@ function Sahaj() {
       </section>
 
       {/* FENIL VIDEO + TESTIMONIAL */}
-      <section className="relative border-t border-border px-8 py-40 md:px-14 md:py-56">
-        <div className="absolute inset-0 glow-warm opacity-50" />
+      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+        <div className="bloom" />
+        <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
           <Reveal className="w-full">
             <div className="w-full">
@@ -194,8 +198,9 @@ function Sahaj() {
       </section>
 
       {/* DHRUTI VIDEO + TESTIMONIAL */}
-      <section className="relative border-t border-border px-8 py-40 md:px-14 md:py-56">
-        <div className="absolute inset-0 glow-warm opacity-50" />
+      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+        <div className="bloom" />
+        <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1fr_1fr]">
           <Reveal delay={200}>
             <div className="space-y-6 text-left">
@@ -223,8 +228,9 @@ function Sahaj() {
       </section>
 
       {/* THE HANDS OF SAHAJ */}
-      <section className="relative border-t border-border px-8 py-40 md:px-14 md:py-56">
-        <div className="absolute inset-0 glow-warm opacity-50" />
+      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+        <div className="bloom" />
+        <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
           <Reveal className="w-full">
             <div className="w-full">
@@ -254,30 +260,29 @@ function Sahaj() {
       </section>
 
       {/* WHAT WE DO */}
-      <section className="relative border-t border-border px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
         <div className="relative mx-auto max-w-[1400px]">
           <Reveal>
-            <p className="kicker text-center">What We Do</p>
             <h2 className="mt-8 text-center font-display text-[clamp(2rem,4vw,4rem)] leading-[1.05]">
-              Our Offering
+              The Essence of Sahaj
             </h2>
           </Reveal>
           <div className="mt-20 grid gap-12 md:grid-cols-3">
             {[
               {
                 n: "01",
-                title: "Commissioned Works",
-                body: "Original pieces conceived in dialogue with you — shaped by space, intention, and the quiet language of your everyday rituals.",
+                title: "The Creative Circle",
+                body: "A space to connect, collaborate, and build a creative community. A platform where ideas are exchanged, relationships are nurtured, and meaningful artistic partnerships take shape",
               },
               {
                 n: "02",
-                title: "Architectural Integration",
-                body: "We work alongside your architect to weave art into walls, light, and proportion — so that nothing feels placed, only inevitable.",
+                title: "Vision to Artwork",
+                body: "We don't simply place art in spaces — we curate stories. Through thoughtful conversations, we translate your vision, personality, and aspirations into meaningful artworks that belong to the architecture and the people who experience it.",
               },
               {
                 n: "03",
                 title: "White Glove Installation",
-                body: "From our studio to your space.\nPerfectly placed.\nWhite-glove handling.\nPrecision installation.\nSeamless integration.\nBecause art deserves respect.",
+                body: "From our studio to your space, every detail is thoughtfully managed. With meticulous handling, precision installation, and seamless execution, we ensure each artwork finds its perfect place — because exceptional art deserves an exceptional experience.",
               },
             ].map((s, i) => (
               <Reveal key={s.n} delay={i * 120}>
@@ -297,8 +302,8 @@ function Sahaj() {
       </section>
 
       {/* THE SPACE */}
-      <section className="relative border-t border-border px-8 py-40 md:px-14 md:py-56">
-        <div className="absolute inset-0 glow-warm opacity-40" />
+      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+        <div className="absolute inset-0 glow-warm opacity-25" />
         <div className="relative mx-auto max-w-[1100px]">
           <div className="grid gap-16 md:grid-cols-2 md:gap-24">
             <Reveal className="flex items-center md:pt-8">
@@ -364,8 +369,11 @@ function Sahaj() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border px-8 py-8 md:px-14">
-        <p className="font-display text-xl tracking-[0.3em] text-center">SAHAJ GALLERY</p>
+      <footer className="border-t border-border/30 px-8 py-4 md:px-14">
+        <div className="flex items-center justify-between">
+          <p className="font-display text-xl tracking-[0.3em]">SAHAJ GALLERY</p>
+          <img src={ndhLogo} alt="NDH House" className="h-12 w-auto opacity-80" />
+        </div>
       </footer>
     </main>
   );

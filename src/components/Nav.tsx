@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import logoSahaj from "@/assets/sahaj trasnparent logo.png";
 
 const links = [
@@ -31,12 +32,12 @@ export function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${
         scrolled
-          ? "backdrop-blur-xl bg-background/60 border-b border-border"
+          ? "backdrop-blur-2xl bg-background/40 border-b border-border/30"
           : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 md:px-14 md:py-6">
-        <a href="/" className="flex items-center gap-6" onClick={() => setMenuOpen(false)}>
+        <Link to="/" className="flex items-center gap-6" onClick={() => setMenuOpen(false)}>
           <img
             src={logoSahaj}
             alt="Sahaj Gallery"
@@ -50,16 +51,16 @@ export function Nav() {
               Art in Architecture
             </span>
           </div>
-        </a>
+        </Link>
         <nav className="hidden items-center gap-10 md:flex">
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
-              href={l.href}
+              to={l.href}
               className="text-[14px] tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-500 hover:text-foreground"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <button
@@ -85,14 +86,14 @@ export function Nav() {
       >
         <div className="flex flex-col gap-0 border-t border-border/50 bg-background/95 backdrop-blur-xl px-6 py-4">
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
-              href={l.href}
+              to={l.href}
               onClick={() => setMenuOpen(false)}
               className="border-b border-border/30 py-4 text-sm tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-300 hover:text-foreground last:border-0"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </div>
       </div>

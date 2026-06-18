@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
+import ndhLogo from "@/assets/NDH_logo_4K.png";
 import { AdminPortal } from "@/components/AdminPortal";
 import { Reveal } from "@/components/Reveal";
 import { useForm } from "react-hook-form";
@@ -76,7 +77,8 @@ function Contact() {
 
       {/* HERO */}
       <section className="relative flex min-h-[80svh] items-center justify-center overflow-hidden px-8 pt-32 md:px-14">
-        <div className="absolute inset-0 glow-warm opacity-60" />
+        <div className="bloom" />
+        <div className="absolute inset-0 glow-warm opacity-40" />
 
         {/* Floating abstract shapes */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -101,8 +103,8 @@ function Contact() {
       </section>
 
       {/* INQUIRY FORM */}
-      <section className="relative px-8 py-24 md:px-14 md:py-40">
-        <div className="absolute inset-0 glow-warm opacity-30" />
+      <section className="section-ambient relative px-8 py-24 md:px-14 md:py-40">
+        <div className="absolute inset-0 glow-warm opacity-20" />
         <div className="relative mx-auto max-w-[1100px]">
           <Reveal>
             <p className="kicker">Send Us a Message</p>
@@ -223,8 +225,8 @@ function Contact() {
       </section>
 
       {/* VISIT + WHY CONNECT */}
-      <section className="relative border-t border-border px-8 py-24 md:px-14 md:py-40">
-        <div className="absolute inset-x-0 top-0 h-1/2 glow-warm opacity-50" />
+      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-40">
+        <div className="absolute inset-x-0 top-0 h-1/2 glow-warm opacity-30" />
         <div className="relative mx-auto max-w-[1400px]">
           <div className="grid gap-20 md:grid-cols-2 md:gap-24">
             {/* Visit Us */}
@@ -293,7 +295,7 @@ function Contact() {
       </section>
 
       {/* Map */}
-      <section className="relative border-t border-border">
+      <section className="section-ambient relative border-t border-border/40">
         <div className="mx-auto max-w-[1600px] px-8 py-16 md:px-14 md:py-24">
           <Reveal>
             <a
@@ -312,8 +314,11 @@ function Contact() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border px-8 py-8 md:px-14">
-        <p className="font-display text-xl tracking-[0.3em] text-center">SAHAJ GALLERY</p>
+      <footer className="border-t border-border/30 px-8 py-4 md:px-14">
+        <div className="flex items-center justify-between">
+          <p className="font-display text-xl tracking-[0.3em]">SAHAJ GALLERY</p>
+          <img src={ndhLogo} alt="NDH House" className="h-12 w-auto opacity-80" />
+        </div>
       </footer>
     </main>
   );

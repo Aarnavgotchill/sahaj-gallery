@@ -1,10 +1,48 @@
-import { useState, useEffect, useRef } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
-import { Reveal } from "@/components/Reveal";
+import WebGLGallery from "@/components/WebGLGallery";
+import ndhLogo from "@/assets/NDH_logo_4K.png";
 
+const VALID_CATEGORY_IDS = [
+  "eyes",
+  "shreenathji",
+  "sikshapatri",
+  "reflection",
+  "cherry",
+] as const;
+
+type CategoryId = (typeof VALID_CATEGORY_IDS)[number];
+
+const CATEGORY_ALIASES: Record<string, CategoryId> = {
+  eyes: "eyes",
+  "the eyes": "eyes",
+  shreenathji: "shreenathji",
+  "the shreenathji grace": "shreenathji",
+  sikshapatri: "sikshapatri",
+  "the sikshapatri": "sikshapatri",
+  reflection: "reflection",
+  "the reflection": "reflection",
+  cherry: "cherry",
+  "cherry blossom": "cherry",
+  urban: "shreenathji",
+  "the urban": "shreenathji",
+};
+
+function resolveCategoryId(raw?: string): CategoryId | undefined {
+  if (!raw) return undefined;
+  const normalized = raw.toLowerCase().trim();
+  if (CATEGORY_ALIASES[normalized]) return CATEGORY_ALIASES[normalized];
+  return VALID_CATEGORY_IDS.includes(normalized as CategoryId)
+    ? (normalized as CategoryId)
+    : undefined;
+}
 
 export const Route = createFileRoute("/work")({
+  validateSearch: (search: Record<string, string | undefined>): { c?: CategoryId } => {
+    const c = resolveCategoryId(search.c ?? search.category);
+    return c ? { c } : {};
+  },
   head: () => ({
     meta: [
       { title: "Gallery — Sahaj Gallery" },
@@ -13,503 +51,610 @@ export const Route = createFileRoute("/work")({
         content: "Browse the full collection of works at Sahaj Gallery in Ahmedabad.",
       },
     ],
+    links: [
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@200;300;400&display=swap",
+      },
+    ],
   }),
   component: Work,
 });
 
-// --- Image loading from category folders ---
+/* ─── DATA ─── */
 
-const imageModules = import.meta.glob<{ default: string }>("../assets/**/*.webp", {
-  eager: true,
-});
-
-const categoryDisplayName: Record<string, string> = {
-  "THE-EYES": "THE EYES",
-  "THE URBAN": "THE URBAN",
-  "THE-SIKSHAPATRI": "THE SIKSHAPATRI",
-  "THE-REFLECTION": "THE REFLECTION",
-  "CHERRY-BLOSSOM": "CHERRY BLOSSOM",
-  sreeyantra: "SREEYANTRA",
-  "SERENE-WOODLAND": "SERENE WOODLAND",
-  "tribal-art": "TRIBAL ART",
-  AUTUMN: "AUTUMN",
-  SARANAM: "SARANAM",
-  PARIJAT: "PARIJAT",
-  FLORA: "FLORA",
-  "PRAKRITI-MANDALA": "PRAKRITI MANDALA",
-};
-
-function displayName(cat: string): string {
-  return categoryDisplayName[cat] ?? cat.replace(/[-_]/g, " ").toUpperCase();
+interface EyeArtwork {
+  title: string;
+  sub: string;
+  desc: string;
+  dim: string;
+  glow: string;
+  svg?: string;
+  image?: string;
+  placeholder?: boolean;
 }
 
-/** Derive a human-readable name from a filename. */
-function deriveName(fileName: string, categoryDir: string): string {
-  const noExt = fileName.replace(/\.webp$/i, "");
-  const esc = categoryDir.replace(/[-\s]/g, "[\\s-]");
-  const withoutPrefix = noExt.replace(new RegExp(`^${esc}`, "i"), "").replace(/^[-]/, "");
-  const withoutNum = withoutPrefix.replace(/-\d+$/, "");
-  const cleaned = withoutNum.replace(/[-_]/g, " ").trim();
-  return cleaned
-    ? cleaned.replace(/\b\w/g, (c) => c.toUpperCase())
-    : displayName(categoryDir);
+function mkPlaceholders(
+  count: number,
+  baseTitle: string,
+  baseSub: string,
+  glow: string,
+  startAt = 1,
+): EyeArtwork[] {
+  return Array.from({ length: count }, (_, i) => ({
+    title: `${baseTitle} ${startAt + i}`,
+    sub: `${baseSub}  ${String(startAt + i).padStart(2, "0")}`,
+    desc: "coming soon",
+    dim: "—",
+    glow,
+    placeholder: true,
+  }));
 }
 
-// Creative names for all images — mapped by filename
-const specificNames: Record<string, string> = {
-  "THE-URBAN.webp": "Jungle Majesty",
-  "THE-URBAN-1.webp": "Elephant Harmony",
-  "THE-URBAN-2.webp": "Lion Legacy",
-  "THE-URBAN-5.webp": "Tiger Trail",
-  "THE-URBAN-6.webp": "Urban Solitude",
-  "THE-URBAN-7.webp": "Concrete Bloom",
-  "THE-URBAN-8.webp": "Street Rhythm",
-  "THE-URBAN-9.webp": "City Veil",
-  "THE-URBAN-11.webp": "Ascent",
-  "THE-URBAN-12.webp": "Neon Stillness",
-  "THE-EYES-2.webp": "Eagle Vision",
-  "THE-EYES-4.webp": "Celestial Gaze",
-  "THE-EYES-5.webp": "Whisper of Sight",
-  "THE-EYES-6.webp": "Dawn Pupil",
-  "THE-REFLECTION.webp": "Graceful Bond",
-  "THE-REFLECTION-1.webp": "Still Waters",
-  "THE-REFLECTION-2.webp": "Mirrored Silence",
-  "THE-REFLECTION-3.webp": "Echo",
-  "THE-REFLECTION-4.webp": "Depth of Surface",
-  "THE-REFLECTION-5.webp": "Ripple and Calm",
-  "THE-SIKSHAPATRI.webp": "Sacred Script",
-  "THE-SIKSHAPATRI-1.webp": "Ancient Verse",
-  "THE-SIKSHAPATRI-2.webp": "Palm Leaf Prayer",
-  "PRAKRITI-MANDALA.webp": "Mandala of Being",
-  "PRAKRITI-MANDALA-1.webp": "Cosmic Circle",
-  "PRAKRITI-MANDALA-2.webp": "Sacred Geometry",
-  "tribal-art.webp": "Tribal Echo",
-  "tribal-art-2.webp": "Ancestral Pulse",
-  "AUTUMN.webp": "Golden Fall",
-  "CHERRY-BLOSSOM.webp": "Petal Drift",
-  "FLORA.webp": "Botanical Stillness",
-  "PARIJAT.webp": "Night Bloom",
-  "SARANAM.webp": "Surrender",
-  "sreeyantra.webp": "Divine Geometry",
-  "SERENE-WOODLAND.webp": "Divine Peace",
-};
-
-interface Artwork {
-  name: string;
-  category: string;
-  img: string;
-  fileName: string;
-}
-
-const allArtworks: Artwork[] = [];
-const categorySet = new Set<string>();
-
-for (const [filePath, mod] of Object.entries(imageModules)) {
-  const normalized = filePath.replace(/\\/g, "/").replace("../assets/", "");
-  const parts = normalized.split("/");
-  if (parts.length < 2) continue; // skip root-level files (e.g. NDH.webp)
-  const categoryDir = parts[0];
-  const fileName = parts[parts.length - 1];
-  const category = displayName(categoryDir);
-  categorySet.add(category);
-
-  allArtworks.push({
-    name: specificNames[fileName] ?? deriveName(fileName, categoryDir),
-    category,
-    img: mod.default,
-    fileName,
-  });
-}
-
-const categoryOrder = [
-  "All",
-  "THE EYES",
-  "THE URBAN",
-  "THE SIKSHAPATRI",
-  "THE REFLECTION",
-  "CHERRY BLOSSOM",
-  "SREEYANTRA",
-  "SERENE WOODLAND",
-  "TRIBAL ART",
-  "AUTUMN",
-  "SARANAM",
-  "PARIJAT",
-  "FLORA",
-  "PRAKRITI MANDALA",
+// S — 1 real image + 9 coming-soon placeholders
+const EYE_ART: EyeArtwork[] = [
+  {
+    title: "Iris I \u2014 Dawn",
+    sub: "I R I S  I",
+    desc: "oil on linen \u00b7 2023",
+    dim: "120 \u00d7 160 cm",
+    glow: "#b87c4a",
+    image: new URL(`../assets/iris-elephant.png`, import.meta.url).href,
+  },
+  ...mkPlaceholders(9, "Iris Study", "I R I S", "#b87c4a", 2),
 ];
 
-const categories = [
-  "All",
-  ...categoryOrder.filter((c) => c !== "All" && categorySet.has(c)),
+// The Shreenathji Grace - 7 images + 3 blank placeholders
+const SHRG_IMGS = Array.from({ length: 7 }, (_, i) =>
+  new URL(`../assets/The Shreenathji Grace/${i + 1}.png`, import.meta.url).href
+);
+const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
+  ...SHRG_IMGS.map((img, i) => ({
+    title: `Shreenathji ${i + 1}`,
+    sub: `S H R E E N A T H J I  ${String(i + 1).padStart(2, "0")}`,
+    desc: "archival print · 2024",
+    dim: "variable dimensions",
+    glow: "#c9a96e",
+    image: img,
+  })),
+  ...Array.from({ length: 3 }, (_, i) => ({
+    title: `Shreenathji ${SHRG_IMGS.length + i + 1}`,
+    sub: `S H R E E N A T H J I  ${String(SHRG_IMGS.length + i + 1).padStart(2, "0")}`,
+    desc: "coming soon",
+    dim: "—",
+    glow: "#c9a96e",
+    placeholder: true,
+  })),
 ];
 
+// H — 10 coming-soon placeholders
+const THE_SIKSHAPATRI_ART: EyeArtwork[] = mkPlaceholders(10, "Sikshapatri Study", "S I K S H A P A T R I", "#8a6020");
+
+// A (index 3) — 10 coming-soon placeholders
+const THE_REFLECTION_ART: EyeArtwork[] = mkPlaceholders(10, "Reflection Series", "R E F L E C T I O N", "#206a8a");
+
+// J — 10 coming-soon placeholders
+const CHERRY_BLOSSOM_ART: EyeArtwork[] = mkPlaceholders(10, "Cherry Blossom", "C H E R R Y  B L O S S O M", "#d08080");
+
+// Category mapping — explicit IDs link panels to their artwork datasets
+const CATEGORIES = [
+  { id: "eyes",      label: "The Eyes",              artworks: EYE_ART,                letter: "S",  img: "S"  },
+  { id: "shreenathji", label: "The Shreenathji Grace", artworks: THE_SHREENATHJI_GRACE_ART, letter: "A",  img: "A"  },
+  { id: "sikshapatri", label: "The Sikshapatri",       artworks: THE_SIKSHAPATRI_ART,    letter: "H",  img: "H"  },
+  { id: "reflection", label: "The Reflection",         artworks: THE_REFLECTION_ART,     letter: "A",  img: "A1" },
+  { id: "cherry",    label: "Cherry Blossom",         artworks: CHERRY_BLOSSOM_ART,     letter: "J",  img: "J"  },
+] as const;
+
+const CATEGORY_ARTWORKS = CATEGORIES.map((c) => c.artworks);
+
+/* ─── CSS ─── */
+const GALLERY_CSS = `
+.gallery-viewport{height:100vh;display:flex;flex-direction:column;overflow-y:auto}
+#gallery-root {
+  --accent: #c9a96e;
+  --accent2: #7a6a8e;
+  --bone: #F0EFEB;
+  --muted: #b0a4be;
+  --ease-cin: cubic-bezier(0.77,0,0.175,1);
+  --ease-soft: cubic-bezier(0.4,0,0.2,1);
+  flex:1;min-height:0;
+  display:flex;flex-direction:column;
+  background:var(--color-background);
+  color:var(--bone);
+  font-family:'Montserrat',sans-serif;
+  cursor:default;
+}
+
+/* Centered content wrapper — holds SAHAJ panels + Essentials */
+#gallery-root .gallery-content{
+  flex:1;min-height:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:156px 20px 50px;
+  gap:0;
+}
+
+.gallery-nav-wrap[data-gallery] {
+  position:relative;z-index:100;
+}
+.gallery-nav-wrap[data-gallery] > header {
+  backdrop-filter:blur(24px) !important;
+  background-color:var(--color-background) !important;
+  border-bottom:1px solid rgba(90,74,110,0.5) !important;
+}
+
+/* L1 */
+#gallery-root #l1{
+  flex:none;
+  height:480px;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .55s var(--ease-soft);
+}
+#gallery-root #l1.out{opacity:0;pointer-events:none}
+#gallery-root .strip-row{display:flex;align-items:center;gap:10px;height:100%;max-height:100%}
+#gallery-root .strip{
+  position:relative;
+  height:100%;width:auto;aspect-ratio:216/504;
+  max-height:480px;
+  overflow:hidden;
+  cursor:pointer;
+  border:1.2px solid transparent;
+  border-radius:7px;
+  transition:width .65s var(--ease-cin), border-color .3s ease, box-shadow .3s ease;
+  filter:brightness(.7);
+  flex-shrink:0;
+}
+#gallery-root .strip:hover{width:260px;border-color:rgba(201,169,110,.8);box-shadow:0 0 32px rgba(201,169,110,.12)}
+#gallery-root .strip-letter{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Gambetta',Georgia,serif;
+  font-weight:500;
+  font-size:clamp(90px,10vw,130px);
+  color:transparent;
+  -webkit-text-stroke:2px #F0EFEB;
+  line-height:1;
+  user-select:none;
+  transition:transform .5s cubic-bezier(0.34,1.56,0.64,1), color .4s ease, -webkit-text-stroke-color .4s ease;
+  z-index:10;
+}
+#gallery-root .strip:hover .strip-letter{
+  color:rgba(201,169,110,.35);
+  -webkit-text-stroke-color:rgba(201,169,110,.9);
+  transform:translate(-50%,-50%) scale(1.08);
+}
+#gallery-root .strip-num{
+  position:absolute;top:10px;right:9px;
+  font-size:8px;font-weight:200;letter-spacing:.28em;
+  color:rgba(201,169,110,.25);z-index:10;
+}
+#gallery-root .strip::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:2px;background:var(--accent);opacity:0;
+  transition:opacity .3s;
+}
+#gallery-root .strip:hover::after{opacity:.4}
+
+/* Gallery close button */
+#gallery-root .gallery-close-wrap{
+  position:fixed;right:28px;bottom:48px;
+  z-index:60;
+  opacity:0;transition:opacity .5s .35s;
+}
+#gallery-root #l3.in .gallery-close-wrap{opacity:1}
+#gallery-root .btn-close{
+  width:38px;height:38px;
+  border:1px solid rgba(201,169,110,.2);
+  background:var(--color-background);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .3s;
+  border-radius:50%;
+}
+#gallery-root .btn-close:hover{border-color:var(--accent)}
+#gallery-root .btn-close svg{stroke:var(--muted);width:12px;height:12px;transition:stroke .3s}
+#gallery-root .btn-close:hover svg{stroke:var(--accent)}
+
+/* L3 — Elegant fade + scale entrance */
+#gallery-root #l3{
+  position:fixed;inset:0;
+  z-index:30;
+  opacity:0;pointer-events:none;
+  background:var(--color-background);
+  transform:scale(0.97);
+  transition:opacity .5s var(--ease-soft),transform .5s cubic-bezier(0.16,1,0.3,1);
+  overflow:hidden;
+}
+#gallery-root #l3.in{
+  opacity:1;pointer-events:all;
+  transform:scale(1);
+}
+#gallery-root #g-stage{
+  position:absolute;
+  top:120px;left:0;right:0;bottom:96px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 40px;
+}
+#gallery-root .artwork{
+  position:absolute;
+  inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  padding:0 80px;
+}
+#gallery-root .artwork.active{opacity:1;pointer-events:all}
+#gallery-root .art-frame{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  width:min(96vw,calc(100vh - 200px));
+  max-height:calc(100vh - 200px);
+  overflow:hidden;
+}
+#gallery-root .art-img{
+  max-width:100%;max-height:calc(100vh - 200px);
+  width:auto;height:auto;
+  object-fit:contain;display:block;
+}
+#gallery-root .art-canvas{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#gallery-root .art-canvas svg{max-width:100%;max-height:100%;width:auto;height:auto}
+#gallery-root .l3-counter{
+  position:absolute;
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:12px;font-weight:300;letter-spacing:.4em;
+  color:var(--accent);z-index:70;
+  pointer-events:none;
+  padding:10px 22px;
+  background:rgba(26,14,40,0.88);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(201,169,110,.28);
+  border-radius:2px;
+  white-space:nowrap;
+}
+#gallery-root .l3-toggle-wrap{
+  position:absolute;top:16px;right:16px;z-index:70;
+}
+#gallery-root .l3-toggle{
+  font-size:9px;font-weight:200;letter-spacing:.2em;
+  color:rgba(201,169,110,.5);
+  background:rgba(201,169,110,.08);
+  border:1px solid rgba(201,169,110,.15);
+  padding:6px 14px;cursor:pointer;
+  text-transform:uppercase;
+  transition:color .3s,background .3s,border-color .3s;
+}
+#gallery-root .l3-toggle:hover{
+  color:#C9A96E;
+  background:rgba(201,169,110,.15);
+  border-color:rgba(201,169,110,.3);
+}
+#gallery-root .g-arr{
+  position:absolute;
+  top:50%;transform:translateY(-50%);
+  width:56px;height:56px;
+  background:rgba(201,169,110,.04);
+  border:1px solid rgba(201,169,110,.12);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:60;
+  transition:background .3s, border-color .3s, opacity .3s;
+}
+#gallery-root .g-arr:hover{background:rgba(201,169,110,.1);border-color:rgba(201,169,110,.3)}
+#gallery-root .g-arr.dim{opacity:.15;pointer-events:none}
+#gallery-root .g-arr svg{stroke:var(--accent);width:20px;height:20px}
+#gallery-root #ga-p{left:20px}
+#gallery-root #ga-n{right:20px}
+/* Placeholder */
+#gallery-root .art-placeholder{border:1px solid rgba(201,169,110,.08);border-radius:2px}
+/* Artwork transitions */
+#gallery-root .artwork{transition:opacity .6s ease;opacity:0}
+#gallery-root .artwork.active{opacity:1}
+@media(max-width:640px){
+  #gallery-root #l1{padding:16px 0 8px}
+  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0 12px;gap:6px;height:auto}
+  #gallery-root .sahaj-panel-wrap{height:auto}
+  #gallery-root .strip{width:100%;height:auto;aspect-ratio:auto;max-height:none;min-height:48px}
+  #gallery-root .strip:hover{width:100%;filter:brightness(1);transform:none}
+  #gallery-root .strip-letter{font-size:28px}
+  #gallery-root .strip-num{font-size:7px;top:8px;right:8px}
+  #gallery-root #g-stage{padding:0 20px}
+  #gallery-root .artwork{padding:0 20px}
+  #gallery-root .art-frame{width:min(85vmin,calc(100vh - 240px))}
+}
+/* Gallery footer — SAHAJ GALLERY branding on front page only */
+#gallery-root .gallery-footer{
+  transition:opacity .55s var(--ease-soft);
+}
+#gallery-root .gallery-footer{border-top-color:rgba(90,74,110,0.3)!important}
+
+/* Gallery vignette overlay on L3 */
+#gallery-root #l3::before{
+  content:'';position:fixed;inset:0;z-index:5;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.6) 100%);
+}
+/* Bloom on L3 */
+#gallery-root #l3::after{
+  content:'';position:fixed;inset:0;z-index:5;pointer-events:none;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(201,169,110,0.04) 0%,transparent 70%),
+             radial-gradient(ellipse 60% 50% at 50% 100%,rgba(90,60,140,0.03) 0%,transparent 60%);
+}
+
+/* SAHAJ panel stagger animation (matching Essentials style) */
+#gallery-root .sahaj-panel-wrap{
+  opacity:0;transform:translateY(30px);
+  transition:opacity 1.2s cubic-bezier(0.34,1.56,0.64,1),transform 1.2s cubic-bezier(0.34,1.56,0.64,1);
+  height:100%;flex-shrink:0;
+}
+#gallery-root .sahaj-panel-wrap.in{
+  opacity:1;transform:translateY(0);
+}
+#gallery-root .strip:hover{
+  border-color:rgba(201,169,110,1);
+  box-shadow:0 0 24px rgba(201,169,110,.12);
+}
+
+/* Hide essentials when gallery opens */
+#gallery-root .gallery-content #l1.out ~ .essentials-section{opacity:0;pointer-events:none}
+#gallery-root .essentials-section{
+  padding:0 20px 24px;text-align:center;
+  margin-top:30px;
+  transition:opacity .55s var(--ease-soft);
+}
+#gallery-root .essentials-grid{
+  display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;
+}
+#gallery-root .essentials-box{
+  width:60px;height:60px;
+  border:1.2px solid rgba(201,169,110,.75);
+  border-radius:7px;
+  background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:default;
+  transition:border-color .3s ease, transform .3s ease, background .3s ease, box-shadow .3s ease;
+}
+#gallery-root .essentials-box:hover{
+  border-color:rgba(201,169,110,1);
+  transform:scale(1.05);
+  background:rgba(201,169,110,.06);
+  box-shadow:0 0 24px rgba(201,169,110,.08);
+}
+#gallery-root .essentials-box span{
+  font-family:'Gambetta',Georgia,serif;
+  font-size:20px;font-weight:500;
+  letter-spacing:.02em;
+  color:var(--bone);
+  user-select:none;
+}
+/* Mount animation for essentials boxes */
+#gallery-root .essentials-box-wrap{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease-out,transform .6s ease-out;
+}
+#gallery-root .essentials-box-wrap.in{
+  opacity:1;transform:translateY(0);
+}
+@media(max-width:768px){
+  #gallery-root #l1{height:360px}
+  #gallery-root .gallery-content{gap:0;padding:156px 20px 50px}
+  #gallery-root .essentials-box{width:48px;height:48px}
+  #gallery-root .essentials-box span{font-size:16px}
+  #gallery-root .essentials-grid{gap:18px}
+}
+@media(max-width:480px){
+  #gallery-root #l1{height:280px}
+  #gallery-root .gallery-content{gap:0;padding:134px 12px 50px}
+  #gallery-root .essentials-section{padding:0 16px}
+  #gallery-root .essentials-box{width:42px;height:42px}
+  #gallery-root .sahaj-panel-wrap{height:auto}
+  #gallery-root .essentials-box span{font-size:14px}
+  #gallery-root .essentials-grid{gap:14px;max-width:320px;margin:0 auto}
+}
+`;
+
+/* ─── COMPONENT ─── */
 function Work() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const [isPanning, setIsPanning] = useState(false);
-  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
-  const [is3dMode, setIs3dMode] = useState(false);
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
-  const tiltRef = useRef({ rotateX: 0, rotateY: 0 });
-  const imageContainerRef = useRef<HTMLDivElement>(null);
-  const tabsRef = useRef<HTMLDivElement>(null);
-  const lightboxRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>(0);
+  const navigate = useNavigate();
+  const { c } = Route.useSearch();
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [useWebGL, setUseWebGL] = useState(false);
+  const [essentialsReady, setEssentialsReady] = useState(false);
+
+  const galleryOpen = !!c;
+  const activeCategory =
+    CATEGORIES.find((cat) => cat.id === c) ?? null;
+  const artworks = activeCategory?.artworks ?? CATEGORIES[0].artworks;
+  const isFirst = activeIdx === 0;
+  const isLast = activeIdx === artworks.length - 1;
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    setActiveIdx(0);
+  }, [c]);
+
+  useEffect(() => {
+    const t = setTimeout(() => setEssentialsReady(true), 50);
+    return () => clearTimeout(t);
   }, []);
+  const touchXRef = useRef(0);
+
+  const openGallery = useCallback((categoryId: CategoryId) => {
+    navigate({ to: "/work", search: { c: categoryId }, replace: true });
+  }, [navigate]);
+
+  const navImg = useCallback((dir: 1|-1) => {
+    const next = activeIdx + dir;
+    if (next < 0 || next >= artworks.length) return;
+    setActiveIdx(next);
+  }, [activeIdx, artworks.length]);
+
+  const goBack = useCallback(() => {
+    navigate({ to: "/work", search: {}, replace: true });
+  }, [navigate]);
 
   useEffect(() => {
-    if (selectedIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    const handler = (e: KeyboardEvent) => {
+      if (useWebGL && galleryOpen) return;
+      if (e.key === "Escape") goBack();
+      if (e.key === "ArrowRight" && galleryOpen) navImg(1);
+      if (e.key === "ArrowLeft" && galleryOpen) navImg(-1);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [galleryOpen, goBack, navImg, useWebGL]);
+
+  useEffect(() => {
+    const onStart = (e: TouchEvent) => { touchXRef.current = e.touches[0].clientX; };
+    const onEnd = (e: TouchEvent) => {
+      if (!galleryOpen) return;
+      const dx = e.changedTouches[0].clientX - touchXRef.current;
+      if (Math.abs(dx) > 40) navImg(dx < 0 ? 1 : -1);
+    };
+    document.addEventListener("touchstart", onStart, { passive: true });
+    document.addEventListener("touchend", onEnd, { passive: true });
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("touchstart", onStart);
+      document.removeEventListener("touchend", onEnd);
     };
-  }, [selectedIndex]);
-
-  const filtered =
-    activeCategory === "All"
-      ? allArtworks
-      : allArtworks.filter((a) => a.category === activeCategory);
-
-  const scrollTab = (direction: number) => {
-    if (tabsRef.current) {
-      tabsRef.current.scrollBy({ left: direction * 200, behavior: "smooth" });
-    }
-  };
-
-  const openLightbox = (index: number) => {
-    setSelectedIndex(index);
-    setZoom(1);
-    setPan({ x: 0, y: 0 });
-  };
-
-  const closeLightbox = () => {
-    setSelectedIndex(null);
-    setZoom(1);
-    setPan({ x: 0, y: 0 });
-    setIs3dMode(false);
-    setTilt({ rotateX: 0, rotateY: 0 });
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
-  };
-
-  const toggle3d = () => {
-    setIs3dMode((v) => !v);
-    if (!is3dMode) {
-      setZoom(1);
-      setPan({ x: 0, y: 0 });
-    }
-    setTilt({ rotateX: 0, rotateY: 0 });
-    tiltRef.current = { rotateX: 0, rotateY: 0 };
-  };
-
-  const handle3dMouse = (e: React.MouseEvent) => {
-    if (!is3dMode || zoom > 1) return;
-    const container = imageContainerRef.current;
-    if (!container) return;
-    const rect = container.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const deltaX = (e.clientX - centerX) / (rect.width / 2);
-    const deltaY = (e.clientY - centerY) / (rect.height / 2);
-    tiltRef.current = {
-      rotateY: deltaX * 20,
-      rotateX: -deltaY * 20,
-    };
-    if (!animationRef.current) {
-      const animate = () => {
-        setTilt((prev) => ({
-          rotateX: prev.rotateX + (tiltRef.current.rotateX - prev.rotateX) * 0.1,
-          rotateY: prev.rotateY + (tiltRef.current.rotateY - prev.rotateY) * 0.1,
-        }));
-        animationRef.current = requestAnimationFrame(animate);
-      };
-      animationRef.current = requestAnimationFrame(animate);
-    }
-  };
-
-  const reset3d = () => {
-    tiltRef.current = { rotateX: 0, rotateY: 0 };
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = 0;
-    }
-    setTilt({ rotateX: 0, rotateY: 0 });
-  };
-
-  const goNext = () => {
-    if (selectedIndex !== null && selectedIndex < filtered.length - 1) {
-      setSelectedIndex(selectedIndex + 1);
-      setZoom(1);
-      setPan({ x: 0, y: 0 });
-    }
-  };
-
-  const goPrev = () => {
-    if (selectedIndex !== null && selectedIndex > 0) {
-      setSelectedIndex(selectedIndex - 1);
-      setZoom(1);
-      setPan({ x: 0, y: 0 });
-    }
-  };
-
-  const zoomIn = () => setZoom((z) => Math.min(z + 0.5, 5));
-  const zoomOut = () => setZoom((z) => Math.max(z - 0.5, 1));
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (zoom > 1) {
-      setIsPanning(true);
-      setPanStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isPanning && zoom > 1) {
-      setPan({ x: e.clientX - panStart.x, y: e.clientY - panStart.y });
-    }
-  };
-
-  const handleMouseUp = () => setIsPanning(false);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowRight") goNext();
-    if (e.key === "ArrowLeft") goPrev();
-  };
+  }, [galleryOpen, navImg]);
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <Nav />
-
-      {/* HEADER */}
-      <section className="relative pt-40 pb-8 md:pt-48 md:pb-12">
-        <div className="mx-auto max-w-[1600px] px-8 md:px-14">
-          <Reveal>
-            <p className="kicker">A NDH HOUSE PARTNERSHIP</p>
-            <h1 className="mt-6 font-display text-[clamp(2.4rem,5vw,5.5rem)] leading-[1] text-balance">
-              Gallery
-            </h1>
-          </Reveal>
+    <>
+      <style>{GALLERY_CSS}</style>
+      <div className="gallery-viewport">
+        <div className="gallery-nav-wrap" data-gallery>
+          <Nav />
         </div>
-      </section>
+        <div id="gallery-root">
 
-      {/* CATEGORY TABS */}
-      <section className="relative px-8 md:px-14">
-        <div className="mx-auto max-w-[1600px]">
-          <div className="relative">
-            <button
-              onClick={() => scrollTab(-1)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-8 h-8 bg-white/10 text-muted-foreground rounded-full shadow hover:bg-white/20 transition-colors"
-              aria-label="Scroll left"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <div
-              ref={tabsRef}
-              className="gallery-tabs flex gap-6 overflow-x-auto py-4 md:mx-10"
-            >
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`gallery-tab text-[11px] tracking-[0.2em] uppercase pb-1 whitespace-nowrap ${
-                    activeCategory === cat
-                      ? "active text-[color:var(--gold)]"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+        {/* Centered content: SAHAJ panels + Essentials */}
+        <div className="gallery-content">
+          {/* L1: Catalogue strips — each panel maps to a category via its explicit ID */}
+          <div id="l1" className={galleryOpen ? "out" : ""}>
+            <div className="strip-row">
+              {CATEGORIES.map((cat, i) => (
+                <div
+                  key={cat.id}
+                  className={`sahaj-panel-wrap ${essentialsReady ? "in" : ""}`}
+                  style={{ transitionDelay: `${i * 250}ms` }}
                 >
-                  {cat}
-                </button>
+                  <div
+                    className="strip"
+                    data-category={cat.id}
+                    style={{ background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${new URL(`../assets/${cat.img}.webp`, import.meta.url).href}) center/cover no-repeat` }}
+                    onClick={() => openGallery(cat.id)}
+                  >
+                    <span className="strip-num">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="strip-letter">{cat.letter}</span>
+                  </div>
+                </div>
               ))}
             </div>
-            <button
-              onClick={() => scrollTab(1)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-8 h-8 bg-white/10 text-muted-foreground rounded-full shadow hover:bg-white/20 transition-colors"
-              aria-label="Scroll right"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
           </div>
-          <div className="mt-2 h-px w-full bg-border" />
-        </div>
-      </section>
 
-      {/* GALLERY GRID */}
-      <section className="px-8 py-12 md:px-14 md:py-20">
-        <div className="mx-auto max-w-[1600px]">
-          <div key={activeCategory} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-5 md:gap-6">
-            {filtered.map((work, i) => (
-              <div
-                key={`${work.fileName}-${i}`}
-                className="artwork-card cursor-pointer animate-card"
-                style={{ animationDelay: `${i * 60}ms` }}
-                onClick={() => openLightbox(i)}
-                onContextMenu={(e) => e.preventDefault()}
-              >
-                <div className="gallery-img-wrap bg-card shadow-sm relative overflow-hidden rounded-sm">
-                  <img
-                    src={work.img}
-                    alt={work.name}
-                    loading="lazy"
-                    draggable={false}
-                    onDragStart={(e) => e.preventDefault()}
-                    className="gallery-img w-full object-contain select-none max-h-[380px] mx-auto"
-                  />
-                  <div className="absolute inset-0 z-[1] pointer-events-none select-none" />
+          {/* Essentials section */}
+          <section className="essentials-section">
+            <div className="essentials-grid">
+              {["E","S","S","E","N","T","I","A","L","S"].map((letter, i) => (
+                <div key={i} className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                  <div className="essentials-box">
+                    <span>{letter}</span>
+                  </div>
                 </div>
-                <div className="mt-3 px-0.5">
-                  <p className="text-[13px] leading-snug text-foreground text-center font-[500]">
-                    {work.name}
-                  </p>
-                  <p className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground text-center mt-0.5">
-                    {work.category}
-                  </p>
+              ))}
+            </div>
+          </section>
+
+          {/* View Full Catalogue button */}
+          <a
+            href="https://drive.google.com/drive/folders/1tbnA8k-aKQ5vYCD_LJQnZrmr8C4tQddc?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
+            style={{ marginTop: 23 }}
+          >
+            View Our Full Catalogue
+            <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+
+        <footer className="gallery-footer border-t border-border/30 px-8 py-4 md:px-14">
+          <div className="flex items-center justify-between">
+            <p className="font-display text-xl tracking-[0.3em] text-left">SAHAJ GALLERY</p>
+            <img src={ndhLogo} alt="NDH House" className="h-12 w-auto opacity-80" />
+          </div>
+        </footer>
+
+        {/* Gallery: Immersive art view */}
+        <div
+          id="l3"
+          className={galleryOpen ? "in" : ""}
+          style={{ background: "var(--color-background)" }}
+        >
+          {galleryOpen && (useWebGL ? (
+            <WebGLGallery
+              key={c}
+              artworks={artworks}
+              imgIdx={activeIdx}
+              onNavImg={navImg}
+              onSetImgIdx={setActiveIdx}
+              onClose={goBack}
+            />
+          ) : (
+            <>
+          <div id="g-stage" key={c}>
+            {artworks.map((art, i) => (
+              <div key={i} className={`artwork ${i === activeIdx ? "active" : ""}`}>
+                <div className="art-frame">
+                  {art.image ? (
+                    <img src={art.image} alt="" className="art-img" />
+                  ) : art.svg ? (
+                    <div className="art-canvas" dangerouslySetInnerHTML={{ __html: art.svg }} />
+                  ) : art.placeholder ? (
+                    <div className="art-placeholder" style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', width:'100%', height:'100%', gap:'12px', background:`radial-gradient(ellipse at center, ${art.glow}20 0%, transparent 80%)`, border:`1px solid ${art.glow}15`, borderRadius:'2px' }}>
+                      <span style={{ fontFamily:'Gambetta,Georgia,serif', fontSize:'clamp(22px,4vw,38px)', letterSpacing:'0.4em', opacity:0.5, color:art.glow, userSelect:'none' }}>Coming Soon</span>
+                      <span style={{ fontSize:'12px', letterSpacing:'0.25em', opacity:0.25, textTransform:'uppercase', color:art.glow, userSelect:'none' }}>{art.sub}</span>
+                    </div>
+                  ) : (
+                    <div className="art-canvas" />
+                  )}
                 </div>
               </div>
             ))}
           </div>
-
-          {filtered.length === 0 && (
-            <div className="py-32 text-center">
-              <p className="text-muted-foreground text-sm tracking-[0.2em] uppercase">
-                No artworks in this category yet
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-border px-8 py-8 md:px-14">
-        <p className="font-display text-xl tracking-[0.3em] text-center">SAHAJ GALLERY</p>
-      </footer>
-
-      {/* LIGHTBOX */}
-      {selectedIndex !== null && (
-        <div
-          ref={lightboxRef}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-sm"
-          onKeyDown={handleKeyDown}
-          tabIndex={0}
-          onClick={(e) => { if (e.target === lightboxRef.current) closeLightbox(); }}
-        >
-          <button
-            onClick={closeLightbox}
-            className="absolute top-6 right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-all"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+          <button className={`g-arr ${isFirst ? "dim" : ""}`} id="ga-p" onClick={() => navImg(-1)}>
+            <svg viewBox="0 0 22 22" fill="none" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"><polyline points="14,4 7,11 14,18"/></svg>
           </button>
-
-          {selectedIndex > 0 && (
-            <button
-              onClick={goPrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-all"
-            >
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <button className={`g-arr ${isLast ? "dim" : ""}`} id="ga-n" onClick={() => navImg(1)}>
+            <svg viewBox="0 0 22 22" fill="none" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"><polyline points="8,4 15,11 8,18"/></svg>
+          </button>
+          </>))}
+          {galleryOpen && (
+          <>
+          <div className="l3-counter">
+            {String(activeIdx + 1).padStart(2, "0")} / {String(artworks.length).padStart(2, "0")}
+          </div>
+          <div className="l3-toggle-wrap">
+            <button className="l3-toggle" onClick={() => setUseWebGL((v) => !v)}>
+              {useWebGL ? "Static" : "WebGL"} View
+            </button>
+          </div>
+          <div className="gallery-close-wrap">
+            <button className="btn-close" onClick={goBack}>
+              <svg viewBox="0 0 14 14" fill="none" strokeWidth="1.2" strokeLinecap="round">
+                <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
               </svg>
             </button>
+          </div>
+          </>
           )}
-
-          {selectedIndex < filtered.length - 1 && (
-            <button
-              onClick={goNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-all"
-            >
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          )}
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 rounded-full bg-white/10 px-4 py-2">
-            <button onClick={zoomOut} className="text-white/70 hover:text-white transition-colors disabled:opacity-30" disabled={zoom <= 1}>
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" d="M5 12h14" />
-              </svg>
-            </button>
-            <span className="min-w-[2.5rem] text-center text-[12px] text-white/70">{Math.round(zoom * 100)}%</span>
-            <button onClick={zoomIn} className="text-white/70 hover:text-white transition-colors disabled:opacity-30" disabled={zoom >= 5}>
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" d="M12 5v14M5 12h14" />
-              </svg>
-            </button>
-            <span className="h-5 w-px bg-white/20 mx-1" />
-            <button
-              onClick={toggle3d}
-              className={`flex items-center gap-1.5 text-[10px] tracking-[0.15em] uppercase transition-colors ${
-                is3dMode ? "text-[#c9a96e]" : "text-white/70 hover:text-white"
-              }`}
-              title="Toggle 3D view"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-              3D
-            </button>
-          </div>
-
-          <div
-            ref={imageContainerRef}
-            className="flex max-h-[90vh] max-w-[90vw] items-center justify-center overflow-hidden"
-            onMouseDown={handleMouseDown}
-            onMouseMove={(e) => { handleMouseMove(e); handle3dMouse(e); }}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={() => { handleMouseUp(); reset3d(); }}
-            style={{
-              cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default",
-              perspective: is3dMode && zoom === 1 ? "1200px" : "none",
-            }}
-          >
-            <div className="relative"
-              style={{
-                transform: is3dMode && zoom === 1
-                  ? `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) scale3d(1, 1, 1)`
-                  : "none",
-                transition: is3dMode && zoom === 1 ? "transform 0.1s ease-out" : "none",
-                transformStyle: "preserve-3d",
-                willChange: "transform",
-              }}
-            >
-              <img
-                src={filtered[selectedIndex].img}
-                alt={filtered[selectedIndex].name}
-                draggable={false}
-                onDragStart={(e) => e.preventDefault()}
-                onContextMenu={(e) => e.preventDefault()}
-                className="max-h-[85vh] max-w-[85vw] object-contain select-none"
-                style={{
-                  transform: zoom > 1 ? `scale(${zoom})` : "none",
-                  cursor: zoom > 1 ? "zoom-in" : "default",
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 text-center">
-            <p className="text-white/90 text-sm tracking-[0.12em]">
-              {filtered[selectedIndex].name}
-            </p>
-            <p className="text-white/50 text-[10px] tracking-[0.2em] uppercase mt-1">
-              {filtered[selectedIndex].category}
-            </p>
-          </div>
         </div>
-      )}
-    </main>
+
+      </div>
+      </div>
+    </>
   );
 }

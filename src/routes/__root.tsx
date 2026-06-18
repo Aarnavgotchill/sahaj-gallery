@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { useDRM } from "@/lib/drm";
 
 function NotFoundComponent() {
   return (
@@ -99,10 +100,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useDRM();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <div className="ambient-overlay" />
+      <div className="relative z-10">
+        <Outlet />
+      </div>
     </QueryClientProvider>
   );
 }
