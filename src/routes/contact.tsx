@@ -101,7 +101,7 @@ function Contact() {
                 <select
                   id="inquiryType"
                   {...register("inquiryType", { required: true })}
-                  className="mt-2 w-full border-0 border-b border-border bg-background pb-2 text-[15px] text-foreground outline-none transition-colors duration-500 focus:border-[var(--gold)] font-sans"
+                  className="mt-2 w-full border-0 border-b border-border bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors duration-500 focus:border-[var(--gold)] font-sans"
                 >
                   <option value="" className="font-sans">Select an option</option>
                   {inquiryTypes.map((t) => (
