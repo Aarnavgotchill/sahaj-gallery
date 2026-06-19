@@ -55,11 +55,11 @@ function Contact() {
       </div>
       <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-[42px] md:px-12 pt-8 pb-[26px]">
         <div className="flex items-center justify-start">
-          <h1 className="font-display text-left text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2] max-w-[380px]">
+          <h1 className="font-display text-left text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
             Send us a message{" "}
-            <em className="italic text-[var(--gold)]">we'd love to hear</em>
+            <em className="italic text-[var(--gold)]">We'd love to hear</em>
             <br />
-            <span className="block">from you.</span>
+            <span>from you.</span>
           </h1>
         </div>
         <div className="flex items-start pt-[92px] md:pt-[100px]">
@@ -102,9 +102,9 @@ function Contact() {
                   {...register("inquiryType", { required: true })}
                   className="mt-2 w-full border-0 border-b border-border bg-background pb-2 text-[15px] text-foreground outline-none transition-colors duration-500 focus:border-[var(--gold)] font-sans"
                 >
-                  <option value="">Select an option</option>
+                  <option value="" className="font-sans">Select an option</option>
                   {inquiryTypes.map((t) => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t} className="font-sans">{t}</option>
                   ))}
                 </select>
               </div>
