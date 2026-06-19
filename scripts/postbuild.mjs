@@ -26,6 +26,8 @@ const html = `<!doctype html>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sahaj Gallery</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=2" />
+    <link rel="shortcut icon" type="image/png" sizes="64x64" href="/favicon.png?v=2" />
     ${cssFile ? `<link rel="stylesheet" href="/assets/${cssFile}" />` : ""}
   </head>
   <body>
