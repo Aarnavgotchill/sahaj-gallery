@@ -94,7 +94,7 @@ export function VideoPlayer({ src }: { src: string }) {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="none"
       />
 
       {/* Center play button overlay when paused */}

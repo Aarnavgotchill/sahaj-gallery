@@ -147,6 +147,7 @@ function Index() {
             muted
             loop
             playsInline
+            preload="metadata"
             className="h-full w-full object-cover"
           />
         </div>

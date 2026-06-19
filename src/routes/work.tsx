@@ -625,7 +625,7 @@ function Work() {
               <div key={i} className={`artwork ${i === activeIdx ? "active" : ""}`}>
                 <div className="art-frame">
                   {art.image ? (
-                    <img src={art.image} alt="" className="art-img" />
+                    <img src={art.image} alt="" loading="lazy" className="art-img" />
                   ) : art.svg ? (
                     <div className="art-canvas" dangerouslySetInnerHTML={{ __html: art.svg }} />
                   ) : art.placeholder ? (
