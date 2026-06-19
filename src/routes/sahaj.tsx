@@ -285,8 +285,8 @@ function Sahaj() {
                 body: "From our studio to your space, every detail is thoughtfully managed. With meticulous handling, precision installation, and seamless execution, we ensure each artwork finds its perfect place   because exceptional art deserves an exceptional experience.",
               },
             ].map((s, i) => (
-              <Reveal key={s.n} delay={i * 120}>
-                <div className="group border border-border p-10 transition-all duration-500 hover:border-[color:var(--gold)] hover:bg-card/30">
+              <Reveal key={s.n} delay={i * 120} className="h-full">
+                <div className="group h-full border border-border p-10 transition-all duration-500 hover:border-[color:var(--gold)] hover:bg-card/30">
                   <p className="text-5xl font-display text-[color:var(--gold)] opacity-40">
                     {s.n}
                   </p>
