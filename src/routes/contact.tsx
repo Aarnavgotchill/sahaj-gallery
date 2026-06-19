@@ -55,12 +55,13 @@ function Contact() {
       </div>
       <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-[42px] md:px-12 pt-8 pb-[26px]">
         <div className="flex items-center justify-start">
-          <h1 className="font-display text-left text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
-            Send us a message{" "}
-            <em className="italic text-[var(--gold)]">We'd love to hear</em>
-            <br />
-            <span>from you.</span>
-          </h1>
+          <div className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
+            <p className="text-left">
+              Send us a message{" "}
+              <em className="italic text-[var(--gold)]">We'd love to hear</em>
+            </p>
+            <p className="text-center">from you.</p>
+          </div>
         </div>
         <div className="flex items-start pt-[92px] md:pt-[100px]">
           <form
