@@ -49,11 +49,11 @@ function Contact() {
   }
 
   return (
-    <main className="h-screen overflow-hidden bg-background text-foreground flex flex-col">
+    <main className="h-screen overflow-y-auto bg-background text-foreground flex flex-col">
       <div className="border-b border-border/30">
         <Nav />
       </div>
-      <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-[42px] md:px-12 pt-8 pb-[26px]">
+      <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-6 md:px-12 pt-8 pb-[26px]">
         <div className="flex items-center justify-start">
           <div className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
             <p className="text-left">
@@ -63,7 +63,7 @@ function Contact() {
             <p className="text-center">from you.</p>
           </div>
         </div>
-        <div className="flex items-start pt-[92px] md:pt-[100px]">
+        <div className="flex items-start pt-12 md:pt-[100px]">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-full rounded-sm border border-border bg-card/30 p-6 backdrop-blur-sm md:p-10"
@@ -122,7 +122,7 @@ function Contact() {
             <div className="mt-6 text-center">
               <button
                 type="submit"
-                className="group relative inline-flex items-center gap-3 overflow-hidden border border-[var(--gold)] px-12 py-4 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background"
+                className="group relative inline-flex items-center gap-3 overflow-hidden border border-[var(--gold)] px-6 md:px-12 py-4 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background"
               >
                 <span className="relative z-10">Send Inquiry</span>
                 <Send className="relative z-10 h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />

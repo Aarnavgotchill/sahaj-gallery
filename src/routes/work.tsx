@@ -371,7 +371,7 @@ const GALLERY_CSS = `
 #gallery-root .g-arr{
   position:absolute;
   top:50%;transform:translateY(-50%);
-  width:56px;height:56px;
+  width:44px;height:44px;
   background:rgba(201,169,110,.04);
   border:1px solid rgba(201,169,110,.12);
   display:flex;align-items:center;justify-content:center;
@@ -380,9 +380,9 @@ const GALLERY_CSS = `
 }
 #gallery-root .g-arr:hover{background:rgba(201,169,110,.1);border-color:rgba(201,169,110,.3)}
 #gallery-root .g-arr.dim{opacity:.15;pointer-events:none}
-#gallery-root .g-arr svg{stroke:var(--accent);width:20px;height:20px}
-#gallery-root #ga-p{left:20px}
-#gallery-root #ga-n{right:20px}
+#gallery-root .g-arr svg{stroke:var(--accent);width:18px;height:18px}
+#gallery-root #ga-p{left:16px}
+#gallery-root #ga-n{right:16px}
 /* Placeholder */
 #gallery-root .art-placeholder{border:1px solid rgba(201,169,110,.08);border-radius:2px}
 /* Artwork transitions */

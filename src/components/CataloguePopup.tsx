@@ -105,9 +105,7 @@ export default function CataloguePopup({
           <DialogTitle className="font-display text-2xl tracking-[0.15em] text-[var(--gold)] text-center">
             Full Catalogue
           </DialogTitle>
-          <DialogDescription className="text-center text-sm tracking-[0.08em] text-muted-foreground">
-            Enter your details to receive the full catalogue.
-          </DialogDescription>
+
         </DialogHeader>
 
         <div className="space-y-4 py-2">

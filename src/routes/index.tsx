@@ -159,7 +159,7 @@ function Index() {
 
         <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center pb-6 px-8 text-center">
           <div className="animate-pop-in-out-5s" style={{ animationDelay: "300ms" }}>
-            <p className="mb-4 font-display text-[17px] tracking-[0.35em] uppercase text-[var(--gold)]">
+            <p className="mb-4 font-display text-[clamp(11px,2.8vw,17px)] tracking-[clamp(0.2em,2.5vw,0.35em)] uppercase text-[var(--gold)]">
               A NDH HOUSE PARTNERSHIP
             </p>
             <h1 className="font-display text-balance text-[clamp(2rem,9vw,48px)] leading-[1.1] text-foreground">
@@ -242,7 +242,7 @@ function Index() {
       </section>
 
       {/* SELECTED WORKS */}
-      <section id="works" className="section-ambient relative border-t border-border/40 px-8 pt-40 pb-0 md:px-14 md:pt-56 md:pb-0">
+      <section id="works" className="section-ambient relative border-t border-border/40 px-8 pt-24 pb-0 md:px-14 md:pt-56 md:pb-0">
         <div className="relative mx-auto max-w-[1400px]">
           <Reveal>
             <div className="mb-16 flex items-end justify-between">

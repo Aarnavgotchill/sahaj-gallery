@@ -100,7 +100,7 @@ function Sahaj() {
       </section>
 
       {/* PARTNERSHIP STORY */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="relative mx-auto max-w-[1100px]">
           <div className="grid gap-16 md:grid-cols-2 md:gap-24">
             <Reveal>
@@ -171,7 +171,7 @@ function Sahaj() {
       </section>
 
       {/* FENIL VIDEO + TESTIMONIAL */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
@@ -198,7 +198,7 @@ function Sahaj() {
       </section>
 
       {/* DHRUTI VIDEO + TESTIMONIAL */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1fr_1fr]">
@@ -228,7 +228,7 @@ function Sahaj() {
       </section>
 
       {/* THE HANDS OF SAHAJ */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
@@ -260,7 +260,7 @@ function Sahaj() {
       </section>
 
       {/* WHAT WE DO */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="relative mx-auto max-w-[1400px]">
           <Reveal>
             <h2 className="mt-8 text-center font-display text-[clamp(2rem,4vw,4rem)] leading-[1.05]">
