@@ -158,7 +158,7 @@ function Index() {
 
         <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center pb-6 px-8 text-center">
           <div className="animate-pop-in-out-5s" style={{ animationDelay: "300ms" }}>
-            <p className="mb-4 font-display text-[17px] tracking-[0.35em] uppercase text-foreground">
+            <p className="mb-4 font-display text-[17px] tracking-[0.35em] uppercase text-[var(--gold)]">
               A NDH HOUSE PARTNERSHIP
             </p>
             <h1 className="font-display text-balance text-[clamp(2rem,9vw,48px)] leading-[1.1] text-foreground">
@@ -197,7 +197,7 @@ function Index() {
                 Every name carries a meaning, a thought, and a purpose. SAHAJ was chosen because it reflects everything we believe art should be. Sahaj, in its simplest form, means natural. Effortless. The way things are meant to be... without force, without noise. And that's exactly how we see art.
               </p>
               <p>
-                Not something that should feel complicated or intimidating. Not something you have to "understand" to appreciate. But something you feel instantly. Something that naturally finds its place in your space, your surroundings, and your life.
+                Not something that should feel complicated or intimidating. Not something you have to "understand" to appreciate. But something you feel instantly. Something that naturally finds its place in your space,<br /> your surroundings, and your life.
               </p>
               <p>
                 At SAHAJ, we create and curate art that feels authentic, timeless, and deeply connected to the people who live with it. Because the most meaningful things are often the ones that feel the most natural.
@@ -225,7 +225,7 @@ function Index() {
           </Reveal>
           <Reveal delay={800}>
             <img src={ndhLogo} alt="NDH House" className="mx-auto mt-12 h-20 w-auto opacity-90" />
-            <p className="font-sans mt-8 text-[16px] tracking-[0.35em] uppercase text-muted-foreground">
+            <p className="font-display mt-8 text-[16px] tracking-[0.35em] uppercase text-[var(--gold)]">
               A NDH HOUSE PARTNERSHIP
             </p>
             <div className="mx-auto mt-10 max-w-3xl space-y-5 text-[15px] leading-loose text-muted-foreground">
@@ -241,7 +241,7 @@ function Index() {
       </section>
 
       {/* SELECTED WORKS */}
-      <section id="works" className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section id="works" className="section-ambient relative border-t border-border/40 px-8 pt-40 pb-0 md:px-14 md:pt-56 md:pb-0">
         <div className="relative mx-auto max-w-[1400px]">
           <Reveal>
             <div className="mb-16 flex items-end justify-between">
@@ -280,7 +280,7 @@ function Index() {
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                   These gentle rabbits remind us of our own journey through difficult times   that beneath every scar, every crack, and every challenge, there remains warmth, hope, and a place to belong. What seems broken from above may, in fact, be protecting a life below. Sometimes, the deepest strength is found in the most fragile places.
                 </p>
-                <p className="font-sans text-[13px] leading-relaxed text-muted-foreground/70 italic">
+                <p className="font-display text-[15px] leading-relaxed text-muted-foreground/70 italic">
                   Size of the Artwork: 8'2"(H) X 3'2"(W)
                 </p>
               </div>
@@ -303,7 +303,7 @@ function Index() {
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                   To experience it in person and explore the story behind every shade, do visit us at our gallery.
                 </p>
-                <p className="font-sans text-[13px] leading-relaxed text-muted-foreground/70 italic">
+                <p className="font-display text-[15px] leading-relaxed text-muted-foreground/70 italic">
                   Size of the Artwork: 5'(H) X 5'(W)
                 </p>
               </div>
@@ -325,14 +325,14 @@ function Index() {
           {/* ROW 3: Image left, text right   Ayodhya Alok */}
           <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
             <Reveal className="w-full">
-              <div className="w-full" onContextMenu={(e) => e.preventDefault()}>
+              <div className="w-full flex justify-center" onContextMenu={(e) => e.preventDefault()}>
                 <img
                   src={art3}
                   alt="Ayodhya Alok"
                   loading="lazy"
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
-                  className="select-none w-full h-auto max-h-[80vh] object-contain"
+                  className="select-none w-[95%] h-auto max-h-[80vh] object-contain"
                 />
               </div>
             </Reveal>
@@ -350,7 +350,7 @@ function Index() {
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                   More than a journey to a temple, it is the journey of millions of hearts returning to Ram.
                 </p>
-                <p className="font-sans text-[13px] leading-relaxed text-muted-foreground/70 italic">
+                <p className="font-display text-[15px] leading-relaxed text-muted-foreground/70 italic">
                   Size of the Artwork: 3'6"(H) X 2'6"(W)
                 </p>
               </div>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import WebGLGallery from "@/components/WebGLGallery";
+import CataloguePopup from "@/components/CataloguePopup";
 import ndhLogo from "@/assets/NDH_logo_4K.png";
 
 const VALID_CATEGORY_IDS = [
@@ -91,50 +92,83 @@ function mkPlaceholders(
   }));
 }
 
-// S   1 real image + 9 coming-soon placeholders
-const EYE_ART: EyeArtwork[] = [
-  {
-    title: "Iris I  Dawn",
-    sub: "I R I S  I",
-    desc: "oil on linen \u00b7 2023",
-    dim: "120 \u00d7 160 cm",
-    glow: "#b87c4a",
-    image: new URL(`../assets/iris-elephant.png`, import.meta.url).href,
-  },
-  ...mkPlaceholders(9, "Iris Study", "I R I S", "#b87c4a", 2),
+// S   Eyes - 10 images from sahaj panel/1S
+const S_IMG = [
+  new URL("../assets/sahaj panel/1S/S1.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S2.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S3.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S4.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S5.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S6.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S7.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S8.JPG", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S9.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/1S/S10.jpg", import.meta.url).href,
 ];
+const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
+  title: `Eyes Study ${i + 1}`,
+  sub: `E Y E S  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: "#b87c4a",
+  image: img,
+}));
 
-// The Shreenathji Grace - 7 images + 3 blank placeholders
-const SHRG_IMGS = Array.from({ length: 7 }, (_, i) =>
-  new URL(`../assets/The Shreenathji Grace/${i + 1}.png`, import.meta.url).href
+// A   Shreenathji - 2 images from sahaj panel/2A + 8 placeholders
+const SHRG_IMGS = Array.from({ length: 2 }, (_, i) =>
+  new URL(`../assets/sahaj panel/2A/${i + 1}A.JPG`, import.meta.url).href
 );
 const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
   ...SHRG_IMGS.map((img, i) => ({
     title: `Shreenathji ${i + 1}`,
     sub: `S H R E E N A T H J I  ${String(i + 1).padStart(2, "0")}`,
-    desc: "archival print · 2024",
-    dim: "variable dimensions",
+    desc: "artwork",
+    dim: " ",
     glow: "#c9a96e",
     image: img,
   })),
-  ...Array.from({ length: 3 }, (_, i) => ({
-    title: `Shreenathji ${SHRG_IMGS.length + i + 1}`,
-    sub: `S H R E E N A T H J I  ${String(SHRG_IMGS.length + i + 1).padStart(2, "0")}`,
-    desc: "coming soon",
-    dim: " ",
-    glow: "#c9a96e",
-    placeholder: true,
-  })),
+  ...mkPlaceholders(8, "Shreenathji", "S H R E E N A T H J I", "#c9a96e", 3),
 ];
 
-// H   10 coming-soon placeholders
-const THE_SIKSHAPATRI_ART: EyeArtwork[] = mkPlaceholders(10, "Sikshapatri Study", "S I K S H A P A T R I", "#8a6020");
+// H   Sikshapatri - 10 images from sahaj panel/3H
+const THE_SIKSHAPATRI_ART: EyeArtwork[] = Array.from({ length: 10 }, (_, i) => ({
+  title: `Sikshapatri Study ${i + 1}`,
+  sub: `S I K S H A P A T R I  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: "#8a6020",
+  image: new URL(`../assets/sahaj panel/3H/${i + 1}H.JPG`, import.meta.url).href,
+}));
 
-// A (index 3)   10 coming-soon placeholders
-const THE_REFLECTION_ART: EyeArtwork[] = mkPlaceholders(10, "Reflection Series", "R E F L E C T I O N", "#206a8a");
+// A (index 3)   Reflection - 9 images from sahaj panel/4A + 1 placeholder
+const REF_IMGS = Array.from({ length: 9 }, (_, i) =>
+  new URL(`../assets/sahaj panel/4A/${i + 1}AA.JPG`, import.meta.url).href
+);
+const THE_REFLECTION_ART: EyeArtwork[] = [
+  ...REF_IMGS.map((img, i) => ({
+    title: `Reflection Series ${i + 1}`,
+    sub: `R E F L E C T I O N  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork",
+    dim: " ",
+    glow: "#206a8a",
+    image: img,
+  })),
+  ...mkPlaceholders(1, "Reflection Series", "R E F L E C T I O N", "#206a8a", 10),
+];
 
-// J   10 coming-soon placeholders
-const CHERRY_BLOSSOM_ART: EyeArtwork[] = mkPlaceholders(10, "Cherry Blossom", "C H E R R Y  B L O S S O M", "#d08080");
+// J   Cherry Blossom - 7 images from sahaj panel/5J + 3 placeholders
+const CB_J_FILES = [1, 2, 3, 4, 7, 8, 10];
+const CHERRY_BLOSSOM_ART: EyeArtwork[] = [
+  ...CB_J_FILES.map((n) => ({
+    title: `Cherry Blossom ${n}`,
+    sub: `C H E R R Y  B L O S S O M  ${String(n).padStart(2, "0")}`,
+    desc: "artwork",
+    dim: " ",
+    glow: "#d08080",
+    image: new URL(`../assets/sahaj panel/5J/${n}J.jpg`, import.meta.url).href,
+  })),
+  ...mkPlaceholders(3, "Cherry Blossom", "C H E R R Y  B L O S S O M", "#d08080", 11),
+];
 
 // Category mapping   explicit IDs link panels to their artwork datasets
 const CATEGORIES = [
@@ -193,17 +227,22 @@ const GALLERY_CSS = `
 #gallery-root .strip-row{display:flex;align-items:center;gap:10px;height:100%;max-height:100%}
 #gallery-root .strip{
   position:relative;
-  height:100%;width:auto;aspect-ratio:216/504;
+  height:100%;width:auto;aspect-ratio:190/504;
   max-height:480px;
   overflow:hidden;
   cursor:pointer;
   border:1.2px solid transparent;
   border-radius:7px;
-  transition:border-color .7s ease;
-  filter:brightness(.7);
+  background-size:cover !important;background-position:center;
   flex-shrink:0;
+  transition:transform .4s cubic-bezier(0.34,1.56,0.64,1),filter .4s cubic-bezier(0.34,1.56,0.64,1),box-shadow .4s cubic-bezier(0.34,1.56,0.64,1),border-color .4s cubic-bezier(0.34,1.56,0.64,1);
 }
-#gallery-root .strip:hover{border-color:rgba(201,169,110,.35)}
+#gallery-root .strip:hover{
+  transform:scale(1.05,1.08);
+  filter:brightness(1.15);
+  box-shadow:0 0 20px rgba(201,169,110,.3);
+  border-color:rgba(201,169,110,.25);
+}
 #gallery-root .strip-letter{
   position:absolute;
   top:50%;left:50%;
@@ -215,11 +254,7 @@ const GALLERY_CSS = `
   -webkit-text-stroke:2px #F0EFEB;
   line-height:1;
   user-select:none;
-  transition:opacity .7s ease;
   z-index:10;
-}
-#gallery-root .strip:hover .strip-letter{
-  opacity:.65;
 }
 #gallery-root .strip-num{
   position:absolute;top:10px;right:9px;
@@ -346,12 +381,11 @@ const GALLERY_CSS = `
 #gallery-root .artwork{transition:opacity .6s ease;opacity:0}
 #gallery-root .artwork.active{opacity:1}
 @media(max-width:640px){
-  #gallery-root #l1{padding:16px 0 8px}
-  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0 12px;gap:6px;height:auto}
-  #gallery-root .sahaj-panel-wrap{height:auto}
-  #gallery-root .strip{width:100%;height:auto;aspect-ratio:auto;max-height:none;min-height:48px}
-  #gallery-root .strip:hover{width:100%}
-  #gallery-root .strip-letter{font-size:28px}
+  #gallery-root #l1{height:auto;padding:20px 12px}
+  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:8px;height:auto}
+  #gallery-root .sahaj-panel-wrap{height:auto;width:100%}
+  #gallery-root .strip{width:100%;height:auto;aspect-ratio:auto;max-height:none;min-height:72px}
+  #gallery-root .strip-letter{font-size:32px}
   #gallery-root .strip-num{font-size:7px;top:8px;right:8px}
   #gallery-root #g-stage{padding:0 20px}
   #gallery-root .artwork{padding:0 20px}
@@ -375,17 +409,9 @@ const GALLERY_CSS = `
              radial-gradient(ellipse 60% 50% at 50% 100%,rgba(90,60,140,0.03) 0%,transparent 60%);
 }
 
-/* SAHAJ panel stagger animation (matching Essentials style) */
+/* SAHAJ panel strip wrapper — no entrance animation */
 #gallery-root .sahaj-panel-wrap{
-  opacity:0;transform:translateY(30px);
-  transition:opacity 1.2s cubic-bezier(0.34,1.56,0.64,1),transform 1.2s cubic-bezier(0.34,1.56,0.64,1);
   height:100%;flex-shrink:0;
-}
-#gallery-root .sahaj-panel-wrap.in{
-  opacity:1;transform:translateY(0);
-}
-#gallery-root .strip:hover{
-  border-color:rgba(201,169,110,.35);
 }
 
 /* Hide essentials when gallery opens */
@@ -409,7 +435,7 @@ const GALLERY_CSS = `
 }
 #gallery-root .essentials-box:hover{
   border-color:rgba(201,169,110,1);
-  transform:scale(1.05);
+  transform:scale(1.1, 1.03);
   background:rgba(201,169,110,.06);
   box-shadow:0 0 24px rgba(201,169,110,.08);
 }
@@ -436,11 +462,13 @@ const GALLERY_CSS = `
   #gallery-root .essentials-grid{gap:18px}
 }
 @media(max-width:480px){
-  #gallery-root #l1{height:280px}
+  #gallery-root #l1{height:auto;padding:16px 10px}
   #gallery-root .gallery-content{gap:0;padding:134px 12px 50px}
   #gallery-root .essentials-section{padding:0 16px}
   #gallery-root .essentials-box{width:42px;height:42px}
-  #gallery-root .sahaj-panel-wrap{height:auto}
+  #gallery-root .sahaj-panel-wrap{height:auto;width:100%}
+  #gallery-root .strip{min-height:60px}
+  #gallery-root .strip-letter{font-size:26px}
   #gallery-root .essentials-box span{font-size:14px}
   #gallery-root .essentials-grid{gap:14px;max-width:320px;margin:0 auto}
 }
@@ -454,7 +482,7 @@ function Work() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
-
+  const [catalogueOpen, setCatalogueOpen] = useState(false);
   const galleryOpen = !!c;
   const activeCategory =
     CATEGORIES.find((cat) => cat.id === c) ?? null;
@@ -527,11 +555,7 @@ function Work() {
           <div id="l1" className={galleryOpen ? "out" : ""}>
             <div className="strip-row">
               {CATEGORIES.map((cat, i) => (
-                <div
-                  key={cat.id}
-                  className={`sahaj-panel-wrap ${essentialsReady ? "in" : ""}`}
-                  style={{ transitionDelay: `${i * 250}ms` }}
-                >
+                <div key={cat.id} className="sahaj-panel-wrap">
                   <div
                     className="strip"
                     data-category={cat.id}
@@ -560,16 +584,16 @@ function Work() {
           </section>
 
           {/* View Full Catalogue button */}
-          <a
-            href="https://drive.google.com/drive/folders/1tbnA8k-aKQ5vYCD_LJQnZrmr8C4tQddc?usp=drive_link"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setCatalogueOpen(true)}
             className="inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
             style={{ marginTop: 23 }}
           >
             View Our Full Catalogue
             <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-          </a>
+          </button>
+
+
         </div>
 
         <footer className="gallery-footer border-t border-border/30 px-8 py-4 md:px-14">
@@ -646,6 +670,8 @@ function Work() {
 
       </div>
       </div>
+
+      <CataloguePopup open={catalogueOpen} onOpenChange={setCatalogueOpen} />
     </>
   );
 }

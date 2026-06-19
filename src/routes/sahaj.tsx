@@ -105,8 +105,8 @@ function Sahaj() {
           <div className="grid gap-16 md:grid-cols-2 md:gap-24">
             <Reveal>
               <p className="kicker">The Collaboration</p>
-              <h2 className="mt-8 font-display text-[clamp(1rem,1.4vw,1.4rem)] leading-[1.2] md:whitespace-nowrap">
-                STUDIO SHIKSHPATRI <em className="italic text-[color:var(--gold)]">×</em> KARIGARI STUDIO
+              <h2 className="mt-8 font-display text-[clamp(1rem,1.4vw,1.4rem)] leading-[1.2] text-[color:var(--gold)] md:whitespace-nowrap">
+                STUDIO SHIKSHPATRI <em className="italic">×</em> KARIGARI STUDIO
               </h2>
               <div className="mt-10 space-y-5 text-[14px] leading-loose text-muted-foreground">
                 <p>
@@ -302,7 +302,7 @@ function Sahaj() {
       </section>
 
       {/* THE SPACE */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-40 md:px-14 md:py-56">
+      <section className="section-ambient relative border-t border-border/40 px-8 pt-40 pb-8 md:px-14 md:pt-56 md:pb-12">
         <div className="absolute inset-0 glow-warm opacity-25" />
         <div className="relative mx-auto max-w-[1100px]">
           <div className="grid gap-16 md:grid-cols-2 md:gap-24">

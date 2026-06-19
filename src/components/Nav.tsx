@@ -57,7 +57,7 @@ export function Nav() {
             <Link
               key={l.href}
               to={l.href}
-              className="text-[14px] tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-500 hover:text-foreground"
+              className="font-display text-[14px] tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-500 hover:text-foreground"
             >
               {l.label}
             </Link>
@@ -90,7 +90,7 @@ export function Nav() {
               key={l.href}
               to={l.href}
               onClick={() => setMenuOpen(false)}
-              className="border-b border-border/30 py-4 text-sm tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-300 hover:text-foreground last:border-0"
+              className="font-display border-b border-border/30 py-4 text-sm tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-300 hover:text-foreground last:border-0"
             >
               {l.label}
             </Link>
