@@ -156,19 +156,27 @@ const THE_REFLECTION_ART: EyeArtwork[] = [
   ...mkPlaceholders(1, "Reflection Series", "R E F L E C T I O N", "#206a8a", 10),
 ];
 
-// J   Cherry Blossom - 7 images from sahaj panel/5J + 3 placeholders
-const CB_J_FILES = [1, 2, 3, 4, 7, 8, 10];
-const CHERRY_BLOSSOM_ART: EyeArtwork[] = [
-  ...CB_J_FILES.map((n) => ({
-    title: `Cherry Blossom ${n}`,
-    sub: `C H E R R Y  B L O S S O M  ${String(n).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: "#d08080",
-    image: new URL(`../assets/sahaj panel/5J/${n}J.jpg`, import.meta.url).href,
-  })),
-  ...mkPlaceholders(3, "Cherry Blossom", "C H E R R Y  B L O S S O M", "#d08080", 11),
+// J   Cherry Blossom - 10 images from sahaj panel/5J (1-4,7,8,10=.jpg, 5,6,9=.jpeg)
+const CB_J_IMGS = [
+  new URL("../assets/sahaj panel/5J/1J.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/2J.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/3J.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/4J.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/5J.jpeg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/6J.jpeg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/7J.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/8J.jpg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/9J.jpeg", import.meta.url).href,
+  new URL("../assets/sahaj panel/5J/10J.jpg", import.meta.url).href,
 ];
+const CHERRY_BLOSSOM_ART: EyeArtwork[] = CB_J_IMGS.map((img, i) => ({
+  title: `Cherry Blossom ${i + 1}`,
+  sub: `C H E R R Y  B L O S S O M  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: "#d08080",
+  image: img,
+}));
 
 // Category mapping   explicit IDs link panels to their artwork datasets
 const CATEGORIES = [
