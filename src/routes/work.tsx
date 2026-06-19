@@ -40,9 +40,11 @@ function resolveCategoryId(raw?: string): CategoryId | undefined {
 }
 
 export const Route = createFileRoute("/work")({
-  validateSearch: (search: Record<string, string | undefined>): { c?: CategoryId } => {
+  validateSearch: (search: Record<string, string | undefined>): { c?: CategoryId; e?: EssentialsKey } => {
     const c = resolveCategoryId(search.c ?? search.category);
-    return c ? { c } : {};
+    const raw = search.e;
+    const e = raw && (ESSENTIALS_KEYS as readonly string[]).includes(raw) ? (raw as EssentialsKey) : undefined;
+    return { ...(c ? { c } : {}), ...(e ? { e } : {}) };
   },
   head: () => ({
     meta: [
@@ -188,6 +190,127 @@ const CATEGORIES = [
 ] as const;
 
 const CATEGORY_ARTWORKS = CATEGORIES.map((c) => c.artworks);
+
+/* ─── ESSENTIALS DATA ─── */
+
+const ESSENTIALS_KEYS = ["ess_6e","ess_7s","ess_8s","ess_9e","ess_10n","ess_11t","ess_12i","ess_13a","ess_14l","ess_15s"] as const;
+type EssentialsKey = (typeof ESSENTIALS_KEYS)[number];
+
+const ESSENTIALS_GLOW = "#c9a96e";
+
+// 6E — 4 real images + 1 placeholder
+const _6E_IMGS = [
+  new URL("../assets/ESSENTIALS/6E/Handle 1.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/6E/Handle 2.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/6E/Handle 3.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/6E/Handle 4.png", import.meta.url).href,
+];
+const ESS_6E_ART: EyeArtwork[] = [
+  ..._6E_IMGS.map((img, i) => ({
+    title: `Handle ${i + 1}`,
+    sub: `E 0 1  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork", dim: " ", glow: ESSENTIALS_GLOW, image: img,
+  })),
+  ...mkPlaceholders(1, "Handle", "E 0 1", ESSENTIALS_GLOW, 5),
+];
+
+// 7S — 2 real images + 3 placeholders
+const _7S_IMGS = [
+  new URL("../assets/ESSENTIALS/7S/1SS.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/7S/2SS.png", import.meta.url).href,
+];
+const ESS_7S_ART: EyeArtwork[] = [
+  ..._7S_IMGS.map((img, i) => ({
+    title: `S ${i + 1}`,
+    sub: `S 0 2  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork", dim: " ", glow: ESSENTIALS_GLOW, image: img,
+  })),
+  ...mkPlaceholders(3, "S", "S 0 2", ESSENTIALS_GLOW, 3),
+];
+
+// 8S — 3 real images + 2 placeholders
+const _8S_IMGS = [
+  new URL("../assets/ESSENTIALS/8S/1SSS.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/8S/2SSS.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/8S/3SSS.png", import.meta.url).href,
+];
+const ESS_8S_ART: EyeArtwork[] = [
+  ..._8S_IMGS.map((img, i) => ({
+    title: `SS ${i + 1}`,
+    sub: `S 0 3  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork", dim: " ", glow: ESSENTIALS_GLOW, image: img,
+  })),
+  ...mkPlaceholders(2, "SS", "S 0 3", ESSENTIALS_GLOW, 4),
+];
+
+// 9E — 4 real images + 1 placeholder
+const _9E_IMGS = [
+  new URL("../assets/ESSENTIALS/9E/1EE.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/9E/2EE.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/9E/3EE.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/9E/4EE.png", import.meta.url).href,
+];
+const ESS_9E_ART: EyeArtwork[] = [
+  ..._9E_IMGS.map((img, i) => ({
+    title: `EE ${i + 1}`,
+    sub: `E 0 4  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork", dim: " ", glow: ESSENTIALS_GLOW, image: img,
+  })),
+  ...mkPlaceholders(1, "EE", "E 0 4", ESSENTIALS_GLOW, 5),
+];
+
+// 10N — 2 real images + 3 placeholders
+const _10N_IMGS = [
+  new URL("../assets/ESSENTIALS/10N/1N.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/10N/2N.png", import.meta.url).href,
+];
+const ESS_10N_ART: EyeArtwork[] = [
+  ..._10N_IMGS.map((img, i) => ({
+    title: `N ${i + 1}`,
+    sub: `N 0 5  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork", dim: " ", glow: ESSENTIALS_GLOW, image: img,
+  })),
+  ...mkPlaceholders(3, "N", "N 0 5", ESSENTIALS_GLOW, 3),
+];
+
+// 11T — 2 real images + 3 placeholders
+const _11T_IMGS = [
+  new URL("../assets/ESSENTIALS/11T/1T.png", import.meta.url).href,
+  new URL("../assets/ESSENTIALS/11T/2T.png", import.meta.url).href,
+];
+const ESS_11T_ART: EyeArtwork[] = [
+  ..._11T_IMGS.map((img, i) => ({
+    title: `T ${i + 1}`,
+    sub: `T 0 6  ${String(i + 1).padStart(2, "0")}`,
+    desc: "artwork", dim: " ", glow: ESSENTIALS_GLOW, image: img,
+  })),
+  ...mkPlaceholders(3, "T", "T 0 6", ESSENTIALS_GLOW, 3),
+];
+
+// 12I — all 5 placeholders (no images exist yet)
+const ESS_12I_ART: EyeArtwork[] = mkPlaceholders(5, "I", "I 0 7", ESSENTIALS_GLOW, 1);
+
+// 13A — all 5 placeholders
+const ESS_13A_ART: EyeArtwork[] = mkPlaceholders(5, "A", "A 0 8", ESSENTIALS_GLOW, 1);
+
+// 14L — all 5 placeholders
+const ESS_14L_ART: EyeArtwork[] = mkPlaceholders(5, "L", "L 0 9", ESSENTIALS_GLOW, 1);
+
+// 15S — all 5 placeholders
+const ESS_15S_ART: EyeArtwork[] = mkPlaceholders(5, "S", "S 1 0", ESSENTIALS_GLOW, 1);
+
+const ESSENTIALS_ENTRIES = [
+  { key: "ess_6e",  letter: "E", artworks: ESS_6E_ART  },
+  { key: "ess_7s",  letter: "S", artworks: ESS_7S_ART  },
+  { key: "ess_8s",  letter: "S", artworks: ESS_8S_ART  },
+  { key: "ess_9e",  letter: "E", artworks: ESS_9E_ART  },
+  { key: "ess_10n", letter: "N", artworks: ESS_10N_ART },
+  { key: "ess_11t", letter: "T", artworks: ESS_11T_ART },
+  { key: "ess_12i", letter: "I", artworks: ESS_12I_ART },
+  { key: "ess_13a", letter: "A", artworks: ESS_13A_ART },
+  { key: "ess_14l", letter: "L", artworks: ESS_14L_ART },
+  { key: "ess_15s", letter: "S", artworks: ESS_15S_ART },
+] as const;
 
 /* ─── CSS ─── */
 const GALLERY_CSS = `
@@ -438,7 +561,7 @@ const GALLERY_CSS = `
   border-radius:7px;
   background:transparent;
   display:flex;align-items:center;justify-content:center;
-  cursor:default;
+  cursor:pointer;
   transition:border-color .3s ease, transform .3s ease, background .3s ease, box-shadow .3s ease;
 }
 #gallery-root .essentials-box:hover{
@@ -485,22 +608,29 @@ const GALLERY_CSS = `
 /* ─── COMPONENT ─── */
 function Work() {
   const navigate = useNavigate();
-  const { c } = Route.useSearch();
+  const { c, e } = Route.useSearch();
 
   const [activeIdx, setActiveIdx] = useState(0);
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
-  const galleryOpen = !!c;
-  const activeCategory =
-    CATEGORIES.find((cat) => cat.id === c) ?? null;
-  const artworks = activeCategory?.artworks ?? CATEGORIES[0].artworks;
+  const galleryOpen = !!c || !!e;
+
+  const activeEssentials = e
+    ? ESSENTIALS_ENTRIES.find((ent) => ent.key === e) ?? null
+    : null;
+  const activeCategory = !e
+    ? (CATEGORIES.find((cat) => cat.id === c) ?? null)
+    : null;
+  const artworks = activeEssentials
+    ? activeEssentials.artworks
+    : activeCategory?.artworks ?? CATEGORIES[0].artworks;
   const isFirst = activeIdx === 0;
   const isLast = activeIdx === artworks.length - 1;
 
   useEffect(() => {
     setActiveIdx(0);
-  }, [c]);
+  }, [c, e]);
 
   useEffect(() => {
     const t = setTimeout(() => setEssentialsReady(true), 50);
@@ -510,6 +640,10 @@ function Work() {
 
   const openGallery = useCallback((categoryId: CategoryId) => {
     navigate({ to: "/work", search: { c: categoryId }, replace: true });
+  }, [navigate]);
+
+  const openEssentials = useCallback((key: EssentialsKey) => {
+    navigate({ to: "/work", search: { e: key }, replace: true });
   }, [navigate]);
 
   const navImg = useCallback((dir: 1|-1) => {
@@ -581,10 +715,10 @@ function Work() {
           {/* Essentials section */}
           <section className="essentials-section">
             <div className="essentials-grid">
-              {["E","S","S","E","N","T","I","A","L","S"].map((letter, i) => (
-                <div key={i} className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
-                  <div className="essentials-box">
-                    <span>{letter}</span>
+              {ESSENTIALS_ENTRIES.map((entry, i) => (
+                <div key={entry.key} className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                  <div className="essentials-box" onClick={() => openEssentials(entry.key)}>
+                    <span>{entry.letter}</span>
                   </div>
                 </div>
               ))}
