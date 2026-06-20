@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -106,7 +107,15 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="ambient-overlay" />
       <div className="relative z-10">
-        <Outlet />
+        <Suspense
+          fallback={
+            <div className="flex min-h-screen items-center justify-center bg-background">
+              <div className="h-8 w-8 animate-pulse rounded-full border border-[var(--gold)]" />
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </div>
     </QueryClientProvider>
   );

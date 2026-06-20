@@ -6,7 +6,8 @@ export function initImageProtection() {
 
   const overlay = document.createElement("div");
   overlay.id = "img-protection-overlay";
-  overlay.style.cssText = "position:fixed;inset:0;z-index:99998;pointer-events:none;background:transparent";
+  overlay.style.cssText =
+    "position:fixed;inset:0;z-index:99998;pointer-events:none;background:transparent";
   document.body.appendChild(overlay);
 
   const style = document.createElement("style");
@@ -22,8 +23,23 @@ export function initImageProtection() {
   document.addEventListener("keydown", (e) => {
     if (
       e.key === "PrintScreen" ||
-      (e.ctrlKey && (e.key === "s" || e.key === "S" || e.key === "p" || e.key === "P" || e.key === "u" || e.key === "U" || e.key === "c" || e.key === "C")) ||
-      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j" || e.key === "C" || e.key === "c")) ||
+      (e.ctrlKey &&
+        (e.key === "s" ||
+          e.key === "S" ||
+          e.key === "p" ||
+          e.key === "P" ||
+          e.key === "u" ||
+          e.key === "U" ||
+          e.key === "c" ||
+          e.key === "C")) ||
+      (e.ctrlKey &&
+        e.shiftKey &&
+        (e.key === "I" ||
+          e.key === "i" ||
+          e.key === "J" ||
+          e.key === "j" ||
+          e.key === "C" ||
+          e.key === "c")) ||
       e.key === "F12"
     ) {
       e.preventDefault();
@@ -37,23 +53,20 @@ export function initImageProtection() {
     }
   });
 
-  let protectTimer: ReturnType<typeof setInterval>;
-  const startProtection = () => {
-    protectTimer = setInterval(() => {
-      document.querySelectorAll("img").forEach((img) => {
-        if (img.closest("#img-protection-overlay")) return;
-        const parent = img.parentElement;
-        if (parent && !parent.classList.contains("protected-img-wrap")) {
-          const wrap = document.createElement("span");
-          wrap.className = "protected-img-wrap";
-          parent.insertBefore(wrap, img);
-          wrap.appendChild(img);
-          const imgOverlay = document.createElement("span");
-          imgOverlay.className = "protected-img-overlay";
-          wrap.appendChild(imgOverlay);
-        }
-      });
-    }, 1000);
-  };
-  startProtection();
+  const observer = new MutationObserver(() => {
+    document.querySelectorAll("img").forEach((img) => {
+      if (img.closest("#img-protection-overlay")) return;
+      const parent = img.parentElement;
+      if (parent && !parent.classList.contains("protected-img-wrap")) {
+        const wrap = document.createElement("span");
+        wrap.className = "protected-img-wrap";
+        parent.insertBefore(wrap, img);
+        wrap.appendChild(img);
+        const imgOverlay = document.createElement("span");
+        imgOverlay.className = "protected-img-overlay";
+        wrap.appendChild(imgOverlay);
+      }
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
 }

@@ -8,17 +8,9 @@ const assetsDir = join(distDir, "assets");
 const files = readdirSync(assetsDir);
 
 const cssFile = files.find((f) => f.endsWith(".css"));
-const jsFiles = files.filter((f) => f.endsWith(".js"));
-
-let mainJs = "";
-let maxSize = 0;
-for (const f of jsFiles) {
-  const size = statSync(join(assetsDir, f)).size;
-  if (size > maxSize) {
-    maxSize = size;
-    mainJs = f;
-  }
-}
+const mainJs =
+  files.find((f) => /^index-[a-zA-Z0-9_-]+\.js$/.test(f)) ||
+  files.filter((f) => f.endsWith(".js")).sort((a, b) => statSync(join(assetsDir, b)).size - statSync(join(assetsDir, a)).size)[0];
 
 const html = `<!doctype html>
 <html lang="en">
