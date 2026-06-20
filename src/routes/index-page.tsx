@@ -6,7 +6,7 @@ const AdminPortal = lazy(() =>
   import("@/components/AdminPortal").then((m) => ({ default: m.AdminPortal })),
 );
 
-import heroVideo from "@/assets/hero video.mp4";
+const heroVideo = "/hero-video.mp4";
 import art1 from "@/assets/ART WORK 1-medium.webp";
 import art2 from "@/assets/ART WORK 2-medium.webp";
 import art3 from "@/assets/ART WORK 3-medium.webp";
