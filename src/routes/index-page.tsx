@@ -8,12 +8,12 @@ const AdminPortal = lazy(() =>
 
 import { r2 } from "@/config/r2";
 
-const heroVideo = r2.videos("hero video.mp4");
-const art1 = r2.artworks("ART WORK 1-medium.webp");
-const art2 = r2.artworks("ART WORK 2-medium.webp");
-const art3 = r2.artworks("ART WORK 3-medium.webp");
-const logoSymbol = r2.logos("sahaj trasnparent logo.png");
-const ndhLogo = r2.logos("NDH_logo_4K.png");
+const heroVideo = r2.hero("hero-video.mp4");
+const art1 = r2.homePage("ART-WORK-1-medium.webp");
+const art2 = r2.homePage("ART-WORK-2-medium.webp");
+const art3 = r2.homePage("ART-WORK-3-medium.webp");
+const logoSymbol = r2.homePage("sahaj-trasnparent-logo.png");
+const ndhLogo = r2.homePage("NDH_logo_4K.png");
 
 const services = [
   {
@@ -64,7 +64,7 @@ function Index() {
     window.scrollTo(0, 0);
     let cancelled = false;
 
-    const audioUrl = r2.audio("Cinematic Ambient Background Music - Piano Instrumental - (320 Kbps).mp3");
+    const audioUrl = r2.audio("Cinematic-Ambient-Background-Music.mp3");
     const audio = new Audio(audioUrl);
     audio.loop = true;
     audio.volume = 0.6;

@@ -3,7 +3,7 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import { r2 } from "@/config/r2";
 
-const ndhLogo = r2.logos("NDH_logo_4K.png");
+const ndhLogo = r2.homePage("NDH_logo_4K.png");
 
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
 const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
@@ -742,7 +742,7 @@ function Work() {
                       className="strip"
                       data-category={cat.id}
                       style={{
-                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${r2.thumbnails(`${cat.img}-medium.webp`)}) center/cover no-repeat`,
+                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${r2.homePage(`${cat.img}-medium.webp`)}) center/cover no-repeat`,
                       }}
                       onClick={() => openGallery(cat.id)}
                     >

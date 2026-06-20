@@ -4,14 +4,14 @@ import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { r2 } from "@/config/r2";
 
-const ndhLogo = r2.logos("NDH_logo_4K.png");
-const sahajLogo = r2.logos("sahaj trasnparent logo.png");
-const studioLogo = r2.logos("Studio_Shikshaptri_white_4K.png");
-const karigariLogo = r2.logos("karigari-logo-png.webp");
-const sahajGallery = r2.gallery("sahaj gallery placeholder.webp");
-const fenilVideo = r2.videos("fenil video.mp4");
-const dhrutiVideo = r2.videos("Dhruit Panchal V1.mp4");
-const handsVideo = r2.videos("The Hands of Sahaj.mp4");
+const ndhLogo = r2.homePage("NDH_logo_4K.png");
+const sahajLogo = r2.homePage("sahaj-trasnparent-logo.png");
+const studioLogo = r2.homePage("Studio_Shikshaptri_white_4K.png");
+const karigariLogo = r2.homePage("karigari-logo-png.webp");
+const sahajGallery = r2.placeholder("sahaj-gallery-placeholder.webp");
+const fenilVideo = r2.videos("fenil-video.mp4");
+const dhrutiVideo = r2.videos("Dhruit-Panchal-V1.mp4");
+const handsVideo = r2.videos("The-Hands-of-Sahaj.mp4");
 
 function Sahaj() {
   useEffect(() => {
