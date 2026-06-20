@@ -1,3 +1,9 @@
+// Assets now served from Cloudflare R2.
+// This script is preserved in case you need to regenerate thumbnails locally.
+// To use: uncomment the code below and comment out the no-op exit.
+console.log("  [skip] Assets are served from Cloudflare R2 — no local generation needed.");
+process.exit(0);
+
 import { readdirSync, statSync, existsSync } from "fs";
 import { join, dirname, extname, basename } from "path";
 import { fileURLToPath } from "url";

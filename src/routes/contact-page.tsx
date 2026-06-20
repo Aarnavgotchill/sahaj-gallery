@@ -1,6 +1,8 @@
 import { useState, lazy, Suspense } from "react";
 import { Nav } from "@/components/Nav";
-import ndhLogo from "@/assets/NDH_logo_4K.png";
+import { r2 } from "@/config/r2";
+
+const ndhLogo = r2.logos("NDH_logo_4K.png");
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
 

@@ -6,12 +6,14 @@ const AdminPortal = lazy(() =>
   import("@/components/AdminPortal").then((m) => ({ default: m.AdminPortal })),
 );
 
-const heroVideo = "/hero-video.mp4";
-import art1 from "@/assets/ART WORK 1-medium.webp";
-import art2 from "@/assets/ART WORK 2-medium.webp";
-import art3 from "@/assets/ART WORK 3-medium.webp";
-import logoSymbol from "@/assets/sahaj trasnparent logo.png";
-import ndhLogo from "@/assets/NDH_logo_4K.png";
+import { r2 } from "@/config/r2";
+
+const heroVideo = r2.videos("hero video.mp4");
+const art1 = r2.artworks("ART WORK 1-medium.webp");
+const art2 = r2.artworks("ART WORK 2-medium.webp");
+const art3 = r2.artworks("ART WORK 3-medium.webp");
+const logoSymbol = r2.logos("sahaj trasnparent logo.png");
+const ndhLogo = r2.logos("NDH_logo_4K.png");
 
 const services = [
   {
@@ -62,28 +64,23 @@ function Index() {
     window.scrollTo(0, 0);
     let cancelled = false;
 
-    import(
-      "@/assets/Cinematic Ambient Background Music - Piano Instrumental - (320 Kbps).mp3"
-    )
-      .then((module) => {
-        if (cancelled) return;
-        const audio = new Audio(module.default);
-        audio.loop = true;
-        audio.volume = 0.6;
-        audioRef.current = audio;
+    const audioUrl = r2.audio("Cinematic Ambient Background Music - Piano Instrumental - (320 Kbps).mp3");
+    const audio = new Audio(audioUrl);
+    audio.loop = true;
+    audio.volume = 0.6;
+    audioRef.current = audio;
 
-        audio.play().catch(() => {
-          const onInteraction = () => {
-            interactedRef.current = true;
-            audio.play().catch(() => {});
-            checkScroll();
-            document.removeEventListener("click", onInteraction);
-            document.removeEventListener("touchstart", onInteraction);
-          };
-          document.addEventListener("click", onInteraction);
-          document.addEventListener("touchstart", onInteraction);
-        });
-      });
+    audio.play().catch(() => {
+      const onInteraction = () => {
+        interactedRef.current = true;
+        audio.play().catch(() => {});
+        checkScroll();
+        document.removeEventListener("click", onInteraction);
+        document.removeEventListener("touchstart", onInteraction);
+      };
+      document.addEventListener("click", onInteraction);
+      document.addEventListener("touchstart", onInteraction);
+    });
 
     window.addEventListener("scroll", checkScroll, { passive: true });
     return () => {

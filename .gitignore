@@ -34,7 +34,9 @@ dist-ssr
 # Vercel
 .vercel
 
+# Environment
 .env*
-src/assets/idea-2026.1.3.exe
-src/assets/hero video.mp4
-public/hero-video.mp4
+!.env.example
+
+# All media assets are served from Cloudflare R2
+src/assets/

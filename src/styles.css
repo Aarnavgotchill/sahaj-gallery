@@ -3,14 +3,14 @@
 
 @font-face {
   font-family: "Gambetta";
-  src: url("./assets/Gambetta-Medium.otf") format("opentype");
+  src: url("https://assets.sahajgallery.com/fonts/Gambetta-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Micross";
-  src: url("./assets/micross.ttf") format("truetype");
+  src: url("https://assets.sahajgallery.com/fonts/micross.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }

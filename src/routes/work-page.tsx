@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, useCallback, lazy } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
-import ndhLogo from "@/assets/NDH_logo_4K.png";
+import { r2 } from "@/config/r2";
+
+const ndhLogo = r2.logos("NDH_logo_4K.png");
 
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
 const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
@@ -75,18 +77,9 @@ function mkPlaceholders(
 }
 
 // S  Eyes - 10 images from sahaj panel/1S
-const S_IMG = [
-  new URL("../assets/sahaj panel/1S/S1.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S2.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S3.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S4.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S5.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S6.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S7.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S8.JPG", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S9.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/1S/S10.jpg", import.meta.url).href,
-];
+const S_IMG = Array.from({ length: 10 }, (_, i) =>
+  r2.sahajPanel(`1S/S${i + 1}.JPG`),
+);
 const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
   title: `Eyes Study ${i + 1}`,
   sub: `E Y E S  ${String(i + 1).padStart(2, "0")}`,
@@ -98,7 +91,7 @@ const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
 
 // A  Shreenathji - 2 images from sahaj panel/2A + 8 placeholders
 const SHRG_IMGS = Array.from({ length: 2 }, (_, i) =>
-  new URL(`../assets/sahaj panel/2A/${i + 1}A.JPG`, import.meta.url).href,
+  r2.sahajPanel(`2A/${i + 1}A.JPG`),
 );
 const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
   ...SHRG_IMGS.map((img, i) => ({
@@ -121,16 +114,13 @@ const THE_SIKSHAPATRI_ART: EyeArtwork[] = Array.from(
     desc: "artwork",
     dim: " ",
     glow: "#8a6020",
-    image: new URL(
-      `../assets/sahaj panel/3H/${i + 1}H.JPG`,
-      import.meta.url,
-    ).href,
+    image: r2.sahajPanel(`3H/${i + 1}H.JPG`),
   }),
 );
 
 // A (index 3)  Reflection - 9 images from sahaj panel/4A + 1 placeholder
 const REF_IMGS = Array.from({ length: 9 }, (_, i) =>
-  new URL(`../assets/sahaj panel/4A/${i + 1}AA.JPG`, import.meta.url).href,
+  r2.sahajPanel(`4A/${i + 1}AA.JPG`),
 );
 const THE_REFLECTION_ART: EyeArtwork[] = [
   ...REF_IMGS.map((img, i) => ({
@@ -145,18 +135,9 @@ const THE_REFLECTION_ART: EyeArtwork[] = [
 ];
 
 // J  Cherry Blossom - 10 images from sahaj panel/5J
-const CB_J_IMGS = [
-  new URL("../assets/sahaj panel/5J/1J.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/2J.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/3J.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/4J.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/5J.jpeg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/6J.jpeg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/7J.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/8J.jpg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/9J.jpeg", import.meta.url).href,
-  new URL("../assets/sahaj panel/5J/10J.jpg", import.meta.url).href,
-];
+const CB_J_IMGS = Array.from({ length: 10 }, (_, i) =>
+  r2.sahajPanel(`5J/${i + 1}J.jpg`),
+);
 const CHERRY_BLOSSOM_ART: EyeArtwork[] = CB_J_IMGS.map((img, i) => ({
   title: `Cherry Blossom ${i + 1}`,
   sub: `C H E R R Y  B L O S S O M  ${String(i + 1).padStart(2, "0")}`,
@@ -223,10 +204,10 @@ type EssentialsKey = (typeof ESSENTIALS_KEYS)[number];
 const ESSENTIALS_GLOW = "#c9a96e";
 
 const _6E_IMGS = [
-  new URL("../assets/ESSENTIALS/6E/Handle 1.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/6E/Handle 2.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/6E/Handle 3.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/6E/Handle 4.png", import.meta.url).href,
+  r2.essentials("6E/Handle 1.png"),
+  r2.essentials("6E/Handle 2.png"),
+  r2.essentials("6E/Handle 3.png"),
+  r2.essentials("6E/Handle 4.png"),
 ];
 const ESS_6E_ART: EyeArtwork[] = [
   ..._6E_IMGS.map((img, i) => ({
@@ -241,8 +222,8 @@ const ESS_6E_ART: EyeArtwork[] = [
 ];
 
 const _7S_IMGS = [
-  new URL("../assets/ESSENTIALS/7S/1SS.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/7S/2SS.png", import.meta.url).href,
+  r2.essentials("7S/1SS.png"),
+  r2.essentials("7S/2SS.png"),
 ];
 const ESS_7S_ART: EyeArtwork[] = [
   ..._7S_IMGS.map((img, i) => ({
@@ -257,9 +238,9 @@ const ESS_7S_ART: EyeArtwork[] = [
 ];
 
 const _8S_IMGS = [
-  new URL("../assets/ESSENTIALS/8S/1SSS.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/8S/2SSS.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/8S/3SSS.png", import.meta.url).href,
+  r2.essentials("8S/1SSS.png"),
+  r2.essentials("8S/2SSS.png"),
+  r2.essentials("8S/3SSS.png"),
 ];
 const ESS_8S_ART: EyeArtwork[] = [
   ..._8S_IMGS.map((img, i) => ({
@@ -274,10 +255,10 @@ const ESS_8S_ART: EyeArtwork[] = [
 ];
 
 const _9E_IMGS = [
-  new URL("../assets/ESSENTIALS/9E/1EE.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/9E/2EE.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/9E/3EE.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/9E/4EE.png", import.meta.url).href,
+  r2.essentials("9E/1EE.png"),
+  r2.essentials("9E/2EE.png"),
+  r2.essentials("9E/3EE.png"),
+  r2.essentials("9E/4EE.png"),
 ];
 const ESS_9E_ART: EyeArtwork[] = [
   ..._9E_IMGS.map((img, i) => ({
@@ -292,8 +273,8 @@ const ESS_9E_ART: EyeArtwork[] = [
 ];
 
 const _10N_IMGS = [
-  new URL("../assets/ESSENTIALS/10N/1N.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/10N/2N.png", import.meta.url).href,
+  r2.essentials("10N/1N.png"),
+  r2.essentials("10N/2N.png"),
 ];
 const ESS_10N_ART: EyeArtwork[] = [
   ..._10N_IMGS.map((img, i) => ({
@@ -308,8 +289,8 @@ const ESS_10N_ART: EyeArtwork[] = [
 ];
 
 const _11T_IMGS = [
-  new URL("../assets/ESSENTIALS/11T/1T.png", import.meta.url).href,
-  new URL("../assets/ESSENTIALS/11T/2T.png", import.meta.url).href,
+  r2.essentials("11T/1T.png"),
+  r2.essentials("11T/2T.png"),
 ];
 const ESS_11T_ART: EyeArtwork[] = [
   ..._11T_IMGS.map((img, i) => ({
@@ -761,7 +742,7 @@ function Work() {
                       className="strip"
                       data-category={cat.id}
                       style={{
-                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${new URL(`../assets/${cat.img}-medium.webp`, import.meta.url).href}) center/cover no-repeat`,
+                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${r2.thumbnails(`${cat.img}-medium.webp`)}) center/cover no-repeat`,
                       }}
                       onClick={() => openGallery(cat.id)}
                     >
