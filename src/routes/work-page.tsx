@@ -554,18 +554,25 @@ const GALLERY_CSS = `
 #gallery-root .artwork{transition:opacity .6s ease;opacity:0}
 #gallery-root .artwork.active{opacity:1}
 @media(max-width:767px){
-  #gallery-root #l1{height:auto;padding:12px 0}
-  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:20px;height:auto}
-  #gallery-root .sahaj-panel-wrap{height:auto;width:100%;display:flex;justify-content:center}
-  #gallery-root .strip{width:90vw;max-width:420px;height:auto;aspect-ratio:3/1;max-height:none;min-height:100px;border-radius:10px}
-  #gallery-root .strip-letter{font-size:clamp(44px,14vw,72px);-webkit-text-stroke:1.5px #F0EFEB}
-  #gallery-root .strip-num{font-size:7px;top:8px;right:10px}
-  #gallery-root .strip:hover{transform:scale(1.03);filter:brightness(1.1)}
-  #gallery-root .gallery-content{padding:120px 0 40px}
-  #gallery-root .essentials-section{padding:0 16px 20px;margin-top:20px}
-  #gallery-root .essentials-box{width:42px;height:42px}
-  #gallery-root .essentials-box span{font-size:14px}
-  #gallery-root .essentials-grid{gap:14px;max-width:340px;margin:0 auto}
+  .gallery-viewport{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #gallery-root .gallery-content{justify-content:flex-start;padding:100px 0 40px;gap:0}
+  #gallery-root #l1{height:auto;padding:0;flex:none}
+  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center}
+  #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
+  #gallery-root .strip{width:88vw;max-width:420px;height:auto;aspect-ratio:3/1;max-height:none;min-height:100px;border-radius:8px;position:relative;overflow:hidden;cursor:pointer;border:1.2px solid transparent;background-size:cover !important;background-position:center;flex-shrink:0;transition:transform .35s ease,filter .35s ease,box-shadow .35s ease,border-color .35s ease;margin:0 auto}
+  #gallery-root .strip:active{transform:scale(0.97)}
+  #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
+  #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
+  #gallery-root .essentials-section{padding:0 16px 0;margin-top:28px;text-align:center}
+  #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(2,auto);gap:16px;justify-content:center;align-items:center;max-width:200px;margin:0 auto}
+  #gallery-root .essentials-box-wrap{opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
+  #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
+  #gallery-root .essentials-box{width:44px;height:44px;border:1.2px solid rgba(201,169,110,.75);border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s ease,transform .3s ease,background .3s ease}
+  #gallery-root .essentials-box:active{transform:scale(0.92);background:rgba(201,169,110,.08)}
+  #gallery-root .essentials-box span{font-family:'Gambetta',Georgia,serif;font-size:16px;font-weight:500;letter-spacing:.02em;color:var(--bone);user-select:none}
+  #gallery-root .gallery-content .btn-catalogue{display:block;margin:28px auto 0;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
+  #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
+  #gallery-root .gallery-footer{margin-top:36px;position:relative;bottom:auto}
   #gallery-root #g-stage{padding:0 20px}
   #gallery-root .artwork{padding:0 20px}
   #gallery-root .art-frame{width:min(85vmin,calc(100vh - 240px))}
@@ -789,7 +796,7 @@ function Work() {
 
             <button
               onClick={() => setCatalogueOpen(true)}
-              className="inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
+              className="btn-catalogue inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
               style={{ marginTop: 23 }}
             >
               View Our Full Catalogue
