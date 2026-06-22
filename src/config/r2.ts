@@ -1,12 +1,27 @@
-const BASE = import.meta.env.VITE_R2_URL || "https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev";
+const R2_URL = import.meta.env.VITE_R2_URL;
+const DEV = import.meta.env.DEV;
+
+function toLocalPath(r2Segments: string[]): string {
+  const joined = r2Segments.join("/");
+  return joined
+    .replace(/^artworks\/sahaj_gallery_panel\//, "sahaj panel/")
+    .replace(/^artworks\/essentials\//, "ESSENTIALS/")
+    .replace(/^images\/home_page\//, "home page/")
+    .replace(/^videos\/reviews\//, "Review Video/");
+}
 
 function buildUrl(...segments: string[]): string {
+  if (DEV || !R2_URL) {
+    const localPath = toLocalPath(segments);
+    return `/src/assets/${localPath}`;
+  }
   const path = segments.filter(Boolean).join("/");
-  const url = `${BASE.replace(/\/+$/, "")}/${path}`;
+  const base = R2_URL.replace(/\/+$/, "");
+  const url = `${base}/${path}`;
   try {
     new URL(url);
   } catch {
-    console.warn(`[R2] Invalid asset URL constructed: ${url}`);
+    console.warn(`[R2] Invalid asset URL: ${url}`);
   }
   return url;
 }
@@ -24,4 +39,4 @@ export const r2 = {
   audio: (file: string) => buildUrl("audio", file),
 };
 
-export const R2_BASE_URL = BASE;
+export const R2_BASE_URL = R2_URL || "";

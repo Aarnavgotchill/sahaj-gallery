@@ -1,26 +1,39 @@
-import { r2 } from "@/config/r2";
+import heroVideo from "./home page/hero video.mp4";
+import artworkSpotlight1 from "./home page/ART WORK 1.png";
+import artworkSpotlight2 from "./home page/ART WORK 2.png";
+import artworkSpotlight3 from "./home page/ART WORK 3.png";
+import sahajTransparentLogo from "./logo/sahaj trasnparent logo.png";
+import ndhLogo4K from "./logo/NDH_logo_4K.png";
+import ambientAudio from "./audio/Cinematic Ambient Background Music - Piano Instrumental - (320 Kbps).mp3";
+import stripS from "./sahaj panel/S.webp";
+import stripA from "./sahaj panel/A.webp";
+import stripH from "./sahaj panel/H.webp";
+import stripA1 from "./sahaj panel/A1.webp";
+import stripJ from "./sahaj panel/J.webp";
+import studioShikshaptriLogo from "./logo/Studio_Shikshaptri_white_4K.png";
+import karigariLogo from "./logo/karigari-logo-png.webp";
+import sahajGalleryPlaceholder from "./logo/sahaj gallery placeholder.webp";
+import fenilTestimonialVideo from "./Review Video/fenil video.mp4";
+import dhrutiTestimonialVideo from "./Review Video/Dhruit Panchal V1.mp4";
+import handsOfSahajVideo from "./Review Video/The Hands of Sahaj.mp4";
 
-export const sahajTransparentLogo = r2.homePage("sahaj-trasnparent-logo.png");
-export const ndhLogo4K = r2.homePage("NDH_logo_4K.png");
-export const studioShikshaptriLogo = r2.homePage("Studio_Shikshaptri_white_4K.png");
-export const karigariLogo = r2.homePage("karigari-logo-png.webp");
-
-export const heroVideo = r2.hero("hero-video.mp4");
-
-export const artworkSpotlight1 = r2.homePage("ART-WORK-1-medium.webp");
-export const artworkSpotlight2 = r2.homePage("ART-WORK-2-medium.webp");
-export const artworkSpotlight3 = r2.homePage("ART-WORK-3-medium.webp");
-
-export const stripS = r2.homePage("S-medium.webp");
-export const stripA = r2.homePage("A-medium.webp");
-export const stripH = r2.homePage("H-medium.webp");
-export const stripA1 = r2.homePage("A1-medium.webp");
-export const stripJ = r2.homePage("J-medium.webp");
-
-export const sahajGalleryPlaceholder = r2.placeholder("sahaj-gallery-placeholder.webp");
-
-export const fenilTestimonialVideo = r2.videos("fenil-video.mp4");
-export const dhrutiTestimonialVideo = r2.videos("Dhruit-Panchal-V1.mp4");
-export const handsOfSahajVideo = r2.videos("The-Hands-of-Sahaj.mp4");
-
-export const ambientAudio = r2.audio("Cinematic-Ambient-Background-Music.mp3");
+export {
+  heroVideo,
+  artworkSpotlight1,
+  artworkSpotlight2,
+  artworkSpotlight3,
+  sahajTransparentLogo,
+  ndhLogo4K,
+  ambientAudio,
+  stripS,
+  stripA,
+  stripH,
+  stripA1,
+  stripJ,
+  studioShikshaptriLogo,
+  karigariLogo,
+  sahajGalleryPlaceholder,
+  fenilTestimonialVideo,
+  dhrutiTestimonialVideo,
+  handsOfSahajVideo,
+};
