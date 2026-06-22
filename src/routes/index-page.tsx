@@ -49,9 +49,9 @@ function Index() {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const threshold = document.documentElement.scrollHeight * 0.1;
+    const threshold = document.documentElement.scrollHeight * 0.15;
     const progress = Math.min(window.scrollY / threshold, 1);
-    const maxVolume = 0.6;
+    const maxVolume = 0.5;
     audio.volume = Math.max(0, maxVolume * (1 - progress));
 
     if (progress < 1 && audio.paused) {
@@ -67,7 +67,7 @@ function Index() {
 
     const audio = new Audio(ambientAudio);
     audio.loop = true;
-    audio.volume = 0.6;
+    audio.volume = 0.5;
     audioRef.current = audio;
 
     audio.play().catch(() => {
