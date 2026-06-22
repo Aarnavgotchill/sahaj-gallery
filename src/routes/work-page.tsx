@@ -577,7 +577,7 @@ const GALLERY_CSS = `
 #gallery-root .art-placeholder{border:1px solid rgba(201,169,110,.08);border-radius:2px}
 #gallery-root .artwork{transition:opacity .6s ease;opacity:0}
 #gallery-root .artwork.active{opacity:1}
-@media(max-width:767px){
+@media screen and (max-width: 768px) and (orientation: portrait){
   .gallery-viewport{overflow-y:auto;-webkit-overflow-scrolling:touch}
   #gallery-root{flex:none}
   #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;padding:100px 0;gap:0}
@@ -625,8 +625,7 @@ const GALLERY_CSS = `
   transition:opacity .55s var(--ease-soft);
 }
 #gallery-root .essentials-grid{
-  display:grid;grid-template-columns:repeat(5,auto);gap:24px;
-  align-items:center;justify-content:center;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;
 }
 #gallery-root .essentials-box{
   width:60px;height:60px;
@@ -666,8 +665,8 @@ const GALLERY_CSS = `
 }
 @keyframes intro-fade{
   0%{opacity:0;transform:scale(.95)}
-  10%{opacity:1;transform:scale(1)}
-  80%{opacity:1;transform:scale(1)}
+  15%{opacity:1;transform:scale(1)}
+  75%{opacity:1;transform:scale(1)}
   100%{opacity:0;transform:scale(.95)}
 }
 #gallery-root .intro-overlay{
@@ -683,7 +682,7 @@ const GALLERY_CSS = `
   letter-spacing:.12em;
   text-align:center;
   padding:0 32px;
-  animation:intro-fade 3.5s ease-in-out forwards;
+  animation:intro-fade 2s ease-in-out forwards;
 }
 `;
 
@@ -722,7 +721,7 @@ function Work() {
 
   useEffect(() => {
     if (!introText) return;
-    const t = setTimeout(() => setIntroText(null), 3500);
+    const t = setTimeout(() => setIntroText(null), 2000);
     return () => clearTimeout(t);
   }, [introText]);
 
