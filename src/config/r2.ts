@@ -11,12 +11,12 @@ function toLocalPath(r2Segments: string[]): string {
 }
 
 function buildUrl(...segments: string[]): string {
-  if (DEV || !R2_URL) {
+  if (DEV) {
     const localPath = toLocalPath(segments);
     return `/src/assets/${localPath}`;
   }
   const path = segments.filter(Boolean).join("/");
-  const base = R2_URL.replace(/\/+$/, "");
+  const base = R2_URL ? R2_URL.replace(/\/+$/, "") : "https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev";
   const url = `${base}/${path}`;
   try {
     new URL(url);

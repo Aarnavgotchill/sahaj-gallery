@@ -82,9 +82,9 @@ function mkPlaceholders(
   }));
 }
 
-// S  Eyes - 10 images from sahaj panel/1S
-const S_IMG = Array.from({ length: 10 }, (_, i) =>
-  r2.sahajPanel(`1S/S${i + 1}.JPG`),
+// S  Eyes - images from sahaj panel/1S
+const S_IMG = ["S11.jpg", "S12.jpg", "S13.jpg", "S14.jpg"].map((f) =>
+  r2.sahajPanel(`1S/${f}`),
 );
 const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
   title: `Eyes Study ${i + 1}`,
@@ -95,10 +95,16 @@ const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
   image: img,
 }));
 
-// A  Shreenathji - 2 images from sahaj panel/2A + 8 placeholders
-const SHRG_IMGS = Array.from({ length: 2 }, (_, i) =>
-  r2.sahajPanel(`2A/${i + 1}A.JPG`),
-);
+// A  Shreenathji - images from sahaj panel/2A
+const SHRG_IMGS = [
+  r2.sahajPanel("2A/1A.JPG"),
+  r2.sahajPanel("2A/2A.JPG"),
+  r2.sahajPanel("2A/3A.jpg"),
+  r2.sahajPanel("2A/4A.jpg"),
+  r2.sahajPanel("2A/5A.jpg"),
+  r2.sahajPanel("2A/6A.jpg"),
+  r2.sahajPanel("2A/7A.jpg"),
+];
 const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
   ...SHRG_IMGS.map((img, i) => ({
     title: `Shreenathji ${i + 1}`,
@@ -108,12 +114,12 @@ const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
     glow: "#c9a96e",
     image: img,
   })),
-  ...mkPlaceholders(8, "Shreenathji", "S H R E E N A T H J I", "#c9a96e", 3),
+  ...mkPlaceholders(3, "Shreenathji", "S H R E E N A T H J I", "#c9a96e", 8),
 ];
 
-// H  Sikshapatri - 10 images from sahaj panel/3H
+// H  Sikshapatri - images from sahaj panel/3H
 const THE_SIKSHAPATRI_ART: EyeArtwork[] = Array.from(
-  { length: 10 },
+  { length: 12 },
   (_, i) => ({
     title: `Sikshapatri Study ${i + 1}`,
     sub: `S I K S H A P A T R I  ${String(i + 1).padStart(2, "0")}`,
@@ -140,10 +146,19 @@ const THE_REFLECTION_ART: EyeArtwork[] = [
   ...mkPlaceholders(1, "Reflection Series", "R E F L E C T I O N", "#206a8a", 10),
 ];
 
-// J  Cherry Blossom - 10 images from sahaj panel/5J
-const CB_J_IMGS = Array.from({ length: 10 }, (_, i) =>
-  r2.sahajPanel(`5J/${i + 1}J.jpg`),
-);
+// J  Cherry Blossom - images from sahaj panel/5J
+const CB_J_IMGS = [
+  r2.sahajPanel("5J/1J.jpg"),
+  r2.sahajPanel("5J/2J.jpg"),
+  r2.sahajPanel("5J/3J.jpg"),
+  r2.sahajPanel("5J/4J.jpg"),
+  r2.sahajPanel("5J/5J.jpeg"),
+  r2.sahajPanel("5J/6J.jpeg"),
+  r2.sahajPanel("5J/7J.jpg"),
+  r2.sahajPanel("5J/8J.jpeg"),
+  r2.sahajPanel("5J/9J.jpg"),
+  r2.sahajPanel("5J/10J.jpg"),
+];
 const CHERRY_BLOSSOM_ART: EyeArtwork[] = CB_J_IMGS.map((img, i) => ({
   title: `Cherry Blossom ${i + 1}`,
   sub: `C H E R R Y  B L O S S O M  ${String(i + 1).padStart(2, "0")}`,
@@ -214,51 +229,51 @@ const _6E_IMGS = [
   r2.essentials("6E/Handle 2.png"),
   r2.essentials("6E/Handle 3.png"),
   r2.essentials("6E/Handle 4.png"),
+  r2.essentials("6E/1E.png"),
+  r2.essentials("6E/2E.png"),
+  r2.essentials("6E/3E.png"),
+  r2.essentials("6E/4E.png"),
 ];
-const ESS_6E_ART: EyeArtwork[] = [
-  ..._6E_IMGS.map((img, i) => ({
-    title: `Handle ${i + 1}`,
-    sub: `E 0 1  ${String(i + 1).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: ESSENTIALS_GLOW,
-    image: img,
-  })),
-  ...mkPlaceholders(1, "Handle", "E 0 1", ESSENTIALS_GLOW, 5),
-];
+const ESS_6E_ART: EyeArtwork[] = _6E_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `E 0 1  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
 const _7S_IMGS = [
   r2.essentials("7S/1SS.png"),
   r2.essentials("7S/2SS.png"),
+  r2.essentials("7S/11SS.png"),
+  r2.essentials("7S/22SS.png"),
 ];
-const ESS_7S_ART: EyeArtwork[] = [
-  ..._7S_IMGS.map((img, i) => ({
-    title: `S ${i + 1}`,
-    sub: `S 0 2  ${String(i + 1).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: ESSENTIALS_GLOW,
-    image: img,
-  })),
-  ...mkPlaceholders(3, "S", "S 0 2", ESSENTIALS_GLOW, 3),
-];
+const ESS_7S_ART: EyeArtwork[] = _7S_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `S 0 2  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
 const _8S_IMGS = [
   r2.essentials("8S/1SSS.png"),
   r2.essentials("8S/2SSS.png"),
   r2.essentials("8S/3SSS.png"),
+  r2.essentials("8S/11SSS.png"),
+  r2.essentials("8S/22SSS.png"),
+  r2.essentials("8S/33SSS.png"),
 ];
-const ESS_8S_ART: EyeArtwork[] = [
-  ..._8S_IMGS.map((img, i) => ({
-    title: `SS ${i + 1}`,
-    sub: `S 0 3  ${String(i + 1).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: ESSENTIALS_GLOW,
-    image: img,
-  })),
-  ...mkPlaceholders(2, "SS", "S 0 3", ESSENTIALS_GLOW, 4),
-];
+const ESS_8S_ART: EyeArtwork[] = _8S_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `S 0 3  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
 const _9E_IMGS = [
   r2.essentials("9E/1EE.png"),
@@ -297,18 +312,17 @@ const ESS_10N_ART: EyeArtwork[] = [
 const _11T_IMGS = [
   r2.essentials("11T/1T.png"),
   r2.essentials("11T/2T.png"),
+  r2.essentials("11T/11T.png"),
+  r2.essentials("11T/22T.png"),
 ];
-const ESS_11T_ART: EyeArtwork[] = [
-  ..._11T_IMGS.map((img, i) => ({
-    title: `T ${i + 1}`,
-    sub: `T 0 6  ${String(i + 1).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: ESSENTIALS_GLOW,
-    image: img,
-  })),
-  ...mkPlaceholders(3, "T", "T 0 6", ESSENTIALS_GLOW, 3),
-];
+const ESS_11T_ART: EyeArtwork[] = _11T_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `T 0 6  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
 const ESS_12I_ART: EyeArtwork[] = mkPlaceholders(
   5,
@@ -324,13 +338,20 @@ const ESS_13A_ART: EyeArtwork[] = mkPlaceholders(
   ESSENTIALS_GLOW,
   1,
 );
-const ESS_14L_ART: EyeArtwork[] = mkPlaceholders(
-  5,
-  "L",
-  "L 0 9",
-  ESSENTIALS_GLOW,
-  1,
-);
+const _14L_IMGS = [
+  r2.essentials("14L/11EE.png"),
+  r2.essentials("14L/22EE.png"),
+  r2.essentials("14L/33EE.png"),
+  r2.essentials("14L/44EE.png"),
+];
+const ESS_14L_ART: EyeArtwork[] = _14L_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `L 0 9  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 const ESS_15S_ART: EyeArtwork[] = mkPlaceholders(
   5,
   "S",
