@@ -11,6 +11,19 @@ import {
   stripJ,
 } from "@/assets/assets";
 
+[stripS, stripA, stripH, stripA1, stripJ].forEach((src) => {
+  const img = new Image();
+  img.src = src;
+});
+
+const STRIP_BG: Record<string, string> = {
+  S: "#b87c4a",
+  A: "#c9a96e",
+  H: "#8a6020",
+  A1: "#206a8a",
+  J: "#d08080",
+};
+
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
 const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
 
@@ -778,6 +791,7 @@ function Work() {
                             J: stripJ,
                           } as Record<string, string>)[cat.img]
                         }) center/cover no-repeat`,
+                        backgroundColor: STRIP_BG[cat.img],
                       }}
                       onClick={() => openGallery(cat.id)}
                     >
