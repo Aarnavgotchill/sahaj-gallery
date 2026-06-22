@@ -214,6 +214,14 @@ const CATEGORIES = [
   },
 ] as const;
 
+const INTRO_TEXTS: Record<string, string> = {
+  eyes: "A Glimpse of Gallery",
+  shreenathji: "Layers Of Craftsmanship",
+  sikshapatri: "The Creative Circle",
+  reflection: "The Art Of Conversation",
+  cherry: "White Glove Installation",
+};
+
 /* ─── ESSENTIALS DATA ─── */
 
 const ESSENTIALS_KEYS = [
@@ -654,6 +662,27 @@ const GALLERY_CSS = `
   #gallery-root .essentials-box span{font-size:16px}
   #gallery-root .essentials-grid{gap:18px}
 }
+@keyframes intro-fade{
+  0%{opacity:0;transform:scale(.95)}
+  10%{opacity:1;transform:scale(1)}
+  80%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.95)}
+}
+#gallery-root .intro-overlay{
+  position:absolute;inset:0;z-index:50;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--color-background);
+  pointer-events:none;
+}
+#gallery-root .intro-overlay span{
+  font-family:'Gambetta',Georgia,serif;
+  font-size:clamp(28px,5vw,48px);
+  color:var(--accent);
+  letter-spacing:.12em;
+  text-align:center;
+  padding:0 32px;
+  animation:intro-fade 3.5s ease-in-out forwards;
+}
 `;
 
 /* ─── COMPONENT ─── */
@@ -665,6 +694,7 @@ function Work() {
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
+  const [introText, setIntroText] = useState<string | null>(null);
   const galleryOpen = !!c || !!e;
 
   const activeEssentials = e
@@ -688,10 +718,22 @@ function Work() {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    if (!introText) return;
+    const t = setTimeout(() => setIntroText(null), 3500);
+    return () => clearTimeout(t);
+  }, [introText]);
+
+  useEffect(() => {
+    if (!galleryOpen) setIntroText(null);
+  }, [galleryOpen]);
+
   const touchXRef = useRef(0);
 
   const openGallery = useCallback(
     (categoryId: string) => {
+      const text = INTRO_TEXTS[categoryId];
+      if (text) setIntroText(text);
       navigate({ to: "/work", search: { c: categoryId }, replace: true });
     },
     [navigate],
@@ -849,6 +891,11 @@ function Work() {
             className={galleryOpen ? "in" : ""}
             style={{ background: "var(--color-background)" }}
           >
+            {introText && (
+              <div className="intro-overlay">
+                <span>{introText}</span>
+              </div>
+            )}
             {galleryOpen &&
               (useWebGL ? (
                 <WebGLGallery
