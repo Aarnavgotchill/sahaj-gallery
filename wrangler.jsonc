@@ -2,5 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "sahaj-gallery",
   "pages_build_output_dir": "dist",
-  "compatibility_date": "2026-06-22"
+  "pages_build_config": {
+    "build_command": "npm run build",
+    "build_output_dir": "dist"
+  },
+  "compatibility_date": "2026-06-22",
+  "observability": {
+    "enabled": true
+  }
 }
