@@ -9,6 +9,7 @@ import {
   stripH,
   stripA1,
   stripJ,
+  sahajPanelBg,
 } from "@/assets/assets";
 
 const STRIP_BG: Record<string, string> = {
@@ -577,31 +578,6 @@ const GALLERY_CSS = `
 #gallery-root .art-placeholder{border:1px solid rgba(201,169,110,.08);border-radius:2px}
 #gallery-root .artwork{transition:opacity .6s ease;opacity:0}
 #gallery-root .artwork.active{opacity:1}
-@media screen and (max-width: 768px) and (orientation: portrait){
-  .gallery-viewport{overflow-y:auto;-webkit-overflow-scrolling:touch}
-  #gallery-root{flex:none}
-  #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;padding:100px 0;gap:0}
-  #gallery-root #l1{height:auto;padding:0;flex:none}
-  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center}
-  #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
-  #gallery-root .strip{width:88vw;max-width:420px;height:auto;aspect-ratio:3/1;max-height:none;min-height:100px;border-radius:8px;position:relative;overflow:hidden;cursor:pointer;border:1.2px solid transparent;background-size:cover !important;background-position:center;flex-shrink:0;transition:transform .35s ease,filter .35s ease,box-shadow .35s ease,border-color .35s ease;margin:0 auto}
-  #gallery-root .strip:active{transform:scale(0.97)}
-  #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
-  #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
-  #gallery-root .essentials-section{padding:0 0 48px;margin-top:28px;text-align:center}
-  #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(5,min-content);column-gap:8px;row-gap:16px;justify-content:center;align-items:center;margin:0 auto;max-width:100%;overflow:hidden}
-  #gallery-root .essentials-box-wrap{opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
-  #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
-  #gallery-root .essentials-box{width:44px;height:44px;border:1.2px solid rgba(201,169,110,.75);border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s ease,transform .3s ease,background .3s ease}
-  #gallery-root .essentials-box:active{transform:scale(0.92);background:rgba(201,169,110,.08)}
-  #gallery-root .essentials-box span{font-family:'Gambetta',Georgia,serif;font-size:16px;font-weight:500;letter-spacing:.02em;color:var(--bone);user-select:none}
-  #gallery-root .gallery-content .btn-catalogue{display:block;margin:28px auto 0;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
-  #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
-  #gallery-root .gallery-footer{margin-top:0;position:relative;bottom:auto}
-  #gallery-root #g-stage{padding:0 20px}
-  #gallery-root .artwork{padding:0 20px}
-  #gallery-root .art-frame{width:min(85vmin,calc(100vh - 240px))}
-}
 #gallery-root .gallery-footer{
   transition:opacity .55s var(--ease-soft);
 }
@@ -662,6 +638,31 @@ const GALLERY_CSS = `
   #gallery-root .essentials-box{width:48px;height:48px}
   #gallery-root .essentials-box span{font-size:16px}
   #gallery-root .essentials-grid{gap:18px}
+}
+@media screen and (max-width: 768px) and (orientation: portrait){
+  .gallery-viewport{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #gallery-root{flex:none}
+  #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;padding:100px 0;gap:0}
+  #gallery-root #l1{height:auto;padding:0;flex:none}
+  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center;background:var(--bg) center/cover no-repeat}
+  #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
+  #gallery-root .strip{width:88vw;max-width:420px;height:auto;aspect-ratio:3/1;max-height:none;min-height:100px;border-radius:8px;position:relative;overflow:hidden;cursor:pointer;border:1.2px solid transparent;background-size:cover !important;background-position:center;flex-shrink:0;transition:transform .35s ease,filter .35s ease,box-shadow .35s ease,border-color .35s ease;margin:0 auto}
+  #gallery-root .strip:active{transform:scale(0.97)}
+  #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
+  #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
+  #gallery-root .essentials-section{padding:0 0 48px;margin-top:28px;text-align:center}
+  #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:280px;margin:0 auto;justify-items:center;align-items:center}
+  #gallery-root .essentials-box-wrap{opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
+  #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
+  #gallery-root .essentials-box{width:44px;height:44px;border:1.2px solid rgba(201,169,110,.75);border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s ease,transform .3s ease,background .3s ease}
+  #gallery-root .essentials-box:active{transform:scale(0.92);background:rgba(201,169,110,.08)}
+  #gallery-root .essentials-box span{font-family:'Gambetta',Georgia,serif;font-size:16px;font-weight:500;letter-spacing:.02em;color:var(--bone);user-select:none}
+  #gallery-root .gallery-content .btn-catalogue{display:block;margin:28px auto 0;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
+  #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
+  #gallery-root .gallery-footer{margin-top:0;position:relative;bottom:auto}
+  #gallery-root #g-stage{padding:0 20px}
+  #gallery-root .artwork{padding:0 20px}
+  #gallery-root .art-frame{width:min(85vmin,calc(100vh - 240px))}
 }
 @keyframes intro-fade{
   0%{opacity:0;transform:scale(.95)}
@@ -813,7 +814,7 @@ function Work() {
         <div id="gallery-root">
           <div className="gallery-content">
             <div id="l1" className={galleryOpen ? "out" : ""}>
-              <div className="strip-row">
+              <div className="strip-row" style={{"--bg":`url(${sahajPanelBg})`} as React.CSSProperties}>
                 {CATEGORIES.map((cat, i) => (
                   <div key={cat.id} className="sahaj-panel-wrap">
                     <div
