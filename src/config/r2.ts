@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_R2_URL || "https://assets.sahajgallery.com";
+const BASE = import.meta.env.VITE_R2_URL || "https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev";
 
 function buildUrl(...segments: string[]): string {
   const path = segments.filter(Boolean).join("/");

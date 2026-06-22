@@ -3,14 +3,14 @@
 
 @font-face {
   font-family: "Gambetta";
-  src: url("https://assets.sahajgallery.com/fonts/Gambetta-Medium.otf") format("opentype");
+  src: url("https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev/fonts/Gambetta-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Micross";
-  src: url("https://assets.sahajgallery.com/fonts/micross.ttf") format("truetype");
+  src: url("https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev/fonts/micross.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -393,7 +393,7 @@ img {
 }
 
 /* Fallback styling for R2-hosted assets */
-img[src*="assets.sahajgallery.com"] {
+img[src*=".r2.dev"], img[src*="assets.sahajgallery.com"] {
   background: var(--color-card);
 }
 video {
