@@ -1,15 +1,21 @@
 import { ambientAudio } from "@/assets/assets";
 
-const audio = new Audio(ambientAudio);
-audio.loop = true;
-audio.preload = "auto";
-audio.volume = 0.5;
-audio.muted = true;
+let audio: HTMLAudioElement | null = null;
 
-audio.play().catch(() => {});
+function getAudio(): HTMLAudioElement {
+  if (!audio) {
+    audio = new Audio(ambientAudio);
+    audio.loop = true;
+    audio.preload = "none";
+    audio.volume = 0.5;
+    audio.muted = true;
+  }
+  return audio;
+}
 
 const unmute = () => {
-  audio.muted = false;
+  const a = getAudio();
+  a.muted = false;
   document.removeEventListener("click", unmute);
   document.removeEventListener("touchstart", unmute);
 };
@@ -17,19 +23,23 @@ document.addEventListener("click", unmute, { once: true });
 document.addEventListener("touchstart", unmute, { once: true });
 
 export function play() {
-  if (!audio.paused) return;
-  audio.play().catch(() => {});
+  const a = getAudio();
+  if (!a.paused) return;
+  a.play().catch(() => {});
 }
 
 export function pause() {
-  audio.pause();
+  const a = getAudio();
+  a.pause();
 }
 
 export function stop() {
-  audio.pause();
-  audio.currentTime = 0;
+  const a = getAudio();
+  a.pause();
+  a.currentTime = 0;
 }
 
 export function volume(v: number) {
-  audio.volume = Math.max(0, Math.min(1, v));
+  const a = getAudio();
+  a.volume = Math.max(0, Math.min(1, v));
 }

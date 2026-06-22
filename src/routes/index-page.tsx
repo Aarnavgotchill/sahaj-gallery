@@ -111,14 +111,14 @@ function Index() {
         id="hero-section"
         className="relative h-[100svh] w-full overflow-hidden"
       >
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-background">
           <video
             src={heroVideo}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             className="h-full w-full object-cover"
           />
         </div>

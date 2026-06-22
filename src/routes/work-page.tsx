@@ -11,11 +11,6 @@ import {
   stripJ,
 } from "@/assets/assets";
 
-[stripS, stripA, stripH, stripA1, stripJ].forEach((src) => {
-  const img = new Image();
-  img.src = src;
-});
-
 const STRIP_BG: Record<string, string> = {
   S: "#b87c4a",
   A: "#c9a96e",
@@ -96,8 +91,8 @@ function mkPlaceholders(
 }
 
 // S  Eyes - images from sahaj panel/1S
-const S_IMG = ["S11.jpg", "S12.jpg", "S13.jpg", "S14.jpg"].map((f) =>
-  r2.sahajPanel(`1S/${f}`),
+const S_IMG = Array.from({ length: 10 }, (_, i) =>
+  r2.sahajPanel(`1S/S${i + 1}.webp`),
 );
 const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
   title: `Eyes Study ${i + 1}`,
@@ -110,13 +105,13 @@ const EYE_ART: EyeArtwork[] = S_IMG.map((img, i) => ({
 
 // A  Shreenathji - images from sahaj panel/2A
 const SHRG_IMGS = [
-  r2.sahajPanel("2A/1A.JPG"),
-  r2.sahajPanel("2A/2A.JPG"),
-  r2.sahajPanel("2A/3A.jpg"),
-  r2.sahajPanel("2A/4A.jpg"),
-  r2.sahajPanel("2A/5A.jpg"),
-  r2.sahajPanel("2A/6A.jpg"),
-  r2.sahajPanel("2A/7A.jpg"),
+  r2.sahajPanel("2A/1A.webp"),
+  r2.sahajPanel("2A/2A.webp"),
+  r2.sahajPanel("2A/3A.webp"),
+  r2.sahajPanel("2A/4A.webp"),
+  r2.sahajPanel("2A/5A.webp"),
+  r2.sahajPanel("2A/6A.webp"),
+  r2.sahajPanel("2A/7A.webp"),
 ];
 const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
   ...SHRG_IMGS.map((img, i) => ({
@@ -139,13 +134,13 @@ const THE_SIKSHAPATRI_ART: EyeArtwork[] = Array.from(
     desc: "artwork",
     dim: " ",
     glow: "#8a6020",
-    image: r2.sahajPanel(`3H/${i + 1}H.JPG`),
+    image: r2.sahajPanel(`3H/${i + 1}H.webp`),
   }),
 );
 
 // A (index 3)  Reflection - 9 images from sahaj panel/4A + 1 placeholder
 const REF_IMGS = Array.from({ length: 9 }, (_, i) =>
-  r2.sahajPanel(`4A/${i + 1}AA.JPG`),
+  r2.sahajPanel(`4A/${i + 1}AA.webp`),
 );
 const THE_REFLECTION_ART: EyeArtwork[] = [
   ...REF_IMGS.map((img, i) => ({
@@ -161,16 +156,16 @@ const THE_REFLECTION_ART: EyeArtwork[] = [
 
 // J  Cherry Blossom - images from sahaj panel/5J
 const CB_J_IMGS = [
-  r2.sahajPanel("5J/1J.jpg"),
-  r2.sahajPanel("5J/2J.jpg"),
-  r2.sahajPanel("5J/3J.jpg"),
-  r2.sahajPanel("5J/4J.jpg"),
-  r2.sahajPanel("5J/5J.jpeg"),
-  r2.sahajPanel("5J/6J.jpeg"),
-  r2.sahajPanel("5J/7J.jpg"),
-  r2.sahajPanel("5J/8J.jpeg"),
-  r2.sahajPanel("5J/9J.jpg"),
-  r2.sahajPanel("5J/10J.jpg"),
+  r2.sahajPanel("5J/1J.webp"),
+  r2.sahajPanel("5J/2J.webp"),
+  r2.sahajPanel("5J/3J.webp"),
+  r2.sahajPanel("5J/4J.webp"),
+  r2.sahajPanel("5J/5J.webp"),
+  r2.sahajPanel("5J/6J.webp"),
+  r2.sahajPanel("5J/7J.webp"),
+  r2.sahajPanel("5J/8J.webp"),
+  r2.sahajPanel("5J/9J.webp"),
+  r2.sahajPanel("5J/10J.webp"),
 ];
 const CHERRY_BLOSSOM_ART: EyeArtwork[] = CB_J_IMGS.map((img, i) => ({
   title: `Cherry Blossom ${i + 1}`,
@@ -238,14 +233,14 @@ type EssentialsKey = (typeof ESSENTIALS_KEYS)[number];
 const ESSENTIALS_GLOW = "#c9a96e";
 
 const _6E_IMGS = [
-  r2.essentials("6E/Handle 1.png"),
-  r2.essentials("6E/Handle 2.png"),
-  r2.essentials("6E/Handle 3.png"),
-  r2.essentials("6E/Handle 4.png"),
-  r2.essentials("6E/1E.png"),
-  r2.essentials("6E/2E.png"),
-  r2.essentials("6E/3E.png"),
-  r2.essentials("6E/4E.png"),
+  r2.essentials("6E/Handle 1.webp"),
+  r2.essentials("6E/Handle 2.webp"),
+  r2.essentials("6E/Handle 3.webp"),
+  r2.essentials("6E/Handle 4.webp"),
+  r2.essentials("6E/1E.webp"),
+  r2.essentials("6E/2E.webp"),
+  r2.essentials("6E/3E.webp"),
+  r2.essentials("6E/4E.webp"),
 ];
 const ESS_6E_ART: EyeArtwork[] = _6E_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
@@ -257,10 +252,10 @@ const ESS_6E_ART: EyeArtwork[] = _6E_IMGS.map((img, i) => ({
 }));
 
 const _7S_IMGS = [
-  r2.essentials("7S/1SS.png"),
-  r2.essentials("7S/2SS.png"),
-  r2.essentials("7S/11SS.png"),
-  r2.essentials("7S/22SS.png"),
+  r2.essentials("7S/1SS.webp"),
+  r2.essentials("7S/2SS.webp"),
+  r2.essentials("7S/11SS.webp"),
+  r2.essentials("7S/22SS.webp"),
 ];
 const ESS_7S_ART: EyeArtwork[] = _7S_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
@@ -272,12 +267,12 @@ const ESS_7S_ART: EyeArtwork[] = _7S_IMGS.map((img, i) => ({
 }));
 
 const _8S_IMGS = [
-  r2.essentials("8S/1SSS.png"),
-  r2.essentials("8S/2SSS.png"),
-  r2.essentials("8S/3SSS.png"),
-  r2.essentials("8S/11SSS.png"),
-  r2.essentials("8S/22SSS.png"),
-  r2.essentials("8S/33SSS.png"),
+  r2.essentials("8S/1SSS.webp"),
+  r2.essentials("8S/2SSS.webp"),
+  r2.essentials("8S/3SSS.webp"),
+  r2.essentials("8S/11SSS.webp"),
+  r2.essentials("8S/22SSS.webp"),
+  r2.essentials("8S/33SSS.webp"),
 ];
 const ESS_8S_ART: EyeArtwork[] = _8S_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
@@ -289,10 +284,10 @@ const ESS_8S_ART: EyeArtwork[] = _8S_IMGS.map((img, i) => ({
 }));
 
 const _9E_IMGS = [
-  r2.essentials("9E/1EE.png"),
-  r2.essentials("9E/2EE.png"),
-  r2.essentials("9E/3EE.png"),
-  r2.essentials("9E/4EE.png"),
+  r2.essentials("9E/1EE.webp"),
+  r2.essentials("9E/2EE.webp"),
+  r2.essentials("9E/3EE.webp"),
+  r2.essentials("9E/4EE.webp"),
 ];
 const ESS_9E_ART: EyeArtwork[] = [
   ..._9E_IMGS.map((img, i) => ({
@@ -307,8 +302,8 @@ const ESS_9E_ART: EyeArtwork[] = [
 ];
 
 const _10N_IMGS = [
-  r2.essentials("10N/1N.png"),
-  r2.essentials("10N/2N.png"),
+  r2.essentials("10N/1N.webp"),
+  r2.essentials("10N/2N.webp"),
 ];
 const ESS_10N_ART: EyeArtwork[] = [
   ..._10N_IMGS.map((img, i) => ({
@@ -323,10 +318,10 @@ const ESS_10N_ART: EyeArtwork[] = [
 ];
 
 const _11T_IMGS = [
-  r2.essentials("11T/1T.png"),
-  r2.essentials("11T/2T.png"),
-  r2.essentials("11T/11T.png"),
-  r2.essentials("11T/22T.png"),
+  r2.essentials("11T/1T.webp"),
+  r2.essentials("11T/2T.webp"),
+  r2.essentials("11T/11T.webp"),
+  r2.essentials("11T/22T.webp"),
 ];
 const ESS_11T_ART: EyeArtwork[] = _11T_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
@@ -352,10 +347,10 @@ const ESS_13A_ART: EyeArtwork[] = mkPlaceholders(
   1,
 );
 const _14L_IMGS = [
-  r2.essentials("14L/11EE.png"),
-  r2.essentials("14L/22EE.png"),
-  r2.essentials("14L/33EE.png"),
-  r2.essentials("14L/44EE.png"),
+  r2.essentials("14L/11EE.webp"),
+  r2.essentials("14L/22EE.webp"),
+  r2.essentials("14L/33EE.webp"),
+  r2.essentials("14L/44EE.webp"),
 ];
 const ESS_14L_ART: EyeArtwork[] = _14L_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
@@ -881,7 +876,7 @@ function Work() {
                           >
                             <div className="art-frame">
                               {art.image ? (
-                                <img src={art.image} alt="" className="art-img" />
+                                <img src={art.image} alt="" className="art-img" loading="lazy" decoding="async" />
                               ) : art.svg ? (
                                 <div
                                   className="art-canvas"
