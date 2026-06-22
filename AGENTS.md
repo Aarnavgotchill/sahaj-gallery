@@ -1,14 +1,14 @@
 # Sahaj Gallery — Project Context
 
 ## Overview
-Professional art gallery website for Sahaj Gallery (Ahmedabad, Gujarat). Built with Vite + React 19 + TanStack Router (client-side SPA). All media assets served from Cloudflare R2 at `https://assets.sahajgallery.com`.
+Professional art gallery website for Sahaj Gallery (Ahmedabad, Gujarat). Built with Vite + React 19 + TanStack Router (client-side SPA). All media assets served from Cloudflare R2 at `https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev`.
 
 ## Build & Deploy
 - **Build command:** `npm run build` → `vite build`
 - **Deploy target:** Cloudflare Pages
 - **SPA routing:** `public/_redirects` (`/* /index.html 200`)
 - **Wrangler config:** `wrangler.jsonc` (build output: `dist`, build command: `npm run build`)
-- **Required env var:** `VITE_R2_URL=https://assets.sahajgallery.com` (set in Cloudflare Pages dashboard)
+- **Required env var:** `VITE_R2_URL=https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev` (set in Cloudflare Pages dashboard)
 
 ### Deploy commands
 ```bash
@@ -140,7 +140,7 @@ The site uses a multi-layer cinematic aesthetic for a premium museum/editorial f
 **Usage:** `.ambient-overlay` is rendered in `__root.tsx` above the `Outlet`. Route sections can use `.bloom`, `.vignette`, `.section-ambient` as needed. All borders use `/40` or `/30` opacity for subtlety.
 
 ## Asset System (Cloudflare R2)
-All media assets (images, videos, audio, fonts) are served from Cloudflare R2 at `https://assets.sahajgallery.com`.
+All media assets (images, videos, audio, fonts) are served from Cloudflare R2 at `https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev`.
 
 ### Registry
 - **`src/assets/assets.ts`** — centralized registry with named exports for every asset
@@ -157,7 +157,7 @@ import { sahajTransparentLogo, heroVideo } from "@/assets/assets";
 ```
 
 ### Environment Variable
-- `VITE_R2_URL` — set to `https://assets.sahajgallery.com` (required in Cloudflare Pages dashboard)
+- `VITE_R2_URL` — set to `https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev` (required in Cloudflare Pages dashboard)
 - The `r2.ts` config falls back to the same URL if the env var is missing
 
 ### No Local Media
@@ -166,7 +166,6 @@ The `src/assets/` directory contains **only** `assets.ts` (the registry). All me
 ## Known Issues
 - `routeTree.gen.ts` must be manually updated when adding new routes (TanStack Router plugin not in Vite config)
 - No actual form submission handler on contact forms (preventDefault only)
-- `src/lib/drm.ts` and `src/components/ProtectedImage.tsx` exist on disk but are dead code
 
 ## 🤝 Dual-Instance Collaboration Protocol
 
@@ -190,6 +189,13 @@ Two OpenCode instances work simultaneously:
 7. **Check comm.log on every task start** — always read the tail of comm.log before beginning work
 
 ## Recent Changes (Latest Session)
+
+### Final Cleanup & R2 Migration Completion
+- Removed 75 files (11,708 lines): dead source files, 31 unused UI components, 8 reports, 4 scripts, 17 configs
+- Reduced CSS bundle from 90KB → 46KB by removing unused shadcn/ui components
+- Removed 15 unused exports from `src/assets/assets.ts` (kept only the 15 actively used)
+- Repository size reduced from ~1.2GB+ to ~2.2MB (99.8% reduction)
+- R2 public URL updated to `https://pub-88b77a3c95f846c492b24221cd5ed074.r2.dev`
 
 ### Panel Hover Refinements (`src/routes/work.tsx`)
 - Changed from uniform `scale(1.05)` → `scale(1.1, 1.03)` (10% width, 3% height)
