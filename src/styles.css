@@ -392,4 +392,12 @@ img {
   transform: scale(1);
 }
 
+/* Fallback styling for R2-hosted assets */
+img[src*="assets.sahajgallery.com"] {
+  background: var(--color-card);
+}
+video {
+  background: #000;
+}
+
 

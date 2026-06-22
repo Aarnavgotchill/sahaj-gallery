@@ -2,8 +2,14 @@ import { useState, useEffect, useRef, useCallback, lazy } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import { r2 } from "@/config/r2";
-
-const ndhLogo = r2.homePage("NDH_logo_4K.png");
+import {
+  ndhLogo4K as ndhLogo,
+  stripS,
+  stripA,
+  stripH,
+  stripA1,
+  stripJ,
+} from "@/assets/assets";
 
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
 const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
@@ -742,7 +748,15 @@ function Work() {
                       className="strip"
                       data-category={cat.id}
                       style={{
-                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${r2.homePage(`${cat.img}-medium.webp`)}) center/cover no-repeat`,
+                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${
+                          ({
+                            S: stripS,
+                            A: stripA,
+                            H: stripH,
+                            A1: stripA1,
+                            J: stripJ,
+                          } as Record<string, string>)[cat.img]
+                        }) center/cover no-repeat`,
                       }}
                       onClick={() => openGallery(cat.id)}
                     >

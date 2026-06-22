@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { r2 } from "@/config/r2";
-
-const logoSahaj = r2.homePage("sahaj-trasnparent-logo.png");
+import { sahajTransparentLogo as logoSahaj } from "@/assets/assets";
 
 const links = [
   { href: "/", label: "Home" },

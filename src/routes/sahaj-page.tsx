@@ -2,16 +2,16 @@ import { useEffect } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
-import { r2 } from "@/config/r2";
-
-const ndhLogo = r2.homePage("NDH_logo_4K.png");
-const sahajLogo = r2.homePage("sahaj-trasnparent-logo.png");
-const studioLogo = r2.homePage("Studio_Shikshaptri_white_4K.png");
-const karigariLogo = r2.homePage("karigari-logo-png.webp");
-const sahajGallery = r2.placeholder("sahaj-gallery-placeholder.webp");
-const fenilVideo = r2.videos("fenil-video.mp4");
-const dhrutiVideo = r2.videos("Dhruit-Panchal-V1.mp4");
-const handsVideo = r2.videos("The-Hands-of-Sahaj.mp4");
+import {
+  ndhLogo4K as ndhLogo,
+  sahajTransparentLogo as sahajLogo,
+  studioShikshaptriLogo as studioLogo,
+  karigariLogo,
+  sahajGalleryPlaceholder as sahajGallery,
+  fenilTestimonialVideo as fenilVideo,
+  dhrutiTestimonialVideo as dhrutiVideo,
+  handsOfSahajVideo as handsVideo,
+} from "@/assets/assets";
 
 function Sahaj() {
   useEffect(() => {

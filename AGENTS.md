@@ -1,14 +1,23 @@
 # Sahaj Gallery — Project Context
 
 ## Overview
-Professional art gallery website for Sahaj Gallery (Ahmedabad, Gujarat). Built with Vite + React 19 + TanStack Router (client-side SPA). Deployed on Vercel at https://sahaj-gallery.vercel.app.
+Professional art gallery website for Sahaj Gallery (Ahmedabad, Gujarat). Built with Vite + React 19 + TanStack Router (client-side SPA). All media assets served from Cloudflare R2 at `https://assets.sahajgallery.com`.
 
 ## Build & Deploy
-- **Build command:** `npm run build` → `vite build && node scripts/postbuild.mjs`
-- **Postbuild script** `scripts/postbuild.mjs`: scans `dist/assets/` for the largest JS file, generates `dist/index.html` with proper script/link tags, copies `public/_redirects` for SPA routing
-- **Deploy:** `vercel --prod --yes`
-- **Vercel config** (`vercel.json`): SPA rewrites `/* → /index.html`
-- **`.vercelignore`** ignores large files (`idea-2026.1.3.exe`, `hero video.mp4`)
+- **Build command:** `npm run build` → `vite build`
+- **Deploy target:** Cloudflare Pages
+- **SPA routing:** `public/_redirects` (`/* /index.html 200`)
+- **Wrangler config:** `wrangler.jsonc` (build output: `dist`, build command: `npm run build`)
+- **Required env var:** `VITE_R2_URL=https://assets.sahajgallery.com` (set in Cloudflare Pages dashboard)
+
+### Deploy commands
+```bash
+# Via Wrangler CLI
+npx wrangler pages deploy dist --project-name=sahaj-gallery
+
+# Or via Cloudflare Dashboard
+# Connect GitHub repo → Set build command: npm run build → Output dir: dist
+```
 
 ## Tech Stack
 - React 19, Vite 7, TypeScript 5.8
@@ -129,6 +138,30 @@ The site uses a multi-layer cinematic aesthetic for a premium museum/editorial f
 | `.gold-border-bottom` | 0.5px gold bottom border |
 
 **Usage:** `.ambient-overlay` is rendered in `__root.tsx` above the `Outlet`. Route sections can use `.bloom`, `.vignette`, `.section-ambient` as needed. All borders use `/40` or `/30` opacity for subtlety.
+
+## Asset System (Cloudflare R2)
+All media assets (images, videos, audio, fonts) are served from Cloudflare R2 at `https://assets.sahajgallery.com`.
+
+### Registry
+- **`src/assets/assets.ts`** — centralized registry with named exports for every asset
+- **`src/config/r2.ts`** — URL builder that constructs R2 paths using `VITE_R2_URL` env var
+
+### Usage
+```ts
+// Import a named asset from the registry
+import { sahajTransparentLogo, heroVideo } from "@/assets/assets";
+
+// Use directly in JSX
+<img src={sahajTransparentLogo} alt="Sahaj" />
+<video src={heroVideo} autoPlay muted loop />
+```
+
+### Environment Variable
+- `VITE_R2_URL` — set to `https://assets.sahajgallery.com` (required in Cloudflare Pages dashboard)
+- The `r2.ts` config falls back to the same URL if the env var is missing
+
+### No Local Media
+The `src/assets/` directory contains **only** `assets.ts` (the registry). All media files have been removed from the repository and are served exclusively from R2. The `.gitignore` ignores `src/assets/**` except `*.ts` files.
 
 ## Known Issues
 - `routeTree.gen.ts` must be manually updated when adding new routes (TanStack Router plugin not in Vite config)

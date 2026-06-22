@@ -42,4 +42,6 @@ dist-ssr
 *.tsbuildinfo
 
 # All media assets are served from Cloudflare R2
-src/assets/
+src/assets/**
+!src/assets/*.ts
+!src/assets/*.tsx

@@ -6,14 +6,15 @@ const AdminPortal = lazy(() =>
   import("@/components/AdminPortal").then((m) => ({ default: m.AdminPortal })),
 );
 
-import { r2 } from "@/config/r2";
-
-const heroVideo = r2.hero("hero-video.mp4");
-const art1 = r2.homePage("ART-WORK-1-medium.webp");
-const art2 = r2.homePage("ART-WORK-2-medium.webp");
-const art3 = r2.homePage("ART-WORK-3-medium.webp");
-const logoSymbol = r2.homePage("sahaj-trasnparent-logo.png");
-const ndhLogo = r2.homePage("NDH_logo_4K.png");
+import {
+  heroVideo,
+  artworkSpotlight1 as art1,
+  artworkSpotlight2 as art2,
+  artworkSpotlight3 as art3,
+  sahajTransparentLogo as logoSymbol,
+  ndhLogo4K as ndhLogo,
+  ambientAudio,
+} from "@/assets/assets";
 
 const services = [
   {
@@ -64,8 +65,7 @@ function Index() {
     window.scrollTo(0, 0);
     let cancelled = false;
 
-    const audioUrl = r2.audio("Cinematic-Ambient-Background-Music.mp3");
-    const audio = new Audio(audioUrl);
+    const audio = new Audio(ambientAudio);
     audio.loop = true;
     audio.volume = 0.6;
     audioRef.current = audio;
