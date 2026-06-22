@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback, lazy, Suspense } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
+import * as ambient from "@/lib/ambient";
 
 const AdminPortal = lazy(() =>
   import("@/components/AdminPortal").then((m) => ({ default: m.AdminPortal })),
@@ -13,7 +14,6 @@ import {
   artworkSpotlight3 as art3,
   sahajTransparentLogo as logoSymbol,
   ndhLogo4K as ndhLogo,
-  ambientAudio,
 } from "@/assets/assets";
 
 const services = [
@@ -35,8 +35,6 @@ const services = [
 ];
 
 function Index() {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const interactedRef = useRef(false);
   const [isAdmin, setIsAdmin] = useState(
     () => sessionStorage.getItem("sahaj_admin") === "true",
   );
@@ -46,49 +44,24 @@ function Index() {
   const noteRef = useRef<HTMLTextAreaElement>(null);
 
   const checkScroll = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
     const threshold = document.documentElement.scrollHeight * 0.15;
     const progress = Math.min(window.scrollY / threshold, 1);
-    const maxVolume = 0.5;
-    audio.volume = Math.max(0, maxVolume * (1 - progress));
+    ambient.volume(Math.max(0, 0.5 * (1 - progress)));
 
-    if (progress < 1 && audio.paused) {
-      audio.play().catch(() => {});
-    } else if (progress >= 1 && !audio.paused) {
-      audio.pause();
+    if (progress < 1) {
+      ambient.play();
+    } else {
+      ambient.stop();
     }
   }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    let cancelled = false;
-
-    const audio = new Audio(ambientAudio);
-    audio.loop = true;
-    audio.volume = 0.5;
-    audioRef.current = audio;
-
-    audio.play().catch(() => {
-      const onInteraction = () => {
-        interactedRef.current = true;
-        audio.play().catch(() => {});
-        checkScroll();
-        document.removeEventListener("click", onInteraction);
-        document.removeEventListener("touchstart", onInteraction);
-      };
-      document.addEventListener("click", onInteraction);
-      document.addEventListener("touchstart", onInteraction);
-    });
-
+    ambient.play();
     window.addEventListener("scroll", checkScroll, { passive: true });
     return () => {
-      cancelled = true;
       window.removeEventListener("scroll", checkScroll);
-      if (audioRef.current && !audioRef.current.paused) {
-        audioRef.current.pause();
-      }
+      ambient.stop();
     };
   }, [checkScroll]);
 
