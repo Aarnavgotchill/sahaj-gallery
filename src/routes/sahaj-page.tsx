@@ -137,29 +137,29 @@ function Sahaj() {
               </div>
             </Reveal>
             <Reveal delay={200}>
-              <div className="flex h-full flex-col items-center justify-center gap-10 rounded-sm border border-border bg-card/50 p-12 md:p-16">
-                <div className="flex items-center justify-center gap-10">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="flex items-center justify-center h-28">
+              <div className="flex h-full flex-col items-center justify-center gap-8 md:gap-10 rounded-sm border border-border bg-card/50 p-8 md:p-16">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 w-full">
+                  <div className="flex flex-col items-center gap-3 w-full max-w-[200px] md:max-w-none">
+                    <div className="flex items-center justify-center w-full md:h-28">
                       <img
                         src={studioLogo}
                         alt="Studio Shikshaptri"
-                        className="h-24 w-auto object-contain md:h-28"
+                        className="w-full max-h-20 md:max-h-none md:h-24 md:w-auto object-contain"
                       />
                     </div>
                     <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground text-center">
                       STUDIO SHIKSHPATRI
                     </span>
                   </div>
-                  <span className="font-display text-4xl text-[color:var(--gold)] self-center">
+                  <span className="font-display text-4xl text-[color:var(--gold)] self-center flex-shrink-0">
                     ×
                   </span>
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="flex items-center justify-center h-28">
+                  <div className="flex flex-col items-center gap-3 w-full max-w-[200px] md:max-w-none">
+                    <div className="flex items-center justify-center w-full md:h-28">
                       <img
                         src={karigariLogo}
                         alt="Karigari Studio"
-                        className="h-24 w-auto object-contain md:h-28"
+                        className="w-full max-h-20 md:max-h-none md:h-24 md:w-auto object-contain"
                       />
                     </div>
                     <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground text-center">
@@ -356,7 +356,7 @@ function Sahaj() {
       </section>
 
       {/* THE SPACE */}
-      <section className="section-ambient relative border-t border-border/40 px-8 pt-40 pb-8 md:px-14 md:pt-56 md:pb-12">
+      <section className="section-ambient relative border-t border-border/40 px-8 pt-40 pb-24 md:px-14 md:pt-56 md:pb-12">
         <div className="absolute inset-0 glow-warm opacity-25" />
         <div className="relative mx-auto max-w-[1100px]">
           <div className="grid gap-16 md:grid-cols-2 md:gap-24">

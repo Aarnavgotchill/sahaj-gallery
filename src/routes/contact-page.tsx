@@ -56,7 +56,7 @@ function Contact() {
       <div className="border-b border-border/30">
         <Nav />
       </div>
-      <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-6 md:px-12 pt-8 pb-[26px]">
+      <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-8 md:px-14 pt-8 pb-[26px]">
         <div className="flex items-center justify-start">
           <div className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
             <p className="text-left">
