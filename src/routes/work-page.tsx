@@ -579,7 +579,8 @@ const GALLERY_CSS = `
 #gallery-root .artwork.active{opacity:1}
 @media(max-width:767px){
   .gallery-viewport{overflow-y:auto;-webkit-overflow-scrolling:touch}
-  #gallery-root .gallery-content{justify-content:flex-start;padding:100px 0 40px;gap:0}
+  #gallery-root{flex:none}
+  #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;padding:100px 0;gap:0}
   #gallery-root #l1{height:auto;padding:0;flex:none}
   #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center}
   #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
@@ -587,7 +588,7 @@ const GALLERY_CSS = `
   #gallery-root .strip:active{transform:scale(0.97)}
   #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
   #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
-  #gallery-root .essentials-section{padding:0 16px 0;margin-top:28px;text-align:center}
+  #gallery-root .essentials-section{padding:0 0 48px;margin-top:28px;text-align:center}
   #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(5,auto);gap:10px;justify-content:center;align-items:center;margin:0 auto}
   #gallery-root .essentials-box-wrap{opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
   #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
@@ -596,7 +597,7 @@ const GALLERY_CSS = `
   #gallery-root .essentials-box span{font-family:'Gambetta',Georgia,serif;font-size:16px;font-weight:500;letter-spacing:.02em;color:var(--bone);user-select:none}
   #gallery-root .gallery-content .btn-catalogue{display:block;margin:28px auto 0;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
   #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
-  #gallery-root .gallery-footer{margin-top:36px;position:relative;bottom:auto}
+  #gallery-root .gallery-footer{margin-top:0;position:relative;bottom:auto}
   #gallery-root #g-stage{padding:0 20px}
   #gallery-root .artwork{padding:0 20px}
   #gallery-root .art-frame{width:min(85vmin,calc(100vh - 240px))}
@@ -624,7 +625,8 @@ const GALLERY_CSS = `
   transition:opacity .55s var(--ease-soft);
 }
 #gallery-root .essentials-grid{
-  display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;
+  display:grid;grid-template-columns:repeat(5,auto);gap:24px;
+  align-items:center;justify-content:center;margin:0 auto;
 }
 #gallery-root .essentials-box{
   width:60px;height:60px;
