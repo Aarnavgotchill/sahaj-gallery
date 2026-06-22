@@ -589,7 +589,7 @@ const GALLERY_CSS = `
   #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
   #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
   #gallery-root .essentials-section{padding:0 0 48px;margin-top:28px;text-align:center}
-  #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(5,auto);column-gap:8px;row-gap:16px;justify-content:center;align-items:center;margin:0 auto}
+  #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(5,min-content);column-gap:8px;row-gap:16px;justify-content:center;align-items:center;margin:0 auto;max-width:100%;overflow:hidden}
   #gallery-root .essentials-box-wrap{opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
   #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
   #gallery-root .essentials-box{width:44px;height:44px;border:1.2px solid rgba(201,169,110,.75);border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s ease,transform .3s ease,background .3s ease}
