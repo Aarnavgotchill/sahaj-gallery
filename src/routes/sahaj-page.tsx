@@ -263,8 +263,8 @@ function Sahaj() {
               </p>
             </div>
           </Reveal>
-          <Reveal className="w-full flex justify-end">
-            <div className="w-full max-w-[380px]">
+          <Reveal className="w-full flex justify-center md:justify-end">
+            <div className="w-full max-w-[420px] md:max-w-[380px]">
               <VideoPlayer src={dhrutiVideo} />
             </div>
           </Reveal>
@@ -338,7 +338,7 @@ function Sahaj() {
               },
             ].map((s, i) => (
               <Reveal key={s.n} delay={i * 120} className="h-full">
-                <div className="group h-full border border-border p-10 transition-all duration-500 hover:border-[color:var(--gold)] hover:bg-card/30">
+                <div className="group h-full border border-border p-8 md:p-10 transition-all duration-500 hover:border-[color:var(--gold)] hover:bg-card/30">
                   <p className="text-5xl font-display text-[color:var(--gold)] opacity-40">
                     {s.n}
                   </p>

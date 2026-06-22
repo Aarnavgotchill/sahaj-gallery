@@ -52,7 +52,7 @@ function Contact() {
   }
 
   return (
-    <main className="h-screen overflow-y-auto bg-background text-foreground flex flex-col">
+    <main className="min-h-screen bg-background text-foreground flex flex-col">
       <div className="border-b border-border/30">
         <Nav />
       </div>
@@ -65,10 +65,10 @@ function Contact() {
                 We'd love to hear
               </em>
             </p>
-            <p className="text-center">from you.</p>
+            <p className="text-left md:text-center">from you.</p>
           </div>
         </div>
-        <div className="flex items-start pt-12 md:pt-[100px]">
+        <div className="flex items-start pt-4 md:pt-[100px]">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-full rounded-sm border border-border bg-card/30 p-6 backdrop-blur-sm md:p-10"

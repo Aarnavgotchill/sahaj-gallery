@@ -303,7 +303,7 @@ function Index() {
           </Reveal>
 
           {/* ROW 1: Image left, text right  Burrows Beneath the Cracks */}
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-40 md:grid-cols-[1fr_1.8fr]">
+          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.8fr]">
             <Reveal className="flex justify-center">
               <div onContextMenu={(e) => e.preventDefault()}>
                 <img
@@ -345,7 +345,7 @@ function Index() {
           </div>
 
           {/* ROW 2: Text left, image right  Coffee on Canvas */}
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 pb-40 md:grid-cols-[1fr_1.5fr]">
+          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.5fr]">
             <Reveal delay={200}>
               <div className="space-y-5 text-left">
                 <h3 className="font-display text-[clamp(1.2rem,2vw,1.8rem)] text-[var(--gold)] leading-snug">
@@ -391,7 +391,7 @@ function Index() {
           </div>
 
           {/* ROW 3: Image left, text right  Ayodhya Alok */}
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
+          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-20 md:gap-16 md:pb-0 md:grid-cols-[1.5fr_1fr]">
             <Reveal className="w-full">
               <div
                 className="w-full flex justify-center"
