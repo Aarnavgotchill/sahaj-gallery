@@ -12,14 +12,6 @@ import {
   sahajPanelBg,
 } from "@/assets/assets";
 
-const STRIP_BG: Record<string, string> = {
-  S: "#b87c4a",
-  A: "#c9a96e",
-  H: "#8a6020",
-  A1: "#206a8a",
-  J: "#d08080",
-};
-
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
 const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
 
@@ -428,6 +420,7 @@ const GALLERY_CSS = `
   transition:opacity .55s var(--ease-soft);
 }
 #gallery-root #l1.out{opacity:0;pointer-events:none}
+#gallery-root #l1.strips-loading{opacity:0!important;pointer-events:none}
 #gallery-root .strip-row{display:flex;align-items:center;gap:10px;height:100%;max-height:100%}
 #gallery-root .strip{
   position:relative;
@@ -697,6 +690,20 @@ function Work() {
   const [essentialsReady, setEssentialsReady] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [introText, setIntroText] = useState<string | null>(null);
+  const [stripsReady, setStripsReady] = useState(false);
+
+  useEffect(() => {
+    const imgs = [stripS, stripA, stripH, stripA1, stripJ];
+    let loaded = 0;
+    imgs.forEach((src) => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === imgs.length) setStripsReady(true);
+      };
+      img.src = src;
+    });
+  }, []);
   const galleryOpen = !!c || !!e;
 
   const activeEssentials = e
@@ -813,7 +820,7 @@ function Work() {
         </div>
         <div id="gallery-root">
           <div className="gallery-content">
-            <div id="l1" className={galleryOpen ? "out" : ""}>
+            <div id="l1" className={`${galleryOpen ? "out" : ""} ${!stripsReady ? "strips-loading" : ""}`}>
               <div className="strip-row" style={{"--bg":`url(${sahajPanelBg})`} as React.CSSProperties}>
                 {CATEGORIES.map((cat, i) => (
                   <div key={cat.id} className="sahaj-panel-wrap">
@@ -830,7 +837,6 @@ function Work() {
                             J: stripJ,
                           } as Record<string, string>)[cat.img]
                         }) center/cover no-repeat`,
-                        backgroundColor: STRIP_BG[cat.img],
                       }}
                       onClick={() => openGallery(cat.id)}
                     >

@@ -431,10 +431,10 @@ function Sahaj() {
                     </a>
                     <br />
                     <a
-                      href="mailto:info@sahajgallery.in"
+                      href="mailto:sahaj.ndhgujarat@gmail.com"
                       className="hover:text-[color:var(--gold)] transition-colors"
                     >
-                      info@sahajgallery.in
+                      sahaj.ndhgujarat@gmail.com
                     </a>
                   </p>
                   <a
