@@ -1,5 +1,31 @@
 let initialized = false;
 
+// Wraps a single <img> in a protection overlay that intercepts right-clicks
+// and long-press saves, without blocking pointer events on the image itself.
+function protectImg(img: HTMLImageElement) {
+  if (img.closest("#img-protection-overlay")) return;
+  const parent = img.parentElement;
+  if (parent && !parent.classList.contains("protected-img-wrap")) {
+    const wrap = document.createElement("span");
+    wrap.className = "protected-img-wrap";
+    parent.insertBefore(wrap, img);
+    wrap.appendChild(img);
+    const imgOverlay = document.createElement("span");
+    imgOverlay.className = "protected-img-overlay";
+    wrap.appendChild(imgOverlay);
+  }
+}
+
+// Scans a single DOM node (and its subtree) for images to protect.
+// Avoids full-document querySelectorAll on every mutation.
+function scanNodeForImages(node: Node) {
+  if (node instanceof HTMLImageElement) {
+    protectImg(node);
+  } else if (node instanceof Element) {
+    node.querySelectorAll("img").forEach(protectImg);
+  }
+}
+
 export function initImageProtection() {
   if (initialized) return;
   initialized = true;
@@ -20,53 +46,17 @@ export function initImageProtection() {
   `;
   document.head.appendChild(style);
 
-  document.addEventListener("keydown", (e) => {
-    if (
-      e.key === "PrintScreen" ||
-      (e.ctrlKey &&
-        (e.key === "s" ||
-          e.key === "S" ||
-          e.key === "p" ||
-          e.key === "P" ||
-          e.key === "u" ||
-          e.key === "U" ||
-          e.key === "c" ||
-          e.key === "C")) ||
-      (e.ctrlKey &&
-        e.shiftKey &&
-        (e.key === "I" ||
-          e.key === "i" ||
-          e.key === "J" ||
-          e.key === "j" ||
-          e.key === "C" ||
-          e.key === "c")) ||
-      e.key === "F12"
-    ) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  });
+  // Process images already present in the DOM
+  document.querySelectorAll("img").forEach(protectImg);
 
-  document.addEventListener("contextmenu", (e) => {
-    if ((e.target as HTMLElement)?.closest?.("img, .protected-img-wrap")) {
-      e.preventDefault();
-    }
-  });
-
-  const observer = new MutationObserver(() => {
-    document.querySelectorAll("img").forEach((img) => {
-      if (img.closest("#img-protection-overlay")) return;
-      const parent = img.parentElement;
-      if (parent && !parent.classList.contains("protected-img-wrap")) {
-        const wrap = document.createElement("span");
-        wrap.className = "protected-img-wrap";
-        parent.insertBefore(wrap, img);
-        wrap.appendChild(img);
-        const imgOverlay = document.createElement("span");
-        imgOverlay.className = "protected-img-overlay";
-        wrap.appendChild(imgOverlay);
+  // Watch for dynamically added images — only processes added nodes,
+  // avoiding repeated full-document scans on every mutation.
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        scanNodeForImages(node);
       }
-    });
+    }
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
