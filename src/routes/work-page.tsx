@@ -1,7 +1,43 @@
 import { useState, useEffect, useRef, useCallback, lazy } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
-import { r2 } from "@/config/r2";
+import GalleryLoadingBar from "@/components/GalleryLoadingBar";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
+
+import { r2 } from "@/config/R2_URL";
+
+const INTRO_VIDEO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/Video%20Project%2019.mp4";
+const BG_AUDIO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/ReelAudio-80306.mp3";
+
+declare global {
+  interface Window {
+    __sahaj_gallery_bg_audio?: HTMLAudioElement;
+  }
+}
+
+let galleryAudioSingleton: HTMLAudioElement | null = null;
+let galleryAudioPlaybackStarted = false;
+let galleryAudioListenerBound = false;
+let galleryIntroPlayAttempted = false;
+let galleryIntroVideoListenersBound = false;
+
+function ensureGalleryAudio(): HTMLAudioElement {
+  if (galleryAudioSingleton) return galleryAudioSingleton;
+
+  const audio = new Audio(BG_AUDIO_URL);
+  audio.preload = "auto";
+  audio.loop = false;
+  audio.volume = 1.0;
+  galleryAudioSingleton = audio;
+
+  if (typeof window !== "undefined") {
+    window.__sahaj_gallery_bg_audio = audio;
+  }
+
+  return audio;
+}
+
+import { CATEGORY_TO_SLUG } from "@/config/artPages";
 import {
   ndhLogo4K as ndhLogo,
   stripS,
@@ -18,7 +54,7 @@ const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
 const VALID_CATEGORY_IDS = [
   "eyes",
   "shreenathji",
-  "sikshapatri",
+  "shikshapatri",
   "reflection",
   "cherry",
 ] as const;
@@ -30,8 +66,10 @@ const CATEGORY_ALIASES: Record<string, CategoryId> = {
   "the eyes": "eyes",
   shreenathji: "shreenathji",
   "the shreenathji grace": "shreenathji",
-  sikshapatri: "sikshapatri",
-  "the sikshapatri": "sikshapatri",
+  shikshapatri: "shikshapatri",
+  "the shikshapatri": "shikshapatri",
+  sikshapatri: "shikshapatri",
+  "the sikshapatri": "shikshapatri",
   reflection: "reflection",
   "the reflection": "reflection",
   cherry: "cherry",
@@ -118,12 +156,12 @@ const THE_SHREENATHJI_GRACE_ART: EyeArtwork[] = [
   ...mkPlaceholders(3, "Shreenathji", "S H R E E N A T H J I", "#c9a96e", 8),
 ];
 
-// H  Sikshapatri - images from sahaj panel/3H
+// H  Shikshapatri - images from sahaj panel/3H
 const THE_SIKSHAPATRI_ART: EyeArtwork[] = Array.from(
   { length: 12 },
   (_, i) => ({
-    title: `Sikshapatri Study ${i + 1}`,
-    sub: `S I K S H A P A T R I  ${String(i + 1).padStart(2, "0")}`,
+    title: `Shikshapatri Study ${i + 1}`,
+    sub: `S H I K S H A P A T R I  ${String(i + 1).padStart(2, "0")}`,
     desc: "artwork",
     dim: " ",
     glow: "#8a6020",
@@ -185,8 +223,8 @@ const CATEGORIES = [
     img: "A",
   },
   {
-    id: "sikshapatri",
-    label: "The Sikshapatri",
+    id: "shikshapatri",
+    label: "The Shikshapatri",
     artworks: THE_SIKSHAPATRI_ART,
     letter: "H",
     img: "H",
@@ -210,7 +248,7 @@ const CATEGORIES = [
 const INTRO_TEXTS: Record<string, string> = {
   eyes: "A Glimpse of Gallery",
   shreenathji: "Layers Of Craftsmanship",
-  sikshapatri: "The Creative Circle",
+  shikshapatri: "The Creative Circle",
   reflection: "The Art Of Conversation",
   cherry: "White Glove Installation",
 };
@@ -413,14 +451,8 @@ const GALLERY_CSS = `
   background-color:var(--color-background) !important;
   border-bottom:1px solid rgba(90,74,110,0.5) !important;
 }
-#gallery-root #l1{
-  flex:none;
-  height:480px;
-  display:flex;align-items:center;justify-content:center;
-  transition:opacity .55s var(--ease-soft);
-}
+#gallery-root #l1{flex:none;height:480px;display:flex;align-items:center;justify-content:center;transition:opacity .55s var(--ease-soft)}
 #gallery-root #l1.out{opacity:0;pointer-events:none}
-#gallery-root #l1.strips-loading{opacity:0!important;pointer-events:none}
 #gallery-root .strip-row{display:flex;align-items:center;gap:10px;height:100%;max-height:100%}
 #gallery-root .strip{
   position:relative;
@@ -587,6 +619,14 @@ const GALLERY_CSS = `
 #gallery-root .sahaj-panel-wrap{
   height:100%;flex-shrink:0;
 }
+#gallery-root .panel-wrap{
+  height:100%;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease-out,transform .6s ease-out;
+}
+#gallery-root .panel-wrap.in{
+  opacity:1;transform:translateY(0);
+}
 #gallery-root .gallery-content #l1.out ~ .essentials-section{opacity:0;pointer-events:none}
 #gallery-root .essentials-section{
   padding:0 20px 24px;text-align:center;
@@ -639,6 +679,8 @@ const GALLERY_CSS = `
   #gallery-root #l1{height:auto;padding:0;flex:none}
   #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center;background:var(--bg) center/cover no-repeat}
   #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
+  #gallery-root .panel-wrap{height:auto;width:100%;opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
+  #gallery-root .panel-wrap.in{opacity:1;transform:translateY(0)}
   #gallery-root .strip{width:88vw;max-width:420px;height:auto;aspect-ratio:3/1;max-height:none;min-height:100px;border-radius:8px;position:relative;overflow:hidden;cursor:pointer;border:1.2px solid transparent;background-size:cover !important;background-position:center;flex-shrink:0;transition:transform .35s ease,filter .35s ease,box-shadow .35s ease,border-color .35s ease;margin:0 auto}
   #gallery-root .strip:active{transform:scale(0.97)}
   #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
@@ -650,7 +692,7 @@ const GALLERY_CSS = `
   #gallery-root .essentials-box{width:44px;height:44px;border:1.2px solid rgba(201,169,110,.75);border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s ease,transform .3s ease,background .3s ease}
   #gallery-root .essentials-box:active{transform:scale(0.92);background:rgba(201,169,110,.08)}
   #gallery-root .essentials-box span{font-family:'Gambetta',Georgia,serif;font-size:16px;font-weight:500;letter-spacing:.02em;color:var(--bone);user-select:none}
-  #gallery-root .gallery-content .btn-catalogue{display:block;margin:28px auto 0;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
+  #gallery-root .gallery-content .btn-catalogue{display:block;margin:0 auto;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
   #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
   #gallery-root .gallery-footer{margin-top:0;position:relative;bottom:auto}
   #gallery-root #g-stage{padding:0 20px}
@@ -688,22 +730,18 @@ function Work() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
+  const [panelsAnimated, setPanelsAnimated] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [introText, setIntroText] = useState<string | null>(null);
-  const [stripsReady, setStripsReady] = useState(false);
+  const [showIntro, setShowIntro] = useState<boolean>(() => !galleryIntroPlayAttempted);
+  // Fade state: "in" = video visible, "out" = fading out, false = hidden
+  const [introVisible, setIntroVisible] = useState<boolean>(true);
+  const [lightboxReady, setLightboxReady] = useState(false);
 
-  useEffect(() => {
-    const imgs = [stripS, stripA, stripH, stripA1, stripJ];
-    let loaded = 0;
-    imgs.forEach((src) => {
-      const img = new Image();
-      img.onload = img.onerror = () => {
-        loaded++;
-        if (loaded === imgs.length) setStripsReady(true);
-      };
-      img.src = src;
-    });
-  }, []);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+  const fadeFrameRef = useRef<number | null>(null);
+  const introFinishedRef = useRef(false);
   const galleryOpen = !!c || !!e;
 
   const activeEssentials = e
@@ -723,11 +761,6 @@ function Work() {
   }, [c, e]);
 
   useEffect(() => {
-    const t = setTimeout(() => setEssentialsReady(true), 50);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
     if (!introText) return;
     const t = setTimeout(() => setIntroText(null), 2000);
     return () => clearTimeout(t);
@@ -737,19 +770,158 @@ function Work() {
     if (!galleryOpen) setIntroText(null);
   }, [galleryOpen]);
 
+  // ── Background audio: create once and reuse for the current page visit ──
+  useEffect(() => {
+    const audio = ensureGalleryAudio();
+    bgAudioRef.current = audio;
+
+    const cleanupResumeListeners = () => {
+      document.removeEventListener("click", resumeAudio);
+      document.removeEventListener("touchstart", resumeAudio);
+      document.removeEventListener("keydown", resumeAudio);
+    };
+
+    const resumeAudio = () => {
+      void audio.play().catch(() => { });
+      cleanupResumeListeners();
+    };
+
+    const handleAudioEnded = () => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 0;
+    };
+
+    if (!galleryAudioListenerBound) {
+      audio.addEventListener("ended", handleAudioEnded);
+      galleryAudioListenerBound = true;
+    }
+
+    if (galleryAudioPlaybackStarted) return;
+
+    galleryAudioPlaybackStarted = true;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        cleanupResumeListeners();
+        document.addEventListener("click", resumeAudio, { once: true });
+        document.addEventListener("touchstart", resumeAudio, { once: true });
+        document.addEventListener("keydown", resumeAudio, { once: true });
+      });
+    }
+
+    return () => {
+      cleanupResumeListeners();
+      if (fadeFrameRef.current !== null) {
+        cancelAnimationFrame(fadeFrameRef.current);
+        fadeFrameRef.current = null;
+      }
+      if (bgAudioRef.current === audio) {
+        bgAudioRef.current = null;
+      }
+
+      if (typeof window !== "undefined" && window.location.pathname !== "/work") {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 0;
+      }
+    };
+  }, []);
+
+  // ── Volume fade helper: gradually reduce from current to 0.20 over ~500ms ──
+  const fadeAudioToAmbient = useCallback(() => {
+    const audio = bgAudioRef.current;
+    if (!audio) return;
+
+    if (fadeFrameRef.current !== null) {
+      cancelAnimationFrame(fadeFrameRef.current);
+      fadeFrameRef.current = null;
+    }
+
+    const targetVol = 0.20;
+    const durationMs = 500;
+    const startVol = audio.volume;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / durationMs);
+      const nextVol = startVol + (targetVol - startVol) * progress;
+      audio.volume = Math.max(targetVol, Math.min(1, nextVol));
+
+      if (progress < 1) {
+        fadeFrameRef.current = requestAnimationFrame(tick);
+      } else {
+        audio.volume = targetVol;
+        fadeFrameRef.current = null;
+      }
+    };
+
+    fadeFrameRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  // ── Transition from intro → gallery (natural or skip) ──
+  const finishIntro = useCallback(() => {
+    if (introFinishedRef.current) return;
+    introFinishedRef.current = true;
+
+    fadeAudioToAmbient();
+    // Fade the intro overlay out, then unmount
+    setIntroVisible(false);
+    const t = setTimeout(() => {
+      setShowIntro(false);
+      setPanelsAnimated(true);
+      setEssentialsReady(true);
+    }, 550); // matches CSS transition duration
+    return () => clearTimeout(t);
+  }, [fadeAudioToAmbient]);
+
+  const handleIntroEnd = useCallback(() => {
+    finishIntro();
+  }, [finishIntro]);
+
+  const handleSkip = useCallback(() => {
+    if (videoRef.current) videoRef.current.pause();
+    // Stop background audio completely — user chose to skip
+    const audio = bgAudioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 0;
+    }
+    finishIntro();
+  }, [finishIntro]);
+
+  // ── Lightbox image preloader ──
+  const artworkImages = galleryOpen
+    ? artworks.filter((a) => a.image).map((a) => a.image as string)
+    : [];
+  const { progress, isLoaded } = useImagePreloader(artworkImages);
+
+  useEffect(() => {
+    if (!galleryOpen) {
+      setLightboxReady(false);
+    }
+  }, [galleryOpen]);
+
+  useEffect(() => {
+    if (isLoaded && galleryOpen) {
+      const t = setTimeout(() => setLightboxReady(true), 100);
+      return () => clearTimeout(t);
+    }
+  }, [isLoaded, galleryOpen]);
+
   const touchXRef = useRef(0);
 
   const openGallery = useCallback(
-    (categoryId: string) => {
-      const text = INTRO_TEXTS[categoryId];
-      if (text) setIntroText(text);
-      navigate({ to: "/work", search: { c: categoryId }, replace: true });
+    (categoryId: CategoryId) => {
+      const slug = CATEGORY_TO_SLUG[categoryId] as "s" | "a" | "h" | "a-2" | "j" | undefined;
+      if (slug) navigate({ to: "/art-viewer", search: { slug }, replace: true });
     },
     [navigate],
   );
 
   const openEssentials = useCallback(
-    (key: string) => {
+    (key: EssentialsKey) => {
       navigate({ to: "/work", search: { e: key }, replace: true });
     },
     [navigate],
@@ -767,6 +939,44 @@ function Work() {
   const goBack = useCallback(() => {
     navigate({ to: "/work", search: {}, replace: true });
   }, [navigate]);
+
+  useEffect(() => {
+    if (showIntro) return;
+    const t = setTimeout(() => {
+      setPanelsAnimated(true);
+      setEssentialsReady(true);
+    }, 50);
+    return () => clearTimeout(t);
+  }, [showIntro]);
+
+  useEffect(() => {
+    if (!showIntro || galleryIntroPlayAttempted || !videoRef.current) return;
+
+    const video = videoRef.current;
+    galleryIntroPlayAttempted = true;
+
+    if (!galleryIntroVideoListenersBound) {
+      const handleVideoEnded = () => {
+        if (!introFinishedRef.current) {
+          finishIntro();
+        }
+      };
+      const handleVideoError = () => {
+        if (!introFinishedRef.current) {
+          finishIntro();
+        }
+      };
+
+      video.addEventListener("ended", handleVideoEnded);
+      video.addEventListener("error", handleVideoError);
+      galleryIntroVideoListenersBound = true;
+    }
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => { });
+    }
+  }, [showIntro, finishIntro]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -814,89 +1024,170 @@ function Work() {
   return (
     <>
       <style>{GALLERY_CSS}</style>
-      <div className="gallery-viewport">
+
+      {/* ── Intro video overlay (session-guarded) ── */}
+      {showIntro && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            backgroundColor: "#000",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: introVisible ? 1 : 0,
+            transition: "opacity 0.55s ease",
+            pointerEvents: introVisible ? "all" : "none",
+          }}
+        >
+          <video
+            ref={videoRef}
+            src={INTRO_VIDEO_URL}
+            playsInline
+            preload="auto"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          {/* Skip button — glassmorphism pill */}
+          <button
+            onClick={handleSkip}
+            style={{
+              position: "absolute",
+              bottom: "12px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(18px) saturate(180%)",
+              WebkitBackdropFilter: "blur(18px) saturate(180%)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              borderRadius: "999px",
+              padding: "12px 32px",
+              color: "rgba(255,255,255,0.90)",
+              fontSize: "12px",
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 300,
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              transition: "background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
+              boxShadow: "0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)",
+              userSelect: "none",
+              outline: "none",
+              zIndex: 110,
+            }}
+            onMouseEnter={e => {
+              const btn = e.currentTarget;
+              btn.style.background = "rgba(255,255,255,0.16)";
+              btn.style.borderColor = "rgba(255,255,255,0.35)";
+              btn.style.color = "rgba(255,255,255,1)";
+              btn.style.boxShadow = "0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.2)";
+              btn.style.transform = "translateX(-50%) translateY(-2px)";
+            }}
+            onMouseLeave={e => {
+              const btn = e.currentTarget;
+              btn.style.background = "rgba(255,255,255,0.08)";
+              btn.style.borderColor = "rgba(255,255,255,0.18)";
+              btn.style.color = "rgba(255,255,255,0.90)";
+              btn.style.boxShadow = "0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)";
+              btn.style.transform = "translateX(-50%) translateY(0)";
+            }}
+          >
+            Skip Video
+          </button>
+        </div>
+      )}
+
+      <div className="gallery-viewport" style={{ opacity: showIntro ? 0 : 1, transition: 'opacity 0.55s ease' }}>
         <div className="gallery-nav-wrap" data-gallery>
-          <Nav />
+          {!showIntro && <Nav />}
         </div>
         <div id="gallery-root">
           <div className="gallery-content">
-            <div id="l1" className={`${galleryOpen ? "out" : ""} ${!stripsReady ? "strips-loading" : ""}`}>
-              <div className="strip-row" style={{"--bg":`url(${sahajPanelBg})`} as React.CSSProperties}>
-                {CATEGORIES.map((cat, i) => (
-                  <div key={cat.id} className="sahaj-panel-wrap">
-                    <div
-                      className="strip"
-                      data-category={cat.id}
-                      style={{
-                        background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${
-                          ({
-                            S: stripS,
-                            A: stripA,
-                            H: stripH,
-                            A1: stripA1,
-                            J: stripJ,
-                          } as Record<string, string>)[cat.img]
-                        }) center/cover no-repeat`,
-                      }}
-                      onClick={() => openGallery(cat.id)}
-                    >
-                      <span className="strip-num">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="strip-letter">{cat.letter}</span>
+            <div className="w-full">
+              <div id="l1" className={`${galleryOpen ? "out" : ""}`}>
+                <div className="strip-row" style={{ "--bg": `url(${sahajPanelBg})` } as React.CSSProperties}>
+                  {CATEGORIES.map((cat, i) => (
+                    <div key={cat.id} className="sahaj-panel-wrap">
+                      <div className={`panel-wrap ${panelsAnimated ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                        <div
+                          className="strip"
+                          data-category={cat.id}
+                          style={{
+                            background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${({
+                              S: stripS,
+                              A: stripA,
+                              H: stripH,
+                              A1: stripA1,
+                              J: stripJ,
+                            } as Record<string, string>)[cat.img]
+                              }) center/cover no-repeat`,
+                          }}
+                          onClick={() => openGallery(cat.id)}
+                        >
+                          <span className="strip-num">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span className="strip-letter">{cat.letter}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              <section className="essentials-section">
+                <div className="essentials-grid">
+                  {ESSENTIALS_ENTRIES.map((entry, i) => (
+                    <div
+                      key={entry.key}
+                      className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`}
+                      style={{ transitionDelay: `${i * 100}ms` }}
+                    >
+                      <div
+                        className="essentials-box"
+                        onClick={() => openEssentials(entry.key)}
+                      >
+                        <span>{entry.letter}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <div className="flex justify-center py-8">
+                <button
+                  onClick={() => setCatalogueOpen(true)}
+                  className="btn-catalogue inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
+                >
+                  View Our Full Catalogue
+                  <span className="transition-transform duration-500 group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
               </div>
             </div>
-
-            <section className="essentials-section">
-              <div className="essentials-grid">
-                {ESSENTIALS_ENTRIES.map((entry, i) => (
-                  <div
-                    key={entry.key}
-                    className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`}
-                    style={{ transitionDelay: `${i * 100}ms` }}
-                  >
-                    <div
-                      className="essentials-box"
-                      onClick={() => openEssentials(entry.key)}
-                    >
-                      <span>{entry.letter}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <button
-              onClick={() => setCatalogueOpen(true)}
-              className="btn-catalogue inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
-              style={{ marginTop: 23 }}
-            >
-              View Our Full Catalogue
-              <span className="transition-transform duration-500 group-hover:translate-x-1">
-                →
-              </span>
-            </button>
           </div>
 
-          <footer className="gallery-footer border-t border-border/30 px-8 py-4 md:px-14">
-            <div className="flex items-center justify-between">
-              <p className="font-display text-xl tracking-[0.3em] text-left">
-                SAHAJ GALLERY
-              </p>
-              <img
-                src={ndhLogo}
-                alt="NDH House"
-                className="h-12 w-auto opacity-80"
-              />
-            </div>
-          </footer>
+          {!showIntro && (
+            <footer className="gallery-footer border-t border-border/30 px-8 py-4 md:px-14">
+              <div className="flex items-center justify-between">
+                <p className="font-display text-xl tracking-[0.3em] text-left text-[#C8A86E]">
+                  SAHAJ GALLERY
+                </p>
+                <img
+                  src={ndhLogo}
+                  alt="NDH House"
+                  className="h-12 w-auto opacity-80"
+                />
+              </div>
+            </footer>
+          )}
+
+          <GalleryLoadingBar progress={progress} visible={galleryOpen && !lightboxReady} />
 
           <div
             id="l3"
-            className={galleryOpen ? "in" : ""}
+            className={galleryOpen && lightboxReady ? "in" : ""}
             style={{ background: "var(--color-background)" }}
           >
             {introText && (

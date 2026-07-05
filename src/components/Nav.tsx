@@ -44,9 +44,9 @@ export function Nav() {
             className="h-11 w-auto md:h-[58px]"
           />
           <div className="flex flex-col">
-            <span className="font-micross whitespace-nowrap text-base tracking-[0.3em] text-foreground md:text-lg">
-              SAHAJ GALLERY
-            </span>
+<span className="font-micross whitespace-nowrap text-base tracking-[0.3em] text-[#C8A86E] md:text-lg">
+                SAHAJ GALLERY
+              </span>
             <span className="font-micross text-[10px] tracking-[0.2em] uppercase text-foreground/80" style={{ height: "24px", lineHeight: "24px" }}>
               Art in Architecture
             </span>

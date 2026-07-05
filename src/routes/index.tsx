@@ -1,7 +1,47 @@
-import { lazy } from "react";
+import { lazy, useState, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 const Page = lazy(() => import("./index-page"));
+
+let _loadingShown = false;
+
+function LoadingGate() {
+  const [showLoader, setShowLoader] = useState(!_loadingShown);
+  const [pageVisible, setPageVisible] = useState(_loadingShown);
+  const [isFirstVisit] = useState(!_loadingShown);
+
+  const handleTransitionStart = useCallback(() => {
+    _loadingShown = true;
+    setPageVisible(true);
+  }, []);
+
+  const handleLoaderComplete = useCallback(() => {
+    setShowLoader(false);
+  }, []);
+
+  return (
+    <>
+      {showLoader && (
+        <LoadingScreen
+          onTransitionStart={handleTransitionStart}
+          onComplete={handleLoaderComplete}
+        />
+      )}
+      <div
+        className="page-entrance-wrapper"
+        data-first-visit={isFirstVisit ? "true" : undefined}
+        data-revealed={pageVisible ? "true" : "false"}
+        style={{
+          opacity: pageVisible ? 1 : 0,
+          transition: 'opacity 0.8s ease-out',
+        }}
+      >
+        <Page />
+      </div>
+    </>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,5 +67,5 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  component: Page,
+  component: LoadingGate,
 });

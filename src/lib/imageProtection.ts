@@ -8,11 +8,18 @@ function protectImg(img: HTMLImageElement) {
   if (parent && !parent.classList.contains("protected-img-wrap")) {
     const wrap = document.createElement("span");
     wrap.className = "protected-img-wrap";
+    const isAbsolute = getComputedStyle(img).position === "absolute";
+    if (isAbsolute) {
+      wrap.style.cssText = "position:absolute;inset:0;display:block;pointer-events:none";
+    }
     parent.insertBefore(wrap, img);
     wrap.appendChild(img);
     const imgOverlay = document.createElement("span");
     imgOverlay.className = "protected-img-overlay";
     wrap.appendChild(imgOverlay);
+    if (isAbsolute && imgOverlay) {
+      imgOverlay.style.cssText = "position:absolute;inset:0;z-index:1;pointer-events:auto;background:transparent;user-select:none;-webkit-user-select:none";
+    }
   }
 }
 

@@ -11,7 +11,7 @@ import stripH from "./sahaj panel/H.webp";
 import stripA1 from "./sahaj panel/A1.webp";
 import stripJ from "./sahaj panel/J.webp";
 import sahajPanelBg from "./sahaj panel/background image of sahaj panel.webp";
-import studioShikshaptriLogo from "./logo/Studio_Shikshaptri_white_4K.webp";
+import studioShikshapatriLogo from "./logo/Studio_Shikshapatri_white_4K.webp";
 import karigariLogo from "./logo/karigari-logo-png.webp";
 import sahajGalleryPlaceholder from "./logo/sahaj gallery placeholder.webp";
 import fenilTestimonialVideo from "./Review Video/fenil video.mp4";
@@ -32,7 +32,7 @@ export {
   stripA1,
   stripJ,
   sahajPanelBg,
-  studioShikshaptriLogo,
+  studioShikshapatriLogo,
   karigariLogo,
   sahajGalleryPlaceholder,
   fenilTestimonialVideo,

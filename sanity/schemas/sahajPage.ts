@@ -37,7 +37,7 @@ export default defineType({
       name: "partnershipSubtitle",
       title: "Partnership Subtitle",
       type: "string",
-      initialValue: "STUDIO SHIKSHPATRI × KARIGARI STUDIO",
+      initialValue: "STUDIO SHIKSHAPATRI × KARIGARI STUDIO",
     }),
     defineField({
       name: "partnershipBody",
@@ -56,14 +56,14 @@ export default defineType({
     }),
     defineField({
       name: "studioLogo",
-      title: "Studio Shikshaptri Logo",
+      title: "Studio Shikshapatri Logo",
       type: "image",
     }),
     defineField({
       name: "studioLabel",
       title: "Studio Label",
       type: "string",
-      initialValue: "STUDIO SHIKSHPATRI",
+      initialValue: "STUDIO SHIKSHAPATRI",
     }),
     defineField({
       name: "karigariLogo",

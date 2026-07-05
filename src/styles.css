@@ -398,4 +398,30 @@ video {
   background: #000;
 }
 
+/* ─── Loading → Page Entrance Transition (first visit only) ─── */
+
+.page-entrance-wrapper[data-first-visit="true"] header.fixed {
+  opacity: 0;
+  transform: translateY(-14px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: 0.15s;
+}
+
+.page-entrance-wrapper[data-first-visit="true"][data-revealed="true"] header.fixed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-entrance-wrapper[data-first-visit="true"] #hero-section {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition-delay: 0.35s;
+}
+
+.page-entrance-wrapper[data-first-visit="true"][data-revealed="true"] #hero-section {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 

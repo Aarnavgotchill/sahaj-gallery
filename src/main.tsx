@@ -17,12 +17,6 @@ const router = createRouter({
   scrollRestoration: false,
 });
 
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
 /*
  * ─── StrictMode Toggle ───
  *

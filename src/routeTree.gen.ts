@@ -13,6 +13,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as SahajRouteImport } from './routes/sahaj'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArtViewerRouteImport } from './routes/art-viewer'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -34,18 +35,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtViewerRoute = ArtViewerRouteImport.update({
+  id: '/art-viewer',
+  path: '/art-viewer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/sahaj': typeof SahajRoute
   '/work': typeof WorkRoute
+  '/art-viewer': typeof ArtViewerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/sahaj': typeof SahajRoute
   '/work': typeof WorkRoute
+  '/art-viewer': typeof ArtViewerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/sahaj': typeof SahajRoute
   '/work': typeof WorkRoute
+  '/art-viewer': typeof ArtViewerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contact' | '/sahaj' | '/work'
+  fullPaths: '/' | '/contact' | '/sahaj' | '/work' | '/art-viewer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/sahaj' | '/work'
-  id: '__root__' | '/' | '/contact' | '/sahaj' | '/work'
+  to: '/' | '/contact' | '/sahaj' | '/work' | '/art-viewer'
+  id: '__root__' | '/' | '/contact' | '/sahaj' | '/work' | '/art-viewer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   SahajRoute: typeof SahajRoute
   WorkRoute: typeof WorkRoute
+  ArtViewerRoute: typeof ArtViewerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/art-viewer': {
+      id: '/art-viewer'
+      path: '/art-viewer'
+      fullPath: '/art-viewer'
+      preLoaderRoute: typeof ArtViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   SahajRoute: SahajRoute,
   WorkRoute: WorkRoute,
+  ArtViewerRoute: ArtViewerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

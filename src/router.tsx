@@ -14,9 +14,3 @@ export function getRouter() {
 }
 
 export type Router = ReturnType<typeof getRouter>;
-
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: ReturnType<typeof createRouter>;
-  }
-}

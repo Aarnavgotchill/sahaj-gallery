@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 const VALID_CATEGORY_IDS = [
   "eyes",
   "shreenathji",
-  "sikshapatri",
+  "shikshapatri",
   "reflection",
   "cherry",
 ] as const;
@@ -16,8 +16,10 @@ const CATEGORY_ALIASES: Record<string, CategoryId> = {
   "the eyes": "eyes",
   shreenathji: "shreenathji",
   "the shreenathji grace": "shreenathji",
-  sikshapatri: "sikshapatri",
-  "the sikshapatri": "sikshapatri",
+  shikshapatri: "shikshapatri",
+  "the shikshapatri": "shikshapatri",
+  sikshapatri: "shikshapatri",
+  "the sikshapatri": "shikshapatri",
   reflection: "reflection",
   "the reflection": "reflection",
   cherry: "cherry",

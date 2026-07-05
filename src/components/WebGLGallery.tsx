@@ -107,7 +107,7 @@ export default function WebGLGallery({ artworks, imgIdx, onNavImg, onSetImgIdx, 
       artworks.map((art) => {
         if (art.image) {
           return new Promise<THREE.Texture>((resolve) => {
-            new THREE.TextureLoader().load(art.image!, (tex) => resolve(tex));
+            new THREE.TextureLoader().load(art.image!, (tex: any) => resolve(tex));
           });
         }
         return svgToTexture(art.svg ?? "");
@@ -117,7 +117,7 @@ export default function WebGLGallery({ artworks, imgIdx, onNavImg, onSetImgIdx, 
     const geometry = new THREE.PlaneGeometry(PLANE_W, PLANE_H);
     const planes: PlaneInfo[] = [];
 
-    textures.forEach((tex, i) => {
+    textures.forEach((tex: any, i: number) => {
       const col = i % SCRIBBLE_W;
       const row = Math.floor(i / SCRIBBLE_W);
       const x = col * SPACING + OFFSET_X;

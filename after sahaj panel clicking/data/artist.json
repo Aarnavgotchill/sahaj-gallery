@@ -1,0 +1,31 @@
+{
+  "name": "SAHAJ GALLERY",
+  "nationality": "Pakistani",
+  "birthYear": "1988",
+  "tagline": "ART IN ARCHITECTURE",
+  "heroImage": "https://tense-emerald-ag8mklnw.edgeone.dev/iris-elephant.webp.png",
+  "artworks": [
+    { "id": "aw-01", "catalogNo": "AV / 001", "title": "Courtyard, Late Afternoon", "year": "2024", "medium": "Oil and thread on stitched canvas", "dimensions": "182 x 142 cm", "image": "https://picsum.photos/seed/artwork01/1200/1500", "width": 1200, "height": 1500 },
+    { "id": "aw-02", "catalogNo": "AV / 002", "title": "Interior with Two Doors", "year": "2023", "medium": "Oil on linen", "dimensions": "120 x 150 cm", "image": "https://picsum.photos/seed/artwork02/1400/1000", "width": 1400, "height": 1000 },
+    { "id": "aw-03", "catalogNo": "AV / 003", "title": "Study for a Threshold", "year": "2023", "medium": "Gouache and pigment on paper", "dimensions": "56 x 76 cm", "image": "https://picsum.photos/seed/artwork03/1000/1300", "width": 1000, "height": 1300 },
+    { "id": "aw-04", "catalogNo": "AV / 004", "title": "Marigold Ledger", "year": "2022", "medium": "Oil and thread on stitched canvas", "dimensions": "200 x 160 cm", "image": "https://picsum.photos/seed/artwork04/1500/1900", "width": 1500, "height": 1900 },
+    { "id": "aw-05", "catalogNo": "AV / 005", "title": "Room Facing East", "year": "2022", "medium": "Oil on linen", "dimensions": "100 x 130 cm", "image": "https://picsum.photos/seed/artwork05/1300/1000", "width": 1300, "height": 1000 },
+    { "id": "aw-06", "catalogNo": "AV / 006", "title": "Second Courtyard", "year": "2021", "medium": "Oil and thread on stitched canvas", "dimensions": "175 x 135 cm", "image": "https://picsum.photos/seed/artwork06/1200/1550", "width": 1200, "height": 1550 },
+    { "id": "aw-07", "catalogNo": "AV / 007", "title": "Notes on a Wall, Amsterdam", "year": "2021", "medium": "Mixed media on paper", "dimensions": "48 x 64 cm", "image": "https://picsum.photos/seed/artwork07/1000/1250", "width": 1000, "height": 1250 },
+    { "id": "aw-08", "catalogNo": "AV / 008", "title": "Vessel with Standing Figure", "year": "2020", "medium": "Oil on linen", "dimensions": "150 x 190 cm", "image": "https://picsum.photos/seed/artwork08/1300/1650", "width": 1300, "height": 1650 },
+    { "id": "aw-09", "catalogNo": "AV / 009", "title": "Two Chairs, No One", "year": "2020", "medium": "Oil and thread on stitched canvas", "dimensions": "140 x 110 cm", "image": "https://picsum.photos/seed/artwork09/1400/1100", "width": 1400, "height": 1100 }
+  ],
+  "exhibitions": [
+    { "id": "ex-01", "year": "2025", "title": "Rooms We Return To", "venue": "Grey Hours Gallery", "location": "Amsterdam, Netherlands", "type": "Solo" },
+    { "id": "ex-02", "year": "2024", "title": "Threaded Ground", "venue": "Latitude 31 Gallery", "location": "Lahore, Pakistan", "type": "Solo" },
+    { "id": "ex-03", "year": "2023", "title": "Domestic Interiors: A Survey", "venue": "Kunsthalle Meer", "location": "Rotterdam, Netherlands", "type": "Group" },
+    { "id": "ex-04", "year": "2022", "title": "South Asian Abstraction Now", "venue": "Fieldwork Projects", "location": "Karachi, Pakistan", "type": "Group" },
+    { "id": "ex-05", "year": "2021", "title": "Sediment", "venue": "Studio 8 Project Space", "location": "Berlin, Germany", "type": "Solo" },
+    { "id": "ex-06", "year": "2019", "title": "New Voices in Textile Painting", "venue": "Neher Contemporary", "location": "Lahore, Pakistan", "type": "Group" }
+  ],
+  "publications": [
+    { "id": "pub-01", "title": "The Quiet Architecture of Amara Vessel", "outlet": "Frame & Field", "date": "March 2025", "excerpt": "Vessel's courtyards are never empty, even when they hold no figures; the stitched ground itself performs the labor of memory.", "href": "#" },
+    { "id": "pub-02", "title": "Stitch as Structure", "outlet": "The Long Gallery Review", "date": "October 2024", "excerpt": "An extended studio visit tracing how Vessel builds a canvas from the reverse side outward, thread before pigment.", "href": "#" },
+    { "id": "pub-03", "title": "Between Lahore and Amsterdam", "outlet": "Panorama Arts Quarterly", "date": "June 2023", "excerpt": "A conversation on the courtyard as recurring form, and what it means to paint a threshold rather than a scene.", "href": "#" }
+  ]
+}

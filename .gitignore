@@ -45,3 +45,5 @@ dist-ssr
 src/assets/**
 !src/assets/*.ts
 !src/assets/*.tsx
+
+.vercel

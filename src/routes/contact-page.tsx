@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { Nav } from "@/components/Nav";
+import { Reveal } from "@/components/Reveal";
 import { ndhLogo4K as ndhLogo } from "@/assets/assets";
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
@@ -57,7 +58,7 @@ function Contact() {
         <Nav />
       </div>
       <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-8 md:px-14 pt-8 pb-[26px]">
-        <div className="flex items-center justify-start">
+        <Reveal className="flex items-center justify-start">
           <div className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
             <p className="text-left">
               Send us a message{" "}
@@ -67,8 +68,8 @@ function Contact() {
             </p>
             <p className="text-left md:text-center">from you.</p>
           </div>
-        </div>
-        <div className="flex items-start pt-4 md:pt-[100px]">
+        </Reveal>
+        <Reveal delay={150} className="flex items-start pt-4 md:pt-[100px]">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-full rounded-sm border border-border bg-card/30 p-6 backdrop-blur-sm md:p-10"
@@ -166,11 +167,11 @@ function Contact() {
               </button>
             </div>
           </form>
-        </div>
+        </Reveal>
       </div>
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
-          <p className="font-display text-xl tracking-[0.3em]">SAHAJ GALLERY</p>
+          <p className="font-display text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
           <img
             src={ndhLogo}
             alt="NDH House"

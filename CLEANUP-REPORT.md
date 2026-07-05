@@ -51,7 +51,7 @@ All shadcn/ui components removed except `dialog.tsx` (used by `CataloguePopup.ts
 | `scripts/upload-r2.mjs` | Only needed when adding new assets to R2 |
 
 ### Unused Asset Exports (15 exports from assets.ts)
-Removed from `src/assets/assets.ts`: `heroImage`, `heroMedium`, `heroThumb`, `artworkSpotlight1Full`, `artworkSpotlight2Full`, `artworkSpotlight3Full`, `eyesArtworks`, `shreenathjiArtworks`, `sikshapatriArtworks`, `reflectionArtworks`, `cherryBlossomArtworks`, all 6 essentials arrays, `sahajFinalPlaceholder`, `galleryBackground`, `gambettaFont`, `microssFont`
+Removed from `src/assets/assets.ts`: `heroImage`, `heroMedium`, `heroThumb`, `artworkSpotlight1Full`, `artworkSpotlight2Full`, `artworkSpotlight3Full`, `eyesArtworks`, `shreenathjiArtworks`, `shikshapatriArtworks`, `reflectionArtworks`, `cherryBlossomArtworks`, all 6 essentials arrays, `sahajFinalPlaceholder`, `galleryBackground`, `gambettaFont`, `microssFont`
 
 ## Files Kept (Production-Ready Only)
 

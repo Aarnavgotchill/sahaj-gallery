@@ -1,12 +1,11 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
-import * as ambient from "@/lib/ambient";
 import {
   ndhLogo4K as ndhLogo,
   sahajTransparentLogo as sahajLogo,
-  studioShikshaptriLogo as studioLogo,
+  studioShikshapatriLogo as studioLogo,
   karigariLogo,
   sahajGalleryPlaceholder as sahajGallery,
   fenilTestimonialVideo as fenilVideo,
@@ -15,27 +14,9 @@ import {
 } from "@/assets/assets";
 
 function Sahaj() {
-  const checkScroll = useCallback(() => {
-    const threshold = document.documentElement.scrollHeight * 0.15;
-    const progress = Math.min(window.scrollY / threshold, 1);
-    ambient.volume(Math.max(0, 0.5 * (1 - progress)));
-
-    if (progress < 1) {
-      ambient.play();
-    } else {
-      ambient.stop();
-    }
-  }, []);
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    ambient.play();
-    window.addEventListener("scroll", checkScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", checkScroll);
-      ambient.stop();
-    };
-  }, [checkScroll]);
+  }, []);
 
   return (
     <main className="relative min-h-screen bg-background text-foreground">
@@ -54,7 +35,7 @@ function Sahaj() {
                   alt="Sahaj Gallery"
                   className="h-24 w-auto object-contain md:h-29"
                 />
-                <span className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground">
+                <span className="text-[11px] tracking-[0.3em] uppercase text-[#C8A86E]">
                   SAHAJ GALLERY
                 </span>
               </div>
@@ -120,7 +101,7 @@ function Sahaj() {
             <Reveal>
               <p className="kicker">The Collaboration</p>
               <h2 className="mt-8 font-display text-[clamp(1rem,1.4vw,1.4rem)] leading-[1.2] text-[color:var(--gold)] md:whitespace-nowrap">
-                STUDIO SHIKSHPATRI <em className="italic">×</em> KARIGARI
+                STUDIO SHIKSHAPATRI <em className="italic">×</em> KARIGARI
                 STUDIO
               </h2>
               <div className="mt-10 space-y-5 text-[14px] leading-loose text-muted-foreground">
@@ -131,12 +112,13 @@ function Sahaj() {
                 </p>
                 <p>
                   <span className="font-semibold text-foreground/90">
-                    Studio Shikashapatrika – Calligraphy Series
+                    Studio Shikshapatri – Calligraphy Series
                   </span>
                   <br />
-                  A collection that celebrates the beauty of script, language,
-                  and expression through contemporary calligraphic artworks,
-                  blending tradition with modern aesthetics.
+                  Creates narrative driven artworks that blend Gujarati and broader Indian traditions and cultural elements. 
+                  This thematic approach was chosen to make the artworks more relatable and accessible, 
+                  enabling viewers to connect with them more deeply through familiar stories, Heritage, 
+                  and cultural references.
                 </p>
                 <p>
                   <span className="font-semibold text-foreground/90">
@@ -158,22 +140,22 @@ function Sahaj() {
             <Reveal delay={200}>
               <div className="flex h-full flex-col items-center justify-center gap-8 md:gap-10 rounded-sm border border-border bg-card/50 p-8 md:p-16">
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 w-full">
-                  <div className="flex flex-col items-center gap-3 w-full max-w-[200px] md:max-w-none">
+                  <div className="flex flex-col items-center gap-1 w-full max-w-[200px] md:max-w-none">
                     <div className="flex items-center justify-center w-full md:h-28">
                       <img
                         src={studioLogo}
-                        alt="Studio Shikshaptri"
+                        alt="Studio Shikshapatri"
                         className="w-full max-h-20 md:max-h-none md:h-24 md:w-auto object-contain"
                       />
                     </div>
                     <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground text-center">
-                      STUDIO SHIKSHPATRI
+                      STUDIO SHIKSHAPATRI
                     </span>
                   </div>
                   <span className="font-display text-4xl text-[color:var(--gold)] self-center flex-shrink-0">
                     ×
                   </span>
-                  <div className="flex flex-col items-center gap-3 w-full max-w-[200px] md:max-w-none">
+                  <div className="flex flex-col items-center gap-1 w-full max-w-[200px] md:max-w-none">
                     <div className="flex items-center justify-center w-full md:h-28">
                       <img
                         src={karigariLogo}
@@ -202,7 +184,7 @@ function Sahaj() {
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
           <Reveal className="w-full">
             <div className="w-full">
-              <VideoPlayer src={fenilVideo} />
+              <VideoPlayer src={fenilVideo} id="fenil" />
             </div>
           </Reveal>
           <Reveal delay={200}>
@@ -284,7 +266,7 @@ function Sahaj() {
           </Reveal>
           <Reveal className="w-full flex justify-center md:justify-end">
             <div className="w-full max-w-[420px] md:max-w-[380px]">
-              <VideoPlayer src={dhrutiVideo} />
+              <VideoPlayer src={dhrutiVideo} id="dhruti" />
             </div>
           </Reveal>
         </div>
@@ -297,7 +279,7 @@ function Sahaj() {
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
           <Reveal className="w-full">
             <div className="w-full">
-              <VideoPlayer src={handsVideo} />
+              <VideoPlayer src={handsVideo} id="hands" />
             </div>
           </Reveal>
           <Reveal delay={200}>
@@ -473,7 +455,7 @@ function Sahaj() {
       {/* FOOTER */}
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
-          <p className="font-display text-xl tracking-[0.3em]">
+          <p className="font-display text-xl tracking-[0.3em] text-[#C8A86E]">
             SAHAJ GALLERY
           </p>
           <img

@@ -1,13 +1,26 @@
 import { useRef, useState, useEffect, useCallback } from "react";
+import { setActiveVideo, getActiveVideo, onActiveVideoChange } from "@/lib/video-manager";
+import { isMediaUnlocked, onMediaUnlocked } from "@/lib/media-unlock";
 
-export function VideoPlayer({ src }: { src: string }) {
+export function VideoPlayer({ src, id }: { src: string; id: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [muted, setMuted] = useState(true);
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    if (isMediaUnlocked()) {
+      setMuted(false);
+      if (videoRef.current) videoRef.current.muted = false;
+    }
+    return onMediaUnlocked(() => {
+      setMuted(false);
+      if (videoRef.current) videoRef.current.muted = false;
+    });
+  }, []);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -26,33 +39,64 @@ export function VideoPlayer({ src }: { src: string }) {
   }, []);
 
   useEffect(() => {
-    const el = videoRef.current;
+    return onActiveVideoChange((activeId) => {
+      if (activeId !== id && activeId !== null) {
+        const vid = videoRef.current;
+        if (vid && !vid.paused) {
+          vid.pause();
+        }
+      }
+    });
+  }, [id]);
+
+  useEffect(() => {
+    const el = containerRef.current;
     if (!el) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
+        const vid = videoRef.current;
+        if (!vid) return;
+
         if (entry.isIntersecting) {
-          el.play().catch(() => {});
-        } else if (!el.paused) {
-          el.pause();
+          setActiveVideo(id);
+          const p = vid.play();
+          if (p) {
+            p.catch(() => {
+              vid.muted = true;
+              setMuted(true);
+              vid.play().catch(() => {});
+            });
+          }
+        } else {
+          if (getActiveVideo() === id && !vid.paused) {
+            vid.pause();
+          }
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
     observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      observer.disconnect();
+      if (getActiveVideo() === id) {
+        setActiveVideo(null);
+      }
+    };
+  }, [id]);
 
   const togglePlay = useCallback(() => {
     const vid = videoRef.current;
     if (!vid) return;
     if (vid.paused) {
+      setActiveVideo(id);
       vid.play();
       setShowControls(false);
     } else {
       vid.pause();
       setShowControls(true);
     }
-  }, []);
+  }, [id]);
 
   const toggleMute = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -64,7 +108,9 @@ export function VideoPlayer({ src }: { src: string }) {
 
   const handleMouseMove = useCallback(() => {
     setShowControls(true);
-    clearTimeout(hideTimer.current);
+    if (hideTimer.current !== undefined) {
+      clearTimeout(hideTimer.current);
+    }
     if (playing) {
       hideTimer.current = setTimeout(() => setShowControls(false), 3000);
     }
@@ -90,14 +136,12 @@ export function VideoPlayer({ src }: { src: string }) {
         ref={videoRef}
         src={src}
         className="w-full h-full object-contain"
-        autoPlay
-        muted
+        muted={muted}
         loop
         playsInline
-        preload="none"
+        preload="auto"
       />
 
-      {/* Center play button overlay when paused */}
       {!playing && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300">
           <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 text-white backdrop-blur-sm transition-transform hover:scale-110">
@@ -108,7 +152,6 @@ export function VideoPlayer({ src }: { src: string }) {
         </div>
       )}
 
-      {/* Mute/unmute button */}
       <button
         onClick={toggleMute}
         className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white/80 hover:text-white transition-colors"
@@ -125,12 +168,10 @@ export function VideoPlayer({ src }: { src: string }) {
         )}
       </button>
 
-      {/* Bottom controls bar */}
       <div
         className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 pb-3 pt-10 transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Progress bar */}
         <div
           className="group/progress mb-2 h-1 cursor-pointer rounded-full bg-white/20 hover:h-1.5 transition-all"
           onClick={seek}
@@ -158,7 +199,6 @@ export function VideoPlayer({ src }: { src: string }) {
               )}
             </button>
           </div>
-
         </div>
       </div>
     </div>
