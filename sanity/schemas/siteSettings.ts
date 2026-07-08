@@ -72,7 +72,7 @@ export default defineType({
       name: "contactEmail",
       title: "Contact Email",
       type: "string",
-      initialValue: "sahaj.ndhgujarat@gmail.com",
+      initialValue: "contact@sahajgallery.com",
     }),
     defineField({
       name: "contactHours",

@@ -53,13 +53,13 @@ export default function ArtNav() {
               >
                 <span className={`font-display text-[20px] tracking-[0.28em] uppercase transition-colors duration-500 ${
                   slug === link.slug
-                    ? "text-[#C8A86C]"
+                    ? "text-[#C8A86E]"
                     : "text-muted-foreground hover:text-foreground"
                 }`}>
                   {link.label}
                 </span>
                 {slug === link.slug && (
-                  <span className="text-[#C8A86C] text-[16px] leading-none -mt-1">_</span>
+                  <span className="text-[#C8A86E] text-[16px] leading-none -mt-1">_</span>
                 )}
               </button>
             ))}

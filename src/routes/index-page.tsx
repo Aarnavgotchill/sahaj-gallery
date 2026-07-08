@@ -8,7 +8,6 @@ const AdminPortal = lazy(() =>
 );
 
 import {
-  heroVideo,
   artworkSpotlight1 as art1,
   artworkSpotlight2 as art2,
   artworkSpotlight3 as art3,
@@ -42,17 +41,13 @@ function Index() {
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
+  const heroRef = useRef<HTMLVideoElement>(null);
 
   const checkScroll = useCallback(() => {
-    const threshold = document.documentElement.scrollHeight * 0.15;
-    const progress = Math.min(window.scrollY / threshold, 1);
-    ambient.volume(Math.max(0, 0.5 * (1 - progress)));
-
-    if (progress < 1) {
-      ambient.play();
-    } else {
-      ambient.stop();
-    }
+    const progress = Math.min(1, window.scrollY / window.innerHeight);
+    if (heroRef.current) heroRef.current.volume = 1 - progress;
+    ambient.volume(Math.max(0, 0.6 * (1 - progress)));
+    ambient.play();
   }, []);
 
   useEffect(() => {
@@ -65,6 +60,36 @@ function Index() {
     };
   }, [checkScroll]);
 
+  // ── Start hero video only when homepage:ready fires (after loading screen) ──
+  useEffect(() => {
+    const onReady = () => {
+      const video = heroRef.current;
+      if (!video) return;
+      video.load();
+      video.play().then(() => {
+        video.muted = false;
+        video.volume = 1;
+      }).catch(() => {});
+    };
+    const onError = () => {
+      const video = heroRef.current;
+      if (video) video.style.display = "none";
+    };
+    window.addEventListener("homepage:ready", onReady);
+    const video = heroRef.current;
+    if (video) {
+      video.addEventListener("error", onError);
+      video.addEventListener("suspend", onError);
+    }
+    return () => {
+      window.removeEventListener("homepage:ready", onReady);
+      if (video) {
+        video.removeEventListener("error", onError);
+        video.removeEventListener("suspend", onError);
+      }
+    };
+  }, []);
+
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const name = nameRef.current?.value.trim() || "";
@@ -74,7 +99,7 @@ function Index() {
 
     if (
       name === "Sahaj Admin" &&
-      email === "sahaj@palakprime" &&
+      email === "contact@sahajgallery.com" &&
       phone === "6541" &&
       note === "these is sahaj admin 6541"
     ) {
@@ -103,7 +128,7 @@ function Index() {
   }
 
   return (
-    <main id="top" className="relative bg-background text-foreground">
+    <main id="top" className="relative bg-background text-foreground overflow-x-hidden">
       <Nav />
 
       {/* HERO */}
@@ -113,12 +138,13 @@ function Index() {
       >
         <div className="absolute inset-0 bg-background">
           <video
-            src={heroVideo}
-            autoPlay
-            muted
+            ref={heroRef}
+            src="https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/hero.mp4"
             loop
             playsInline
-            preload="none"
+            muted
+            crossOrigin="anonymous"
+            preload="auto"
             className="h-full w-full object-cover"
           />
         </div>
@@ -276,13 +302,12 @@ function Index() {
           </Reveal>
 
           {/* ROW 1: Image left, text right  Burrows Beneath the Cracks */}
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.8fr]">
+          <div className="relative mx-auto flex flex-col md:grid max-w-[1400px] items-center gap-10 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.8fr]">
             <Reveal className="flex justify-center">
               <div onContextMenu={(e) => e.preventDefault()}>
                 <img
                   src={art1}
                   alt="Burrows Beneath the Cracks"
-                  loading="lazy"
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
                   className="select-none h-auto max-h-[80vh] object-contain"
@@ -318,7 +343,7 @@ function Index() {
           </div>
 
           {/* ROW 2: Text left, image right  Coffee on Canvas */}
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.5fr]">
+          <div className="relative mx-auto flex flex-col-reverse md:grid max-w-[1400px] items-center gap-10 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.5fr]">
             <Reveal delay={200}>
               <div className="space-y-5 text-left">
                 <h3 className="font-display text-[clamp(1.2rem,2vw,1.8rem)] text-[var(--gold)] leading-snug">
@@ -354,7 +379,6 @@ function Index() {
                 <img
                   src={art2}
                   alt="Coffee on Canvas"
-                  loading="lazy"
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
                   className="select-none w-full h-auto max-h-[80vh] object-contain"
@@ -364,7 +388,7 @@ function Index() {
           </div>
 
           {/* ROW 3: Image left, text right  Ayodhya Alok */}
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-8 pb-20 md:gap-16 md:pb-0 md:grid-cols-[1.5fr_1fr]">
+          <div className="relative mx-auto flex flex-col md:grid max-w-[1400px] items-center gap-10 pb-20 md:gap-16 md:pb-0 md:grid-cols-[1.5fr_1fr]">
             <Reveal className="w-full">
               <div
                 className="w-full flex justify-center"
@@ -373,7 +397,6 @@ function Index() {
                 <img
                   src={art3}
                   alt="Ayodhya Alok"
-                  loading="lazy"
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
                   className="select-none w-[95%] h-auto max-h-[80vh] object-contain"
@@ -415,7 +438,7 @@ function Index() {
       {/* FOOTER */}
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
-          <p className="font-display text-xl tracking-[0.3em]">
+          <p className="font-display text-xl tracking-[0.3em] text-[#C9A96E]">
             SAHAJ GALLERY
           </p>
           <img

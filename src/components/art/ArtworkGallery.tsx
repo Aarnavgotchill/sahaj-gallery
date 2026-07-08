@@ -15,9 +15,13 @@ function decodeImage(src: string): Promise<void> {
 export default function ArtworkGallery({
   artworks,
   artistName,
+  lightboxDimensions,
+  lightboxAspectRatio,
 }: {
   artworks: Artwork[];
   artistName: string;
+  lightboxDimensions?: { width: number; height: number };
+  lightboxAspectRatio?: string;
 }) {
   const { activeIndex, open, close, next, prev, isOpen } =
     useArtLightbox(artworks.length);
@@ -103,6 +107,8 @@ export default function ArtworkGallery({
             onNext={next}
             onPrev={prev}
             artistName={artistName}
+            containerDimensions={lightboxDimensions}
+            containerAspectRatio={lightboxAspectRatio}
           />
         )}
       </AnimatePresence>

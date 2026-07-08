@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as SahajRouteImport } from './routes/sahaj'
+import { Route as OurTeamRouteImport } from './routes/our-team'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArtViewerRouteImport } from './routes/art-viewer'
+import { Route as EssentialsViewerRouteImport } from './routes/essentials-viewer'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -30,6 +32,11 @@ const SahajRoute = SahajRouteImport.update({
   path: '/sahaj',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OurTeamRoute = OurTeamRouteImport.update({
+  id: '/our-team',
+  path: '/our-team',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -40,20 +47,29 @@ const ArtViewerRoute = ArtViewerRouteImport.update({
   path: '/art-viewer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EssentialsViewerRoute = EssentialsViewerRouteImport.update({
+  id: '/essentials-viewer',
+  path: '/essentials-viewer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/sahaj': typeof SahajRoute
   '/work': typeof WorkRoute
+  '/our-team': typeof OurTeamRoute
   '/art-viewer': typeof ArtViewerRoute
+  '/essentials-viewer': typeof EssentialsViewerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/sahaj': typeof SahajRoute
   '/work': typeof WorkRoute
+  '/our-team': typeof OurTeamRoute
   '/art-viewer': typeof ArtViewerRoute
+  '/essentials-viewer': typeof EssentialsViewerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,14 +77,16 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/sahaj': typeof SahajRoute
   '/work': typeof WorkRoute
+  '/our-team': typeof OurTeamRoute
   '/art-viewer': typeof ArtViewerRoute
+  '/essentials-viewer': typeof EssentialsViewerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contact' | '/sahaj' | '/work' | '/art-viewer'
+  fullPaths: '/' | '/contact' | '/sahaj' | '/work' | '/our-team' | '/art-viewer' | '/essentials-viewer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/sahaj' | '/work' | '/art-viewer'
-  id: '__root__' | '/' | '/contact' | '/sahaj' | '/work' | '/art-viewer'
+  to: '/' | '/contact' | '/sahaj' | '/work' | '/our-team' | '/art-viewer' | '/essentials-viewer'
+  id: '__root__' | '/' | '/contact' | '/sahaj' | '/work' | '/our-team' | '/art-viewer' | '/essentials-viewer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,7 +94,9 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   SahajRoute: typeof SahajRoute
   WorkRoute: typeof WorkRoute
+  OurTeamRoute: typeof OurTeamRoute
   ArtViewerRoute: typeof ArtViewerRoute
+  EssentialsViewerRoute: typeof EssentialsViewerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -102,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SahajRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/our-team': {
+      id: '/our-team'
+      path: '/our-team'
+      fullPath: '/our-team'
+      preLoaderRoute: typeof OurTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -116,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtViewerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/essentials-viewer': {
+      id: '/essentials-viewer'
+      path: '/essentials-viewer'
+      fullPath: '/essentials-viewer'
+      preLoaderRoute: typeof EssentialsViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -124,7 +158,9 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   SahajRoute: SahajRoute,
   WorkRoute: WorkRoute,
+  OurTeamRoute: OurTeamRoute,
   ArtViewerRoute: ArtViewerRoute,
+  EssentialsViewerRoute: EssentialsViewerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

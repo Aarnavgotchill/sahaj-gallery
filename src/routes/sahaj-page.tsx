@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import GalleryLoadingBar from "@/components/GalleryLoadingBar";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
 import {
   ndhLogo4K as ndhLogo,
   sahajTransparentLogo as sahajLogo,
@@ -14,13 +16,54 @@ import {
 } from "@/assets/assets";
 
 function Sahaj() {
+  const [contentReady, setContentReady] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+
+  const imageUrls = [
+    sahajLogo,
+    ndhLogo,
+    studioLogo,
+    karigariLogo,
+    sahajGallery,
+  ];
+
+  const { progress, isLoaded } = useImagePreloader(imageUrls);
+
+  useEffect(() => {
+    if (isLoaded) {
+      setContentReady(true);
+      const t = setTimeout(() => setShowLoader(false), 100);
+      return () => clearTimeout(t);
+    }
+  }, [isLoaded]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-background text-foreground">
-      <Nav />
+    <>
+      <GalleryLoadingBar progress={progress} visible={showLoader} />
+
+      {showLoader && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9998,
+            backgroundColor: "#413152",
+            opacity: contentReady ? 0 : 1,
+            transition: "opacity 0.6s ease",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      <main
+        className="relative min-h-screen bg-background text-foreground overflow-x-hidden"
+        style={{ opacity: contentReady ? 1 : 0, transition: "opacity 0.6s ease" }}
+      >
+        <Nav />
 
       {/* HERO  Partnership Branding */}
       <section className="relative flex min-h-[90svh] items-center justify-center overflow-hidden px-8 pt-32 pb-20 md:px-14">
@@ -49,9 +92,9 @@ function Sahaj() {
                   className="h-24 w-auto object-contain md:h-29"
                 />
                 <div className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground leading-relaxed">
-                  <span>NDH HOUSE</span>
+                  <span className="text-[color:var(--gold)]">NDH HOUSE</span>
                   <br />
-                  <span className="text-[10px] tracking-[0.25em]">
+                  <span className="text-[10px] tracking-[0.25em] text-[color:var(--gold)]">
                     Private Limited
                   </span>
                 </div>
@@ -97,7 +140,7 @@ function Sahaj() {
       {/* PARTNERSHIP STORY */}
       <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="relative mx-auto max-w-[1100px]">
-          <div className="grid gap-16 md:grid-cols-2 md:gap-24">
+          <div className="flex flex-col gap-12 md:grid md:grid-cols-2 md:gap-16 lg:gap-24">
             <Reveal>
               <p className="kicker">The Collaboration</p>
               <h2 className="mt-8 font-display text-[clamp(1rem,1.4vw,1.4rem)] leading-[1.2] text-[color:var(--gold)] md:whitespace-nowrap">
@@ -115,9 +158,9 @@ function Sahaj() {
                     Studio Shikshapatri – Calligraphy Series
                   </span>
                   <br />
-                  Creates narrative driven artworks that blend Gujarati and broader Indian traditions and cultural elements. 
-                  This thematic approach was chosen to make the artworks more relatable and accessible, 
-                  enabling viewers to connect with them more deeply through familiar stories, Heritage, 
+                  Creates narrative driven artworks that blend Gujarati and broader Indian traditions and cultural elements.
+                  This thematic approach was chosen to make the artworks more relatable and accessible,
+                  enabling viewers to connect with them more deeply through familiar stories, Heritage,
                   and cultural references.
                 </p>
                 <p>
@@ -181,7 +224,7 @@ function Sahaj() {
       <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
-        <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
+        <div className="relative mx-auto flex flex-col md:grid max-w-[1400px] items-center gap-10 md:gap-16 md:grid-cols-[1.5fr_1fr]">
           <Reveal className="w-full">
             <div className="w-full">
               <VideoPlayer src={fenilVideo} id="fenil" />
@@ -224,7 +267,7 @@ function Sahaj() {
       <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
-        <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1fr_1fr]">
+        <div className="relative mx-auto flex flex-col-reverse md:grid max-w-[1400px] items-center gap-10 md:gap-16 md:grid-cols-[1fr_1fr]">
           <Reveal delay={200}>
             <div className="space-y-6 text-left">
               <p className="font-sans text-[15px] leading-loose text-muted-foreground italic">
@@ -232,7 +275,7 @@ function Sahaj() {
                 confession."
               </p>
               <p className="font-sans text-[17px] leading-loose text-foreground/90">
-                <strong>
+                <span className="font-bold">
                   Dhruti Panchal (
                   <a
                     href="https://www.instagram.com/dhruti_artfromheart/"
@@ -242,12 +285,13 @@ function Sahaj() {
                   >
                     @dhruti_artfromheart
                   </a>
-                  ) is one such voice in Ahmedabad's art landscape. Her
-                  appreciation of SAHAJ is meaningful not simply because it is
-                  praise, but because it is recognition one artist recognizing
-                  the sincerity, effort, and intention behind the work of
-                  fellow makers.
-                </strong>
+                  )
+                </span>
+                , is one such voice in Ahmedabad's art landscape. Her
+                appreciation of SAHAJ is meaningful not simply because it is
+                praise, but because it is recognition one artist recognizing
+                the sincerity, effort, and intention behind the work of
+                fellow makers.
               </p>
               <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                 For us, SAHAJ has always been more than a gallery. It is an
@@ -276,7 +320,7 @@ function Sahaj() {
       <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-56">
         <div className="bloom" />
         <div className="absolute inset-0 glow-warm opacity-30" />
-        <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 md:grid-cols-[1.5fr_1fr]">
+        <div className="relative mx-auto flex flex-col md:grid max-w-[1400px] items-center gap-10 md:gap-16 md:grid-cols-[1.5fr_1fr]">
           <Reveal className="w-full">
             <div className="w-full">
               <VideoPlayer src={handsVideo} id="hands" />
@@ -303,10 +347,17 @@ function Sahaj() {
                 become creations that enrich spaces, evoke emotions, and
                 inspire lasting connections.
               </p>
-              <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                Nehal Rathod · Chintu Bhalani · Hetakshi Chauhan · Hansni
-                Sharma · Arya Jadav · Pooja Bhavsar
-              </p>
+              <div className="text-center">
+                <a
+                  href="/our-team"
+                  className="inline-flex items-center gap-3 border border-[color:var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[color:var(--gold)] transition-all duration-500 hover:bg-[color:var(--gold)] hover:text-background"
+                >
+                  About us
+                  <span className="transition-transform duration-500 group-hover:translate-x-1">
+                    →
+                  </span>
+                </a>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -357,12 +408,12 @@ function Sahaj() {
       </section>
 
       {/* THE SPACE */}
-      <section className="section-ambient relative border-t border-border/40 px-8 pt-40 pb-24 md:px-14 md:pt-56 md:pb-12">
+      <section className="section-ambient relative border-t border-border/40 px-8 pt-20 pb-24 md:px-14 md:pt-28 md:pb-12">
         <div className="absolute inset-0 glow-warm opacity-25" />
         <div className="relative mx-auto max-w-[1100px]">
-          <div className="grid gap-16 md:grid-cols-2 md:gap-24">
-            <Reveal className="flex items-center md:pt-8">
-              <div className="space-y-8 text-[14px] leading-loose text-foreground/80">
+          <div className="flex flex-col gap-12 md:grid md:grid-cols-2 md:gap-16 lg:gap-24 md:items-start">
+            <Reveal className="flex items-center justify-center">
+              <div className="space-y-8 text-[14px] leading-loose text-foreground/80 text-center md:text-left">
                 <div>
                   <p className="kicker mb-3">Address</p>
                   <p>
@@ -413,10 +464,10 @@ function Sahaj() {
                     </a>
                     <br />
                     <a
-                      href="mailto:sahaj.ndhgujarat@gmail.com"
+                      href="mailto:contact@sahajgallery.com"
                       className="hover:text-[color:var(--gold)] transition-colors"
                     >
-                      sahaj.ndhgujarat@gmail.com
+                      contact@sahajgallery.com
                     </a>
                   </p>
                   <a
@@ -439,12 +490,12 @@ function Sahaj() {
                 </div>
               </div>
             </Reveal>
-            <Reveal delay={200}>
-              <div className="flex h-full flex-col rounded-sm border border-border bg-card/50 p-6 md:p-10">
+            <Reveal delay={200} className="w-full mx-auto max-w-[378px] md:max-w-[432px]">
+              <div className="flex flex-col items-center justify-center rounded-sm border border-border/50 bg-card/30 p-3 md:p-5 shadow-md w-full h-auto">
                 <img
                   src={sahajGallery}
                   alt="Sahaj Gallery interior"
-                  className="w-full h-full object-cover rounded-sm"
+                  className="w-full h-auto object-contain rounded-sm"
                 />
               </div>
             </Reveal>
@@ -466,6 +517,7 @@ function Sahaj() {
         </div>
       </footer>
     </main>
+    </>
   );
 }
 

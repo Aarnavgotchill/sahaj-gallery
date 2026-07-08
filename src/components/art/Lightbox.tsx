@@ -12,6 +12,8 @@ interface Props {
   onNext: () => void;
   onPrev: () => void;
   artistName: string;
+  containerDimensions?: { width: number; height: number };
+  containerAspectRatio?: string;
 }
 
 function decodeImage(src: string): Promise<void> {
@@ -27,6 +29,8 @@ export default function Lightbox({
   onNext,
   onPrev,
   artistName,
+  containerDimensions,
+  containerAspectRatio,
 }: Props) {
   /**
    * displayedSrc: the image URL that is currently VISIBLE.
@@ -142,7 +146,7 @@ export default function Lightbox({
             initial="hidden"
             animate="show"
             exit="exit"
-            className="flex flex-col justify-center px-8 pt-24 md:w-[380px] md:px-12 md:pt-0 lg:w-[440px] lg:px-16"
+            className="flex flex-col justify-center px-8 pt-12 md:w-[380px] md:px-12 md:pt-0 lg:w-[440px] lg:px-16"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="space-y-8">
@@ -172,11 +176,15 @@ export default function Lightbox({
 
           <div
             onClick={(e) => e.stopPropagation()}
-            className="flex h-[90vh] w-full items-center justify-center"
+            className="flex h-full w-full items-center justify-center"
           >
             <div
-              className="relative max-h-full max-w-full"
-              style={{ width: "600px", aspectRatio: "600 / 700" }}
+              className="relative max-h-full max-w-full w-full"
+              style={{
+                aspectRatio: containerAspectRatio ?? (containerDimensions
+                  ? `${containerDimensions.width} / ${containerDimensions.height}`
+                  : "600 / 700"),
+              }}
             >
               {/*
                * CSS opacity crossfade — deliberately NOT using AnimatePresence
@@ -196,7 +204,7 @@ export default function Lightbox({
                 loading="eager"
                 decoding="async"
                 draggable={false}
-                className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
+                className="absolute inset-0 h-full w-full object-contain select-none pointer-events-none"
                 style={{
                   opacity: visible ? 1 : 0,
                   // y: 12px → 0 on open, 0 → 12px on fade-out — the artwork

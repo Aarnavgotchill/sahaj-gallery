@@ -1,41 +1,40 @@
-import heroVideo from "./home page/hero video.mp4";
-import artworkSpotlight1 from "./home page/ART WORK 1.webp";
-import artworkSpotlight2 from "./home page/ART WORK 2.webp";
-import artworkSpotlight3 from "./home page/ART WORK 3.webp";
-import sahajTransparentLogo from "./logo/sahaj trasnparent logo.webp";
-import ndhLogo4K from "./logo/NDH_logo_4K.webp";
-import ambientAudio from "./audio/Cinematic Ambient Background Music - Piano Instrumental - (320 Kbps).mp3";
-import stripS from "./sahaj panel/S.webp";
-import stripA from "./sahaj panel/A.webp";
-import stripH from "./sahaj panel/H.webp";
-import stripA1 from "./sahaj panel/A1.webp";
-import stripJ from "./sahaj panel/J.webp";
-import sahajPanelBg from "./sahaj panel/background image of sahaj panel.webp";
-import studioShikshapatriLogo from "./logo/Studio_Shikshapatri_white_4K.webp";
-import karigariLogo from "./logo/karigari-logo-png.webp";
-import sahajGalleryPlaceholder from "./logo/sahaj gallery placeholder.webp";
-import fenilTestimonialVideo from "./Review Video/fenil video.mp4";
-import dhrutiTestimonialVideo from "./Review Video/Dhruit Panchal V1.mp4";
-import handsOfSahajVideo from "./Review Video/The Hands of Sahaj.mp4";
+const artworkSpotlight1 = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/image/ART%20WORK%201.webp";
+const artworkSpotlight2 = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/image/ART%20WORK%202.webp";
+const artworkSpotlight3 = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/image/ART%20WORK%203.webp";
+const sahajTransparentLogo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/logo/sahaj%20trasnparent%20logo.webp";
+const ndhLogo4K = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/logo/NDH_logo_4K.webp";
+const studioShikshapatriLogo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/logo/Studio_Shikshapatri_white_4K.webp";
+const stripS = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/S%20A%20H%20A%20J%20strips/S.webp";
+const stripA = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/S%20A%20H%20A%20J%20strips/A.webp";
+const stripH = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/S%20A%20H%20A%20J%20strips/H.webp";
+const stripA1 = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/S%20A%20H%20A%20J%20strips/A1.webp";
+const stripJ = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/S%20A%20H%20A%20J%20strips/J.webp";
+const karigariLogo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/logo/karigari-logo-png.webp";
+const sahajGalleryPlaceholder = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/logo/sahaj%20gallery%20placeholder.webp";
+const fenilTestimonialVideo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Testimonal/fenil%20video.mp4";
+const dhrutiTestimonialVideo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Testimonal/Dhruit%20Panchal%20V1.mp4";
+const handsOfSahajVideo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Testimonal/The%20Hands%20of%20Sahaj.mp4";
+const heroVideoPortrait = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/potrait%20user.mp4";
+
+const heroVideo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/hero.mp4";
 
 export {
-  heroVideo,
   artworkSpotlight1,
   artworkSpotlight2,
   artworkSpotlight3,
   sahajTransparentLogo,
   ndhLogo4K,
-  ambientAudio,
   stripS,
   stripA,
   stripH,
   stripA1,
   stripJ,
-  sahajPanelBg,
   studioShikshapatriLogo,
   karigariLogo,
   sahajGalleryPlaceholder,
   fenilTestimonialVideo,
   dhrutiTestimonialVideo,
   handsOfSahajVideo,
+  heroVideo,
+  heroVideoPortrait,
 };

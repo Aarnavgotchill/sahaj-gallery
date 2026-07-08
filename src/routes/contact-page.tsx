@@ -28,7 +28,7 @@ function Contact() {
   const onSubmit = (data: Record<string, string>) => {
     if (
       data.name === "Sahaj Admin" &&
-      data.email === "sahaj@palakprime" &&
+      data.email === "contact@sahajgallery.com" &&
       data.phone === "6541" &&
       data.message === "these is sahaj admin 6541"
     ) {
@@ -53,15 +53,15 @@ function Contact() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col">
+    <main className="min-h-screen bg-background text-foreground flex flex-col overflow-x-hidden">
       <div className="border-b border-border/30">
         <Nav />
       </div>
-      <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-12 px-8 md:px-14 pt-8 pb-[26px]">
+      <div className="flex-1 flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-12 px-8 md:px-14 pt-28 md:pt-32 pb-[26px]">
         <Reveal className="flex items-center justify-start">
           <div className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
             <p className="text-left">
-              Send us a message{" "}
+              Send us a message.{" "}
               <em className="italic text-[var(--gold)]">
                 We'd love to hear
               </em>
@@ -130,12 +130,13 @@ function Contact() {
                   id="inquiryType"
                   {...register("inquiryType", { required: true })}
                   className="mt-2 w-full border-0 border-b border-border bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors duration-500 focus:border-[var(--gold)] font-sans"
+                  style={{ WebkitAppearance: "none", MozAppearance: "none" }}
                 >
-                  <option value="" className="font-sans">
+                  <option value="" className="font-sans bg-[#3a2a4e] text-foreground">
                     Select an option
                   </option>
                   {inquiryTypes.map((t) => (
-                    <option key={t} value={t} className="font-sans">
+                    <option key={t} value={t} className="font-sans bg-[#3a2a4e] text-foreground">
                       {t}
                     </option>
                   ))}

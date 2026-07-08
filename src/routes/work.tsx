@@ -38,16 +38,16 @@ function resolveCategoryId(raw?: string): CategoryId | undefined {
 }
 
 const ESSENTIALS_KEYS = [
-  "ess_6e",
-  "ess_7s",
-  "ess_8s",
-  "ess_9e",
-  "ess_10n",
-  "ess_11t",
-  "ess_12i",
-  "ess_13a",
-  "ess_14l",
-  "ess_15s",
+  "ess_1e",
+  "ess_2s",
+  "ess_3s",
+  "ess_4e",
+  "ess_5n",
+  "ess_6t",
+  "ess_7i",
+  "ess_8a",
+  "ess_9l",
+  "ess_10s",
 ] as const;
 type EssentialsKey = (typeof ESSENTIALS_KEYS)[number];
 

@@ -1,6 +1,11 @@
-import { lazy, useState, useCallback } from "react";
+import { lazy, useState, useCallback, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import {
+  artworkSpotlight1,
+  artworkSpotlight2,
+  artworkSpotlight3,
+} from "@/assets/assets";
 
 const Page = lazy(() => import("./index-page"));
 
@@ -11,9 +16,28 @@ function LoadingGate() {
   const [pageVisible, setPageVisible] = useState(_loadingShown);
   const [isFirstVisit] = useState(!_loadingShown);
 
+  // ── Preload homepage assets in background during loading screen ──
+  useEffect(() => {
+    if (!_loadingShown) {
+      [artworkSpotlight1, artworkSpotlight2, artworkSpotlight3].forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }
+  }, []);
+
+  // ── On subsequent visits (no loading screen), signal video to start immediately ──
+  useEffect(() => {
+    if (_loadingShown) {
+      window.dispatchEvent(new CustomEvent("homepage:ready"));
+    }
+  }, []);
+
   const handleTransitionStart = useCallback(() => {
     _loadingShown = true;
     setPageVisible(true);
+    // Signal to index-page that hero video should start playing
+    window.dispatchEvent(new CustomEvent("homepage:ready"));
   }, []);
 
   const handleLoaderComplete = useCallback(() => {
@@ -34,7 +58,7 @@ function LoadingGate() {
         data-revealed={pageVisible ? "true" : "false"}
         style={{
           opacity: pageVisible ? 1 : 0,
-          transition: 'opacity 0.8s ease-out',
+          transition: "opacity 0.7s ease-out",
         }}
       >
         <Page />

@@ -6,7 +6,8 @@ import { useImagePreloader } from "@/hooks/useImagePreloader";
 
 import { r2 } from "@/config/R2_URL";
 
-const INTRO_VIDEO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/Video%20Project%2019.mp4";
+const INTRO_VIDEO_LANDSCAPE = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/Video%20Project%2019.mp4";
+const INTRO_VIDEO_PORTRAIT = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/potrait%20user.mp4";
 const BG_AUDIO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/ReelAudio-80306.mp3";
 
 declare global {
@@ -45,7 +46,6 @@ import {
   stripH,
   stripA1,
   stripJ,
-  sahajPanelBg,
 } from "@/assets/assets";
 
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
@@ -256,32 +256,29 @@ const INTRO_TEXTS: Record<string, string> = {
 /* ─── ESSENTIALS DATA ─── */
 
 const ESSENTIALS_KEYS = [
-  "ess_6e",
-  "ess_7s",
-  "ess_8s",
-  "ess_9e",
-  "ess_10n",
-  "ess_11t",
-  "ess_12i",
-  "ess_13a",
-  "ess_14l",
-  "ess_15s",
+  "ess_1e",
+  "ess_2s",
+  "ess_3s",
+  "ess_4e",
+  "ess_5n",
+  "ess_6t",
+  "ess_7i",
+  "ess_8a",
+  "ess_9l",
+  "ess_10s",
 ] as const;
 type EssentialsKey = (typeof ESSENTIALS_KEYS)[number];
 
 const ESSENTIALS_GLOW = "#c9a96e";
 
-const _6E_IMGS = [
-  r2.essentials("6E/Handle 1.webp"),
-  r2.essentials("6E/Handle 2.webp"),
-  r2.essentials("6E/Handle 3.webp"),
-  r2.essentials("6E/Handle 4.webp"),
-  r2.essentials("6E/1E.webp"),
-  r2.essentials("6E/2E.webp"),
-  r2.essentials("6E/3E.webp"),
-  r2.essentials("6E/4E.webp"),
+const ESS_BASE = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/E%20S%20S%20E%20N%20T%20I%20A%20L%20S/essentials";
+
+const _1E_IMGS = [
+  `${ESS_BASE}/1E/11E.webp`,
+  `${ESS_BASE}/1E/22E.webp`,
+  `${ESS_BASE}/1E/33E.webp`,
 ];
-const ESS_6E_ART: EyeArtwork[] = _6E_IMGS.map((img, i) => ({
+const ESS_1E_ART: EyeArtwork[] = _1E_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
   sub: `E 0 1  ${String(i + 1).padStart(2, "0")}`,
   desc: "artwork",
@@ -290,13 +287,11 @@ const ESS_6E_ART: EyeArtwork[] = _6E_IMGS.map((img, i) => ({
   image: img,
 }));
 
-const _7S_IMGS = [
-  r2.essentials("7S/1SS.webp"),
-  r2.essentials("7S/2SS.webp"),
-  r2.essentials("7S/11SS.webp"),
-  r2.essentials("7S/22SS.webp"),
+const _2S_IMGS = [
+  `${ESS_BASE}/2S/11SS.webp`,
+  `${ESS_BASE}/2S/22SS.webp`,
 ];
-const ESS_7S_ART: EyeArtwork[] = _7S_IMGS.map((img, i) => ({
+const ESS_2S_ART: EyeArtwork[] = _2S_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
   sub: `S 0 2  ${String(i + 1).padStart(2, "0")}`,
   desc: "artwork",
@@ -305,15 +300,14 @@ const ESS_7S_ART: EyeArtwork[] = _7S_IMGS.map((img, i) => ({
   image: img,
 }));
 
-const _8S_IMGS = [
-  r2.essentials("8S/1SSS.webp"),
-  r2.essentials("8S/2SSS.webp"),
-  r2.essentials("8S/3SSS.webp"),
-  r2.essentials("8S/11SSS.webp"),
-  r2.essentials("8S/22SSS.webp"),
-  r2.essentials("8S/33SSS.webp"),
+const _3S_IMGS = [
+  `${ESS_BASE}/3S/11SSS.webp`,
+  `${ESS_BASE}/3S/22SSS.webp`,
+  `${ESS_BASE}/3S/33SSS.webp`,
+  `${ESS_BASE}/3S/44SSS.webp`,
+  `${ESS_BASE}/3S/55SSS.webp`,
 ];
-const ESS_8S_ART: EyeArtwork[] = _8S_IMGS.map((img, i) => ({
+const ESS_3S_ART: EyeArtwork[] = _3S_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
   sub: `S 0 3  ${String(i + 1).padStart(2, "0")}`,
   desc: "artwork",
@@ -322,47 +316,40 @@ const ESS_8S_ART: EyeArtwork[] = _8S_IMGS.map((img, i) => ({
   image: img,
 }));
 
-const _9E_IMGS = [
-  r2.essentials("9E/1EE.webp"),
-  r2.essentials("9E/2EE.webp"),
-  r2.essentials("9E/3EE.webp"),
-  r2.essentials("9E/4EE.webp"),
+const _4E_IMGS = [
+  `${ESS_BASE}/4E/1.webp`,
+  `${ESS_BASE}/4E/2.webp`,
+  `${ESS_BASE}/4E/3.webp`,
+  `${ESS_BASE}/4E/4.webp`,
 ];
-const ESS_9E_ART: EyeArtwork[] = [
-  ..._9E_IMGS.map((img, i) => ({
-    title: `EE ${i + 1}`,
-    sub: `E 0 4  ${String(i + 1).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: ESSENTIALS_GLOW,
-    image: img,
-  })),
-  ...mkPlaceholders(1, "EE", "E 0 4", ESSENTIALS_GLOW, 5),
-];
+const ESS_4E_ART: EyeArtwork[] = _4E_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `E 0 4  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
-const _10N_IMGS = [
-  r2.essentials("10N/1N.webp"),
-  r2.essentials("10N/2N.webp"),
+const _5N_IMGS = [
+  `${ESS_BASE}/5N/1N.webp`,
+  `${ESS_BASE}/5N/2N.webp`,
 ];
-const ESS_10N_ART: EyeArtwork[] = [
-  ..._10N_IMGS.map((img, i) => ({
-    title: `N ${i + 1}`,
-    sub: `N 0 5  ${String(i + 1).padStart(2, "0")}`,
-    desc: "artwork",
-    dim: " ",
-    glow: ESSENTIALS_GLOW,
-    image: img,
-  })),
-  ...mkPlaceholders(3, "N", "N 0 5", ESSENTIALS_GLOW, 3),
-];
+const ESS_5N_ART: EyeArtwork[] = _5N_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `N 0 5  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
-const _11T_IMGS = [
-  r2.essentials("11T/1T.webp"),
-  r2.essentials("11T/2T.webp"),
-  r2.essentials("11T/11T.webp"),
-  r2.essentials("11T/22T.webp"),
+const _6T_IMGS = [
+  `${ESS_BASE}/6T/1SSSS.webp`,
+  `${ESS_BASE}/6T/2SSSS.webp`,
+  `${ESS_BASE}/6T/3SSSS.webp`,
 ];
-const ESS_11T_ART: EyeArtwork[] = _11T_IMGS.map((img, i) => ({
+const ESS_6T_ART: EyeArtwork[] = _6T_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
   sub: `T 0 6  ${String(i + 1).padStart(2, "0")}`,
   desc: "artwork",
@@ -370,28 +357,33 @@ const ESS_11T_ART: EyeArtwork[] = _11T_IMGS.map((img, i) => ({
   glow: ESSENTIALS_GLOW,
   image: img,
 }));
-
-const ESS_12I_ART: EyeArtwork[] = mkPlaceholders(
-  5,
-  "I",
-  "I 0 7",
-  ESSENTIALS_GLOW,
-  1,
-);
-const ESS_13A_ART: EyeArtwork[] = mkPlaceholders(
+const _7I_IMGS = [
+  `${ESS_BASE}/7I/11T.webp`,
+  `${ESS_BASE}/7I/22T.webp`,
+];
+const ESS_7I_ART: EyeArtwork[] = _7I_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `I 0 7  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
+const ESS_8A_ART: EyeArtwork[] = mkPlaceholders(
   5,
   "A",
   "A 0 8",
   ESSENTIALS_GLOW,
   1,
 );
-const _14L_IMGS = [
-  r2.essentials("14L/11EE.webp"),
-  r2.essentials("14L/22EE.webp"),
-  r2.essentials("14L/33EE.webp"),
-  r2.essentials("14L/44EE.webp"),
+const _9L_IMGS = [
+  `${ESS_BASE}/8A/11EE.webp`,
+  `${ESS_BASE}/8A/22EE.webp`,
+  `${ESS_BASE}/8A/33EE.webp`,
+  `${ESS_BASE}/8A/44EE.webp`,
+  `${ESS_BASE}/8A/55EE.webp`,
 ];
-const ESS_14L_ART: EyeArtwork[] = _14L_IMGS.map((img, i) => ({
+const ESS_9L_ART: EyeArtwork[] = _9L_IMGS.map((img, i) => ({
   title: `Art ${i + 1}`,
   sub: `L 0 9  ${String(i + 1).padStart(2, "0")}`,
   desc: "artwork",
@@ -399,30 +391,36 @@ const ESS_14L_ART: EyeArtwork[] = _14L_IMGS.map((img, i) => ({
   glow: ESSENTIALS_GLOW,
   image: img,
 }));
-const ESS_15S_ART: EyeArtwork[] = mkPlaceholders(
-  5,
-  "S",
-  "S 1 0",
-  ESSENTIALS_GLOW,
-  1,
-);
+const _10S_IMGS = [
+  `${ESS_BASE}/10S/11SSSS.webp`,
+  `${ESS_BASE}/10S/22SSSS.webp`,
+  `${ESS_BASE}/10S/33SSSS.webp`,
+];
+const ESS_10S_ART: EyeArtwork[] = _10S_IMGS.map((img, i) => ({
+  title: `Art ${i + 1}`,
+  sub: `S 1 0  ${String(i + 1).padStart(2, "0")}`,
+  desc: "artwork",
+  dim: " ",
+  glow: ESSENTIALS_GLOW,
+  image: img,
+}));
 
 const ESSENTIALS_ENTRIES = [
-  { key: "ess_6e", letter: "E", artworks: ESS_6E_ART },
-  { key: "ess_7s", letter: "S", artworks: ESS_7S_ART },
-  { key: "ess_8s", letter: "S", artworks: ESS_8S_ART },
-  { key: "ess_9e", letter: "E", artworks: ESS_9E_ART },
-  { key: "ess_10n", letter: "N", artworks: ESS_10N_ART },
-  { key: "ess_11t", letter: "T", artworks: ESS_11T_ART },
-  { key: "ess_12i", letter: "I", artworks: ESS_12I_ART },
-  { key: "ess_13a", letter: "A", artworks: ESS_13A_ART },
-  { key: "ess_14l", letter: "L", artworks: ESS_14L_ART },
-  { key: "ess_15s", letter: "S", artworks: ESS_15S_ART },
+  { key: "ess_1e", letter: "E", artworks: ESS_1E_ART },
+  { key: "ess_2s", letter: "S", artworks: ESS_2S_ART },
+  { key: "ess_3s", letter: "S", artworks: ESS_3S_ART },
+  { key: "ess_4e", letter: "E", artworks: ESS_4E_ART },
+  { key: "ess_5n", letter: "N", artworks: ESS_5N_ART },
+  { key: "ess_6t", letter: "T", artworks: ESS_6T_ART },
+  { key: "ess_7i", letter: "I", artworks: ESS_7I_ART },
+  { key: "ess_8a", letter: "A", artworks: ESS_8A_ART },
+  { key: "ess_9l", letter: "L", artworks: ESS_9L_ART },
+  { key: "ess_10s", letter: "S", artworks: ESS_10S_ART },
 ] as const;
 
 /* ─── CSS ─── */
 const GALLERY_CSS = `
-.gallery-viewport{height:100vh;display:flex;flex-direction:column;overflow-y:auto}
+.gallery-viewport{height:100vh;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
 #gallery-root {
   --accent: #c9a96e;
   --accent2: #7a6a8e;
@@ -541,6 +539,10 @@ const GALLERY_CSS = `
   width:min(96vw,calc(100vh - 200px));
   max-height:calc(100vh - 200px);
   overflow:hidden;
+  border-radius:2px;
+  box-shadow:0 2px 4px rgba(0,0,0,0.08),0 8px 24px rgba(0,0,0,0.12),0 24px 48px rgba(0,0,0,0.08),0 0 0 1px rgba(201,169,110,0.08);
+  will-change:transform;
+  transition:transform 0.6s cubic-bezier(.22,1,.36,1),box-shadow 0.6s cubic-bezier(.22,1,.36,1),border-color 0.6s cubic-bezier(.22,1,.36,1),filter 0.6s cubic-bezier(.22,1,.36,1);
 }
 #gallery-root .art-img{
   max-width:100%;max-height:calc(100vh - 200px);
@@ -673,7 +675,7 @@ const GALLERY_CSS = `
   #gallery-root .essentials-grid{gap:18px}
 }
 @media screen and (max-width: 768px) and (orientation: portrait){
-  .gallery-viewport{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .gallery-viewport{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   #gallery-root{flex:none}
   #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;padding:100px 0;gap:0}
   #gallery-root #l1{height:auto;padding:0;flex:none}
@@ -720,6 +722,164 @@ const GALLERY_CSS = `
   padding:0 32px;
   animation:intro-fade 2s ease-in-out forwards;
 }
+
+/* ─── Strip Floating Animation ─── */
+@keyframes strip-float{
+  0%,100%{transform:translateY(0) translateX(0)}
+  25%{transform:translateY(-3px) translateX(1px)}
+  50%{transform:translateY(-5px) translateX(-2px)}
+  75%{transform:translateY(-1px) translateX(2px)}
+}
+#gallery-root .strip.float{
+  animation:strip-float var(--strip-float-dur,7s) ease-in-out infinite;
+  animation-delay:var(--strip-float-delay,0s);
+  will-change:transform;
+}
+
+/* ─── 1. Glass Artwork Panel — glass reflection overlay ─── */
+#gallery-root .art-frame::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  border-radius:inherit;
+  background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0.06) 0%,
+    rgba(255,255,255,0.02) 35%,
+    transparent 50%,
+    rgba(255,255,255,0.01) 75%,
+    transparent 100%
+  );
+  mix-blend-mode:overlay;
+}
+#gallery-root .art-frame::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  border-radius:inherit;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+#gallery-root .art-frame.glass-hover::before{
+  background:linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255,255,255,0.06) 45%,
+    rgba(255,255,255,0.02) 50%,
+    transparent 65%
+  );
+  transition:background 0.3s ease;
+}
+
+/* ─── 2. Floating Gallery Effect ─── */
+@keyframes artwork-float{
+  0%,100%{transform:translateY(0) translateX(0)}
+  20%{transform:translateY(-3px) translateX(1.5px)}
+  40%{transform:translateY(-5px) translateX(-1px)}
+  60%{transform:translateY(-2px) translateX(2.5px)}
+  80%{transform:translateY(-4px) translateX(-1.5px)}
+}
+#gallery-root .art-frame.float{
+  animation:artwork-float var(--float-duration,8s) ease-in-out infinite;
+  animation-delay:var(--float-delay,0s);
+  will-change:transform;
+}
+
+/* ─── 3. Soft Spotlight ─── */
+#gallery-root #g-stage::before{
+  content:'';
+  position:fixed;
+  top:50%;left:50%;
+  width:min(100vmin,700px);
+  height:min(100vmin,700px);
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(201,169,110,0.04) 0%,rgba(201,169,110,0.01) 40%,transparent 65%);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* ─── 4. Artwork Hover ─── */
+#gallery-root .art-frame .art-img{
+  max-width:100%;max-height:calc(100vh - 200px);
+  width:auto;height:auto;
+  object-fit:contain;display:block;
+  transition:transform 0.8s cubic-bezier(.22,1,.36,1),filter 0.8s cubic-bezier(.22,1,.36,1);
+  will-change:transform;
+}
+#gallery-root .art-frame:hover .art-img{
+  transform:scale(1.09);
+  filter:saturate(1.08) contrast(1.06) brightness(1.04);
+}
+#gallery-root .art-frame:hover{
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.08),
+    0 16px 32px rgba(0,0,0,0.16),
+    0 40px 64px rgba(0,0,0,0.12),
+    0 0 0 1px rgba(201,169,110,0.2);
+  transform:translateY(-8px);
+}
+
+/* ─── 5. Golden Border Shimmer ─── */
+@keyframes gold-shimmer{
+  0%{left:-10%;opacity:0}
+  10%{opacity:1}
+  40%{left:100%;opacity:1}
+  50%{left:110%;opacity:0}
+  100%{left:110%;opacity:0}
+}
+#gallery-root .art-frame .gold-shimmer{
+  position:absolute;
+  top:0;left:-10%;
+  width:40%;height:100%;
+  background:linear-gradient(90deg,transparent 0%,rgba(201,169,110,0.08) 30%,rgba(201,169,110,0.04) 50%,transparent 100%);
+  pointer-events:none;
+  z-index:4;
+  animation:gold-shimmer var(--shimmer-duration,10s) cubic-bezier(.22,1,.36,1) infinite;
+  animation-delay:var(--shimmer-delay,0s);
+  will-change:transform,opacity;
+}
+
+/* ─── 6. Artwork Entrance Animation ─── */
+@keyframes artwork-entrance{
+  0%{opacity:0;transform:translateY(24px) scale(0.97)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+#gallery-root .artwork-entrance{
+  opacity:0;
+  animation:artwork-entrance 0.7s cubic-bezier(.22,1,.36,1) forwards;
+  animation-delay:var(--entrance-delay,0s);
+}
+
+/* ─── 7. Letter Animation ─── */
+@keyframes letter-entrance{
+  0%{opacity:0;transform:translateY(16px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+#gallery-root .letter-entrance{
+  opacity:0;
+  animation:letter-entrance 0.6s cubic-bezier(.22,1,.36,1) forwards;
+  animation-delay:var(--letter-delay,0s);
+}
+
+/* ─── 8. Active Artwork Focus ─── */
+#gallery-root .art-frame.dim-sibling{
+  filter:brightness(0.92);
+  transition:filter 0.5s cubic-bezier(.22,1,.36,1),transform 0.5s cubic-bezier(.22,1,.36,1);
+  transform:scale(0.98);
+}
+#gallery-root .art-frame.focus-active{
+  filter:brightness(1.06);
+  transition:filter 0.5s cubic-bezier(.22,1,.36,1),transform 0.5s cubic-bezier(.22,1,.36,1),box-shadow 0.5s cubic-bezier(.22,1,.36,1);
+  transform:translateY(-12px);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.1),
+    0 20px 40px rgba(0,0,0,0.18),
+    0 48px 80px rgba(0,0,0,0.14),
+    0 0 0 1px rgba(201,169,110,0.25);
+}
 `;
 
 /* ─── COMPONENT ─── */
@@ -737,6 +897,29 @@ function Work() {
   // Fade state: "in" = video visible, "out" = fading out, false = hidden
   const [introVisible, setIntroVisible] = useState<boolean>(true);
   const [lightboxReady, setLightboxReady] = useState(false);
+  const [bgReady, setBgReady] = useState(false);
+  const [introSrc] = useState(() =>
+    window.matchMedia("(orientation: portrait)").matches ? INTRO_VIDEO_PORTRAIT : INTRO_VIDEO_LANDSCAPE,
+  );
+  const [spotlightPos, setSpotlightPos] = useState({ x: 0, y: 0 });
+  const [spotlightVisible, setSpotlightVisible] = useState(false);
+  const [entranceDone, setEntranceDone] = useState(false);
+  const [focusIdx, setFocusIdx] = useState<number | null>(null);
+  const [entranceArtworks, setEntranceArtworks] = useState(false);
+  const [floatingActive, setFloatingActive] = useState(false);
+
+  // SAHAJ transition overlay refs
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayWordmarkRef = useRef<HTMLDivElement>(null);
+  const essentialsOverlayRef = useRef<HTMLDivElement>(null);
+  const animTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const floatDelaysRef = useRef<number[]>([]);
+  const floatDurationsRef = useRef<number[]>([]);
+  const shimmerDelaysRef = useRef<number[]>([]);
+  const shimmerDurationsRef = useRef<number[]>([]);
+  const stripFloatDelaysRef = useRef<number[]>([]);
+  const stripFloatDurationsRef = useRef<number[]>([]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -769,6 +952,215 @@ function Work() {
   useEffect(() => {
     if (!galleryOpen) setIntroText(null);
   }, [galleryOpen]);
+
+  // ── Toggle: false = old center-wordmark animation ──
+  const SAHAJ_ANIM_FROM_PANEL = true;
+
+  // ── SAHAJ transition: letters rise from panel strips and merge into header ──
+  const startSahajTransition = useCallback((slug: string, _slugIdx: number) => {
+    animTimersRef.current.forEach(clearTimeout);
+    animTimersRef.current = [];
+
+    const overlay = overlayRef.current;
+    const wordmark = overlayWordmarkRef.current;
+    if (!overlay || !wordmark) {
+      navigate({
+        to: "/art-viewer",
+        search: { slug: slug as "s" | "a" | "h" | "a-2" | "j" },
+        replace: true,
+        state: { sahajTransition: true },
+      });
+      return;
+    }
+
+    // ── Target position — ArtNav top padding (md:py-6 = 24px) ──
+    const HEADER_TOP = 24;
+    const LETTER_GAP = 40;
+    const HEADER_FONT = 20;
+
+    // ── Shared: Show overlay & hide UI ──
+    overlay.style.visibility = "visible";
+    overlay.style.opacity = "1";
+
+    const navWrap = document.querySelector<HTMLElement>(".gallery-nav-wrap");
+    if (navWrap) {
+      navWrap.style.transition = "opacity 0.15s ease";
+      navWrap.style.opacity = "0";
+      navWrap.style.pointerEvents = "none";
+    }
+    const footer = document.querySelector<HTMLElement>(".gallery-footer");
+    if (footer) {
+      footer.style.transition = "opacity 0.15s ease";
+      footer.style.opacity = "0";
+      footer.style.pointerEvents = "none";
+    }
+    const stripRow = document.getElementById("l1");
+    if (stripRow) {
+      stripRow.style.transition = "opacity 0.2s ease";
+      stripRow.style.opacity = "0";
+    }
+    document.querySelector(".essentials-section")?.setAttribute(
+      "style", "opacity:0;pointer-events:none;transition:opacity 0.2s ease"
+    );
+    const catBtn = document.querySelector<HTMLElement>(".btn-catalogue");
+    if (catBtn) {
+      catBtn.style.transition = "opacity 0.2s ease";
+      catBtn.style.opacity = "0";
+      catBtn.style.pointerEvents = "none";
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Set SAHAJ_ANIM_FROM_PANEL to false to revert to the old
+    // center-wordmark animation. Toggle at line ~936 in this file.
+    // ═══════════════════════════════════════════════════════════════
+
+    if (SAHAJ_ANIM_FROM_PANEL) {
+      // ── NEW: Letters rise from each panel's strip-letter ──
+
+      const stripLetters = document.querySelectorAll<HTMLElement>(".strip-letter");
+      const letterEls = wordmark.querySelectorAll<HTMLElement>(".sahaj-letter");
+
+      // Position each overlay letter at its panel letter's position & size
+      letterEls.forEach((el, i) => {
+        const panelLetter = stripLetters[i];
+        if (!panelLetter) return;
+        const rect = panelLetter.getBoundingClientRect();
+        const style = getComputedStyle(panelLetter);
+        el.style.transition = "none";
+        el.style.top = `${rect.top}px`;
+        el.style.left = `${rect.left}px`;
+        el.style.fontSize = style.fontSize;
+        el.style.transform = "none";
+        el.style.opacity = "0";
+      });
+
+      // Force layout flush
+      void wordmark.offsetHeight;
+
+      // Fade letters in at their panel positions
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          letterEls.forEach((el) => {
+            el.style.transition = "opacity 0.35s ease";
+            el.style.opacity = "1";
+          });
+        });
+      });
+
+      // Animate letters upward to header, shrinking to final size
+      animTimersRef.current.push(setTimeout(() => {
+        const totalWidth = 4 * LETTER_GAP;
+        const startX = (window.innerWidth - totalWidth) / 2;
+
+        letterEls.forEach((el, i) => {
+          el.style.transition =
+            "top 0.85s cubic-bezier(0.22,1,0.36,1), " +
+            "left 0.85s cubic-bezier(0.22,1,0.36,1), " +
+            "font-size 0.85s cubic-bezier(0.22,1,0.36,1), " +
+            "color 0.85s cubic-bezier(0.22,1,0.36,1), " +
+            "-webkit-text-stroke 0.85s cubic-bezier(0.22,1,0.36,1), " +
+            "opacity 0.25s ease 0.55s";
+          el.style.top = `${HEADER_TOP}px`;
+          el.style.left = `${startX + i * LETTER_GAP}px`;
+          el.style.fontSize = `${HEADER_FONT}px`;
+          el.style.color = "#C8A86E";
+          el.style.WebkitTextStroke = "0px transparent";
+        });
+      }, 450));
+
+      // Fade overlay background away
+      animTimersRef.current.push(setTimeout(() => {
+        overlay.style.transition = "background 0.4s ease";
+        overlay.style.background = "transparent";
+      }, 950));
+
+      // Fade letters out
+      animTimersRef.current.push(setTimeout(() => {
+        letterEls.forEach((el) => {
+          el.style.opacity = "0";
+        });
+      }, 1150));
+
+      // Navigate
+      animTimersRef.current.push(setTimeout(() => {
+        overlay.style.visibility = "hidden";
+        overlay.style.opacity = "0";
+        navigate({
+          to: "/art-viewer",
+          search: { slug: slug as "s" | "a" | "h" | "a-2" | "j" },
+          replace: true,
+          state: { sahajTransition: true },
+        });
+      }, 1300));
+
+    } else {
+      // ── OLD: Wordmark at screen center, flies straight up ──
+
+      // Hide the fixed-position children so they don't interfere
+      wordmark.querySelectorAll<HTMLElement>(".sahaj-letter").forEach((el) => {
+        el.style.display = "none";
+      });
+
+      // Create a temporary centered wordmark inside overlay
+      const temp = document.createElement("div");
+      temp.id = "sahaj-old-wordmark";
+      temp.style.cssText =
+        "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);" +
+        "display:flex;align-items:center;gap:40px;opacity:0;z-index:102;" +
+        "font-family:'Gambetta',Georgia,serif;font-size:28px;font-weight:500;" +
+        "line-height:1;letter-spacing:0.32em;text-transform:uppercase;color:#C8A86E;" +
+        "user-select:none;transition:none;";
+      temp.innerHTML = "S A H A J";
+      overlay.appendChild(temp);
+
+      void temp.offsetHeight;
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          temp.style.transition = "opacity 0.35s ease";
+          temp.style.opacity = "1";
+        });
+      });
+
+      animTimersRef.current.push(setTimeout(() => {
+        temp.style.transition =
+          "top 0.85s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease 0.55s";
+        temp.style.top = `${HEADER_TOP}px`;
+        temp.style.transform = "translateX(-50%)";
+      }, 450));
+
+      animTimersRef.current.push(setTimeout(() => {
+        overlay.style.transition = "background 0.4s ease";
+        overlay.style.background = "transparent";
+      }, 950));
+
+      animTimersRef.current.push(setTimeout(() => {
+        temp.style.opacity = "0";
+      }, 1150));
+
+      animTimersRef.current.push(setTimeout(() => {
+        temp.remove();
+        overlay.style.visibility = "hidden";
+        overlay.style.opacity = "0";
+        navigate({
+          to: "/art-viewer",
+          search: { slug: slug as "s" | "a" | "h" | "a-2" | "j" },
+          replace: true,
+          state: { sahajTransition: true },
+        });
+      }, 1300));
+    }
+  }, [navigate]);
+
+  // ── ESSENTIALS transition: simply fade section and navigate ──
+  const startEssentialsTransition = useCallback(() => {
+    const essSection = document.querySelector<HTMLElement>(".essentials-section");
+    if (essSection) {
+      essSection.style.transition = "opacity 0.2s ease";
+      essSection.style.opacity = "0";
+      essSection.style.pointerEvents = "none";
+    }
+  }, []);
 
   // ── Background audio: create once and reuse for the current page visit ──
   useEffect(() => {
@@ -825,6 +1217,44 @@ function Work() {
         audio.currentTime = 0;
         audio.volume = 0;
       }
+    };
+  }, []);
+
+  // ── Preload background assets before intro becomes visible ──
+  useEffect(() => {
+    let cancelled = false;
+
+    // Preload strip background images
+    [stripS, stripA, stripH, stripA1, stripJ].forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+
+    // Preload art-viewer page chunk so navigation is instant on click
+    import("./art-viewer-page").catch(() => { });
+
+    // Wait for video to be playable before showing intro overlay
+    const video = videoRef.current;
+    if (video) {
+      const onReady = () => {
+        if (!cancelled) setBgReady(true);
+      };
+      if (video.readyState >= 2) {
+        onReady();
+      } else {
+        video.addEventListener("loadeddata", onReady, { once: true });
+        const timer = setTimeout(onReady, 5000);
+        return () => {
+          cancelled = true;
+          clearTimeout(timer);
+        };
+      }
+    } else {
+      setBgReady(true);
+    }
+
+    return () => {
+      cancelled = true;
     };
   }, []);
 
@@ -912,19 +1342,27 @@ function Work() {
 
   const touchXRef = useRef(0);
 
+  const SLUGS = ["s", "a", "h", "a-2", "j"];
+
   const openGallery = useCallback(
     (categoryId: CategoryId) => {
       const slug = CATEGORY_TO_SLUG[categoryId] as "s" | "a" | "h" | "a-2" | "j" | undefined;
-      if (slug) navigate({ to: "/art-viewer", search: { slug }, replace: true });
+      if (!slug) return;
+      const slugIdx = SLUGS.indexOf(slug);
+      startSahajTransition(slug, slugIdx);
     },
-    [navigate],
+    [startSahajTransition],
   );
 
   const openEssentials = useCallback(
     (key: EssentialsKey) => {
-      navigate({ to: "/work", search: { e: key }, replace: true });
+      startEssentialsTransition();
+      const tid = setTimeout(() => {
+        navigate({ to: "/essentials-viewer", search: { e: key }, replace: true });
+      }, 300);
+      animTimersRef.current.push(tid);
     },
-    [navigate],
+    [navigate, startEssentialsTransition],
   );
 
   const navImg = useCallback(
@@ -1021,6 +1459,48 @@ function Work() {
     };
   }, [galleryOpen, navImg]);
 
+  // ── Random float & shimmer delays ──
+  useEffect(() => {
+    if (!galleryOpen) return;
+    const count = artworks.length;
+    floatDelaysRef.current = Array.from({ length: count }, () => Math.random() * 5);
+    floatDurationsRef.current = Array.from({ length: count }, () => 4 + Math.random() * 4);
+    shimmerDelaysRef.current = Array.from({ length: count }, () => Math.random() * 12);
+    shimmerDurationsRef.current = Array.from({ length: count }, () => 8 + Math.random() * 4);
+    const enterTimer = setTimeout(() => {
+      setEntranceArtworks(true);
+      setEntranceDone(true);
+    }, 100);
+    const floatTimer = setTimeout(() => {
+      setFloatingActive(true);
+    }, 1500);
+    return () => { clearTimeout(enterTimer); clearTimeout(floatTimer); setEntranceArtworks(false); setEntranceDone(false); setFloatingActive(false); };
+  }, [galleryOpen, c, e]);
+
+  // ── Strip float delays (initialized once on mount) ──
+  useEffect(() => {
+    const count = CATEGORIES.length;
+    stripFloatDelaysRef.current = Array.from({ length: count }, () => Math.random() * 5);
+    stripFloatDurationsRef.current = Array.from({ length: count }, () => 6 + Math.random() * 3);
+  }, []);
+
+  // ── Mouse spotlight ──
+  const handleMouseMoveSpotlight = useCallback((e: React.MouseEvent) => {
+    setSpotlightPos({ x: e.clientX, y: e.clientY });
+    setSpotlightVisible(true);
+  }, []);
+  const handleMouseLeaveSpotlight = useCallback(() => {
+    setSpotlightVisible(false);
+  }, []);
+
+  // ── Active artwork focus ──
+  const handleArtworkEnter = useCallback((idx: number) => {
+    setFocusIdx(idx);
+  }, []);
+  const handleArtworkLeave = useCallback(() => {
+    setFocusIdx(null);
+  }, []);
+
   return (
     <>
       <style>{GALLERY_CSS}</style>
@@ -1032,18 +1512,18 @@ function Work() {
             position: "fixed",
             inset: 0,
             zIndex: 100,
-            backgroundColor: "#000",
+            backgroundColor: "transparent",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            opacity: introVisible ? 1 : 0,
+            opacity: (introVisible && bgReady) ? 1 : 0,
             transition: "opacity 0.55s ease",
             pointerEvents: introVisible ? "all" : "none",
           }}
         >
           <video
             ref={videoRef}
-            src={INTRO_VIDEO_URL}
+            src={introSrc}
             playsInline
             preload="auto"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -1097,41 +1577,64 @@ function Work() {
         </div>
       )}
 
-      <div className="gallery-viewport" style={{ opacity: showIntro ? 0 : 1, transition: 'opacity 0.55s ease' }}>
+      <div className="gallery-viewport" style={{ opacity: 1 }}>
         <div className="gallery-nav-wrap" data-gallery>
           {!showIntro && <Nav />}
         </div>
-        <div id="gallery-root">
+        <div id="gallery-root" className="film-grain" onMouseMove={handleMouseMoveSpotlight} onMouseLeave={handleMouseLeaveSpotlight}>
+          <div className="gallery-vignette" />
+          {/* Floating particles */}
+          <div className="particle-dot" style={{ width: "2px", height: "2px", background: "rgba(201,169,110,0.12)", left: "15%", bottom: "-10px", animation: "particle-rise 25s linear infinite", animationDelay: "0s" }} />
+          <div className="particle-dot" style={{ width: "1.5px", height: "1.5px", background: "rgba(236,230,220,0.1)", left: "35%", bottom: "-10px", animation: "particle-rise 30s linear infinite", animationDelay: "5s" }} />
+          <div className="particle-dot" style={{ width: "2.5px", height: "2.5px", background: "rgba(201,169,110,0.08)", left: "55%", bottom: "-10px", animation: "particle-rise 28s linear infinite", animationDelay: "10s" }} />
+          <div className="particle-dot" style={{ width: "1px", height: "1px", background: "rgba(255,255,255,0.08)", left: "70%", bottom: "-10px", animation: "particle-rise 35s linear infinite", animationDelay: "3s" }} />
+          <div className="particle-dot" style={{ width: "2px", height: "2px", background: "rgba(201,169,110,0.1)", left: "85%", bottom: "-10px", animation: "particle-rise 22s linear infinite", animationDelay: "7s" }} />
+          <div className="particle-dot" style={{ width: "1.5px", height: "1.5px", background: "rgba(180,160,200,0.08)", left: "25%", bottom: "-10px", animation: "particle-rise 32s linear infinite", animationDelay: "12s" }} />
+          <div
+            className={`mouse-spotlight ${spotlightVisible ? "visible" : ""}`}
+            style={{
+              left: `${spotlightPos.x}px`,
+              top: `${spotlightPos.y}px`,
+            }}
+          />
           <div className="gallery-content">
             <div className="w-full">
               <div id="l1" className={`${galleryOpen ? "out" : ""}`}>
-                <div className="strip-row" style={{ "--bg": `url(${sahajPanelBg})` } as React.CSSProperties}>
-                  {CATEGORIES.map((cat, i) => (
-                    <div key={cat.id} className="sahaj-panel-wrap">
-                      <div className={`panel-wrap ${panelsAnimated ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
-                        <div
-                          className="strip"
-                          data-category={cat.id}
-                          style={{
-                            background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${({
-                              S: stripS,
-                              A: stripA,
-                              H: stripH,
-                              A1: stripA1,
-                              J: stripJ,
-                            } as Record<string, string>)[cat.img]
-                              }) center/cover no-repeat`,
-                          }}
-                          onClick={() => openGallery(cat.id)}
-                        >
-                          <span className="strip-num">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <span className="strip-letter">{cat.letter}</span>
+                <div className="strip-row">
+                  {CATEGORIES.map((cat, i) => {
+                    const stripFloatDel = stripFloatDelaysRef.current[i];
+                    const stripFloatDur = stripFloatDurationsRef.current[i];
+                    return (
+                      <div key={cat.id} className="sahaj-panel-wrap">
+                        <div className={`panel-wrap ${panelsAnimated ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                          <div
+                            className={`strip ${panelsAnimated ? "float" : ""}`}
+                            data-category={cat.id}
+                            style={{
+                              ["--strip-float-dur" as string]: stripFloatDur ? `${stripFloatDur.toFixed(1)}s` : "7s",
+                              ["--strip-float-delay" as string]: stripFloatDel ? `${stripFloatDel.toFixed(1)}s` : "0s",
+                              background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${({
+                                S: stripS,
+                                A: stripA,
+                                H: stripH,
+                                A1: stripA1,
+                                J: stripJ,
+                              } as Record<string, string>)[cat.img]
+                                }) center/cover no-repeat`,
+                            }}
+                            onClick={() => openGallery(cat.id)}
+                          >
+                            <span className="strip-num">
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
+                            <span
+                              className="strip-letter"
+                            >{cat.letter}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -1140,8 +1643,11 @@ function Work() {
                   {ESSENTIALS_ENTRIES.map((entry, i) => (
                     <div
                       key={entry.key}
-                      className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`}
-                      style={{ transitionDelay: `${i * 100}ms` }}
+                      className={`essentials-box-wrap ${essentialsReady ? "in letter-entrance" : ""}`}
+                      style={{
+                        ["--letter-delay" as string]: `${i * 90}ms`,
+                        transitionDelay: `${i * 100}ms`,
+                      } as React.CSSProperties}
                     >
                       <div
                         className="essentials-box"
@@ -1215,12 +1721,31 @@ function Work() {
                       }
                       return idxs.map((i) => {
                         const art = artworks[i];
+                        const floatDur = floatDurationsRef.current[i];
+                        const floatDel = floatDelaysRef.current[i];
+                        const shimmerDel = shimmerDelaysRef.current[i];
+                        const shimmerDur = shimmerDurationsRef.current[i];
+                        const isFocused = focusIdx === i;
+                        const isDimmed = focusIdx !== null && focusIdx !== i;
+                        const entranceDel = i * 90;
                         return (
                           <div
                             key={i}
                             className={`artwork ${i === activeIdx ? "active" : ""}`}
                           >
-                            <div className="art-frame">
+                            <div
+                              className={`art-frame ${entranceArtworks ? "artwork-entrance" : ""} ${floatingActive ? "float" : ""} ${isFocused ? "focus-active" : ""} ${isDimmed ? "dim-sibling" : ""}`}
+                              style={{
+                                ["--entrance-delay" as string]: `${entranceDel}ms`,
+                                ["--float-duration" as string]: floatDur ? `${floatDur}s` : "6s",
+                                ["--float-delay" as string]: floatDel ? `${floatDel}s` : "0s",
+                                ["--shimmer-duration" as string]: shimmerDur ? `${shimmerDur}s` : "10s",
+                                ["--shimmer-delay" as string]: shimmerDel !== undefined ? `${shimmerDel}s` : "0s",
+                              }}
+                              onMouseEnter={() => handleArtworkEnter(i)}
+                              onMouseLeave={handleArtworkLeave}
+                            >
+                              <div className="gold-shimmer" />
                               {art.image ? (
                                 <img src={art.image} alt="" className="art-img" loading="lazy" decoding="async" />
                               ) : art.svg ? (
@@ -1341,6 +1866,64 @@ function Work() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* ── SAHAJ transition overlay — letters rise from panels and merge into header ── */}
+      <div
+        ref={overlayRef}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 100,
+          pointerEvents: "none",
+          visibility: "hidden",
+          opacity: 0,
+          background: "rgb(65,49,82)",
+          transition: "none",
+        }}
+      >
+        <div
+          ref={overlayWordmarkRef}
+          style={{
+            position: "fixed",
+            inset: 0,
+          }}
+        >
+          {["S", "A", "H", "A", "J"].map((letter, i) => (
+            <span
+              key={i}
+              className="sahaj-letter"
+              data-index={i}
+              style={{
+                position: "fixed",
+                fontFamily: "'Gambetta', Georgia, serif",
+                fontWeight: 500,
+                lineHeight: 1,
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "transparent",
+                WebkitTextStroke: "2px #F0EFEB",
+                userSelect: "none",
+                opacity: 0,
+                willChange: "top, left, font-size, opacity, color",
+                transition: "none",
+                zIndex: 101,
+                fontSize: "clamp(90px, 10vw, 130px)",
+              }}
+            >
+              {letter}
+            </span>
+          ))}
+        </div>
+        <div
+          ref={essentialsOverlayRef}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 102,
+            pointerEvents: "none",
+          }}
+        />
       </div>
 
       {catalogueOpen && (

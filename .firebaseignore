@@ -1,0 +1,41 @@
+# Ignore files and directories from deployment
+
+# Dependencies & build cache
+node_modules/
+.firebase/
+.sass-cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Git repository
+.git/
+.gitignore
+
+# Project config files
+firebase.json
+.firebaserc
+.firebaseignore
+.env.local
+.env.development
+.env.production
+.env.production.local
+.env.test.local
+
+# Netlify, Vercel & Cloudflare Wrangler config
+.netlify/
+.vercel/
+.wrangler/
+wrangler.jsonc
+
+# System / IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
