@@ -13,6 +13,7 @@ import {
   artworkSpotlight3 as art3,
   sahajTransparentLogo as logoSymbol,
   ndhLogo4K as ndhLogo,
+  heroVideo,
 } from "@/assets/assets";
 
 const services = [
@@ -60,33 +61,28 @@ function Index() {
     };
   }, [checkScroll]);
 
-  // ── Start hero video only when homepage:ready fires (after loading screen) ──
+  // ── Hero video: autoplay naturally (muted + playsInline + autoPlay) ──
   useEffect(() => {
-    const onReady = () => {
-      const video = heroRef.current;
-      if (!video) return;
-      video.load();
+    const video = heroRef.current;
+    if (!video) return;
+    const tryPlay = () => {
       video.play().then(() => {
         video.muted = false;
         video.volume = 1;
-      }).catch(() => {});
+      }).catch(() => { });
     };
-    const onError = () => {
-      const video = heroRef.current;
-      if (video) video.style.display = "none";
+    // Attempt play on mount; also retry on first user interaction if blocked
+    tryPlay();
+    const onInteraction = () => {
+      if (video.paused) tryPlay();
+      document.removeEventListener("click", onInteraction);
+      document.removeEventListener("touchstart", onInteraction);
     };
-    window.addEventListener("homepage:ready", onReady);
-    const video = heroRef.current;
-    if (video) {
-      video.addEventListener("error", onError);
-      video.addEventListener("suspend", onError);
-    }
+    document.addEventListener("click", onInteraction);
+    document.addEventListener("touchstart", onInteraction);
     return () => {
-      window.removeEventListener("homepage:ready", onReady);
-      if (video) {
-        video.removeEventListener("error", onError);
-        video.removeEventListener("suspend", onError);
-      }
+      document.removeEventListener("click", onInteraction);
+      document.removeEventListener("touchstart", onInteraction);
     };
   }, []);
 
@@ -128,28 +124,26 @@ function Index() {
   }
 
   return (
-    <main id="top" className="relative bg-background text-foreground overflow-x-hidden">
-      <Nav />
+    <main id="top" className="relative text-foreground overflow-x-hidden">
+      <Nav home />
 
       {/* HERO */}
       <section
         id="hero-section"
         className="relative h-[100svh] w-full overflow-hidden"
       >
-        <div className="absolute inset-0 bg-background">
+        <div className="absolute inset-0">
           <video
             ref={heroRef}
-            src="https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/hero.mp4"
+            src={heroVideo}
+            autoPlay
             loop
             playsInline
             muted
-            crossOrigin="anonymous"
             preload="auto"
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="bloom" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
         <div className="absolute inset-0 vignette" />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-8 text-center" />
@@ -178,103 +172,6 @@ function Index() {
             </span>
             <div className="h-16 w-px bg-gradient-to-b from-foreground/40 to-transparent" />
           </div>
-        </div>
-      </section>
-
-      {/* PHILOSOPHY */}
-      <section
-        id="philosophy"
-        className="section-ambient relative px-8 pt-20 pb-20 md:px-14 md:pt-28 md:pb-28"
-      >
-        <div className="bloom" />
-        <div className="absolute inset-0 glow-warm opacity-40" />
-        <div className="relative mx-auto max-w-[900px] text-center">
-          <Reveal>
-            <h2 className="font-display text-balance text-[clamp(1.2rem,2.2vw,2rem)] leading-[1.3] text-[var(--gold)]">
-              The Story Behind the Name SAHAJ
-            </h2>
-          </Reveal>
-          <Reveal delay={200}>
-            <div className="mx-auto mt-12 max-w-3xl space-y-6 text-[15px] leading-loose text-muted-foreground">
-              <p>
-                Every name carries a meaning, a thought, and a purpose. SAHAJ
-                was chosen because it reflects everything we believe art should
-                be. Sahaj, in its simplest form, means natural. Effortless. The
-                way things are meant to be... without force, without noise. And
-                that's exactly how we see art.
-              </p>
-              <p>
-                Not something that should feel complicated or intimidating. Not
-                something you have to "understand" to appreciate. But something
-                you feel instantly. Something that naturally finds its place in
-                your space,<br /> your surroundings, and your life.
-              </p>
-              <p>
-                At SAHAJ, we create and curate art that feels authentic,
-                timeless, and deeply connected to the people who live with it.
-                Because the most meaningful things are often the ones that feel
-                the most natural.
-              </p>
-            </div>
-          </Reveal>
-          <Reveal delay={400}>
-            <img
-              src={logoSymbol}
-              alt="Sahaj"
-              className="mx-auto mt-12 h-28 w-auto opacity-70"
-            />
-          </Reveal>
-          <Reveal delay={600}>
-            <div className="mx-auto mt-8 max-w-3xl space-y-6">
-              <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                And then there's our logo... the{" "}
-                <span className="text-[var(--gold)] font-semibold">Hansa</span>.
-              </p>
-              <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                A symbol of peace, purity, and quiet beauty, the Hansa has long
-                held a special place in Indian philosophy. It represents grace
-                in movement, clarity in thought, and a gentle connection to what
-                is true and meaningful.
-              </p>
-              <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                We chose the Hansa because it reflects the feeling we want our
-                art to evoke calm, effortless, and timeless. Much like a swan
-                gliding across still waters, true beauty doesn't seek attention;
-                it simply exists, serene and natural.
-              </p>
-              <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                For us, the Hansa is a reminder that the most meaningful things
-                are often the most peaceful. It embodies the spirit of SAHAJ
-                art that brings harmony to a space, softness to a moment, and
-                beauty that feels naturally at home.
-              </p>
-            </div>
-          </Reveal>
-          <Reveal delay={800}>
-            <img
-              src={ndhLogo}
-              alt="NDH House"
-              className="mx-auto mt-12 h-20 w-auto opacity-90"
-            />
-            <p className="font-display mt-8 text-[16px] tracking-[0.35em] uppercase text-[var(--gold)]">
-              A NDH HOUSE PARTNERSHIP
-            </p>
-            <div className="mx-auto mt-10 max-w-3xl space-y-5 text-[15px] leading-loose text-muted-foreground">
-              <p>
-                SAHAJ is an initiative by NDH House, an architecture and
-                interior design firm with extensive experience in hospitality,
-                hotel, resort, and commercial interior projects.
-              </p>
-              <p>
-                Over the years, we discovered that while architecture shapes a
-                space, art gives it emotion and identity. This belief inspired
-                our philosophy of{" "}
-                <em className="text-[var(--gold)]">Art in Architecture</em>,
-                where art is not merely an addition, but an integral part of the
-                spatial experience.
-              </p>
-            </div>
-          </Reveal>
         </div>
       </section>
 
@@ -328,10 +225,7 @@ function Index() {
                   surface appears broken, life finds a way to endure.
                 </p>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                  These gentle rabbits remind us of our own journey through
-                  difficult times that beneath every scar, every crack, and
-                  every challenge, there remains warmth, hope, and a place to
-                  belong. What seems broken from above may, in fact, be
+                  These gentle rabbits remind us of our own journey through difficult times that beneath every scar, every crack, and every challenge, there remains warmth, hope, and a place to belong. What seems broken from above may, in fact, be
                   protecting a life below. Sometimes, the deepest strength is
                   found in the most fragile places.
                 </p>
@@ -355,23 +249,27 @@ function Index() {
                   truly knows their coffee can look at a colour and instantly
                   recall its taste, the richness of its soil, the altitude where
                   it was grown, and the story behind every bean.
+                  More than just artwork, it captures the memories, rituals, and
+                  emotions that make coffee special. For someone who truly loves
+                  coffee, this is one of the most personal canvases they can
+                  have in their space.  To experience it in person and explore the story behind every
+                  shade, do visit us at our gallery.
                 </p>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                   More than just artwork, it captures the memories, rituals, and
                   emotions that make coffee special. For someone who truly loves
                   coffee, this is one of the most personal canvases they can
-                  have in their space.
-                </p>
-                <p className="font-sans text-[15px] leading-loose text-muted-foreground">
-                  To experience it in person and explore the story behind every
+                  have in their space.  To experience it in person and explore the story behind every
                   shade, do visit us at our gallery.
+
                 </p>
+
                 <p className="font-display text-[15px] leading-relaxed text-muted-foreground/70 italic">
                   Size of the Artwork: 5'(H) X 5'(W)
                 </p>
               </div>
             </Reveal>
-            <Reveal className="w-full flex justify-end">
+            <Reveal className="w-full flex justify-end md:-mr-16">
               <div
                 className="w-full"
                 onContextMenu={(e) => e.preventDefault()}
@@ -435,10 +333,86 @@ function Index() {
         </div>
       </section>
 
+      {/* PHILOSOPHY */}
+      <section
+        id="philosophy"
+        className="section-ambient relative min-h-screen flex items-center px-8 py-10 md:px-14 md:py-14"
+      >
+        <div className="relative mx-auto max-w-[1300px] text-center">
+          <Reveal>
+            <h2 className="font-display text-balance text-[clamp(1.2rem,2.2vw,2rem)] leading-[1.3] text-[var(--gold)]">
+              The Story Behind the Name SAHAJ
+            </h2>
+          </Reveal>
+          <Reveal delay={200}>
+            <div className="mx-auto mt-6 max-w-[1200px] text-[15px] leading-relaxed text-muted-foreground">
+              <p>
+                Every name carries a meaning, a thought, and a purpose. SAHAJ
+                was chosen because it reflects everything we believe art should
+                be. Sahaj, in its simplest form, means natural. Effortless. The
+                way things are meant to be... without force, without noise. And
+                that's exactly how we see art.  Not something that should feel complicated or intimidating. Not
+                something you have to "understand" to appreciate. But something
+                you feel instantly. Something that naturally finds its place in
+                your space.
+              </p>
+
+            </div>
+          </Reveal>
+          <Reveal delay={400}>
+            <img
+              src={logoSymbol}
+              alt="Sahaj"
+              className="mx-auto mt-5 h-20 w-auto opacity-70"
+            />
+          </Reveal>
+          <Reveal delay={600}>
+            <div className="mx-auto mt-3 max-w-[1200px]">
+              <p className="font-sans text-[15px] leading-relaxed text-muted-foreground">
+                And then there's our logo... the{" "}
+                <span className="text-[var(--gold)] font-semibold">Hansa</span>.
+                A symbol of peace, purity, and quiet beauty, the Hansa has long
+                held a special place in Indian philosophy. It represents grace
+                in movement, clarity in thought, and a gentle connection to what
+                is true and meaningful. We chose the Hansa because it reflects the feeling we want our
+                art to evoke calm, effortless, and timeless. Much like a swan
+                gliding across still waters, true beauty doesn't seek attention;
+                it simply exists, serene and natural. For us, the Hansa is a reminder that the most meaningful things
+                are often the most peaceful. It embodies the spirit of SAHAJ
+                art that brings harmony to a space, softness to a moment, and
+                beauty that feels naturally at home.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={800}>
+            <img
+              src={ndhLogo}
+              alt="NDH House"
+              className="mx-auto mt-5 h-16 w-auto opacity-90"
+            />
+            <p className="font-display mt-3 text-[14px] tracking-[0.35em] uppercase text-[var(--gold)]">
+              A NDH HOUSE PARTNERSHIP
+            </p>
+            <div className="mx-auto mt-3 max-w-[1200px] text-[15px] leading-relaxed text-muted-foreground">
+              <p>
+                SAHAJ is an initiative by NDH House, an architecture and
+                interior design firm with extensive experience in hospitality,
+                hotel, resort, and commercial interior projects. Over the years, we discovered that while architecture shapes a
+                space, art gives it emotion and identity. This belief inspired
+                our philosophy of{" "}
+                <em className="text-[var(--gold)]">Art in Architecture</em>,
+                where art is not merely an addition, but an integral part of the
+                spatial experience.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
-          <p className="font-display text-xl tracking-[0.3em] text-[#C9A96E]">
+          <p className="font-display text-lg md:text-xl tracking-[0.3em] text-[#C9A96E]">
             SAHAJ GALLERY
           </p>
           <img

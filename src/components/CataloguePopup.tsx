@@ -14,8 +14,7 @@ const SUPABASE_ANON_KEY =
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const GOOGLE_DRIVE_LINK =
-  "https://drive.google.com/drive/folders/1tbnA8k-aKQ5vYCD_LJQnZrmr8C4tQddc?usp=drive_link";
+const WHATSAPP_NUMBER = "9510788933";
 
 interface CataloguePopupProps {
   open: boolean;
@@ -52,12 +51,21 @@ export default function CataloguePopup({
     setError("");
     setLoading(true);
 
-    try {
-      const trimmedName = name.trim();
-      const emailValue = email.trim();
-      const mobileValue = mobile.trim();
+    const trimmedName = name.trim();
+    const emailValue = email.trim();
+    const mobileValue = mobile.trim();
 
-      // Try to insert with incrementing suffix until we find a free unique_name
+    // Open WhatsApp and close popup immediately — don't block on Supabase
+    onOpenChange(false);
+    const message = encodeURIComponent("Hi");
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    // Fire-and-forget Supabase insert in the background
+    try {
       let inserted = false;
       let attempt = 1;
 
@@ -76,23 +84,13 @@ export default function CataloguePopup({
         if (!insertError) {
           inserted = true;
         } else if (insertError.code === "23505") {
-          // unique_violation — name already taken, try next suffix
           attempt++;
         } else {
           throw insertError;
         }
       }
-
-      onOpenChange(false);
-      window.open(GOOGLE_DRIVE_LINK, "_blank", "noopener,noreferrer");
-    } catch (err) {
-      const message =
-        typeof err === "object" && err !== null && "message" in err
-          ? (err as { message: string }).message
-          : err instanceof Error
-            ? err.message
-            : "Something went wrong. Please try again.";
-      setError(message);
+    } catch {
+      // Silently handle — user already got their WhatsApp redirect
     } finally {
       setLoading(false);
     }

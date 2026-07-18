@@ -43,40 +43,34 @@ function OurTeam() {
     <main className="relative min-h-screen text-foreground" style={{ backgroundColor: "#443356" }}>
       <Nav />
 
-      {/* Hero Image */}
-      <section className="relative overflow-hidden px-8 pt-32 pb-0 md:px-14">
-        <div className="bloom" />
-        <div className="absolute inset-0 glow-warm opacity-30" />
-        <div className="relative mx-auto max-w-[1200px]">
-          <Reveal>
-            <img
-              src={CS}
-              alt="Our Team"
-              className="w-full h-auto object-cover rounded-sm"
-            />
-          </Reveal>
-        </div>
-      </section>
-
       {/* About */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-40">
+      <section className="section-ambient relative px-8 py-24 md:px-14 md:py-40">
         <div className="relative mx-auto max-w-[800px] text-center">
           <Reveal>
             <p className="kicker">About</p>
             <div className="mt-10 space-y-6 text-[14px] leading-loose text-muted-foreground">
               <p>
-                Urbscapes is a design studio based in Ahmedabad, India founded by Narendra Mangwani and Nidhi Parikh in year 2008. The studio works in the field of master planning, landscape, architecture & research & documentation. The name of the studio \u201curbscapes\u201d is a combination of \u201curban\u201d & \u201clandscape\u201d as we believe working in our cities through built environment is shaping its landscape.
+                At Sahaj Gallery, we believe that art is more than an object it is an experience that transforms spaces and enriches everyday living. Born from the design philosophy of NDH House, Sahaj brings together artists, architects, designers, and skilled craftsmen to create artworks that seamlessly integrate with architecture and interiors.
               </p>
               <p>
-                We believe that design has to be appropriate to the context, climate, and function & should be in harmony with the nature. We strive to strike a balance between the need of the projects & what the project can offer. Each project is important to us, as it gives an opportunity to question & find appropriate answers.
+                Our team is united by a shared commitment to craftsmanship, storytelling, and timeless design. Every creation is thoughtfully conceived, handcrafted with precision, and inspired by India's rich cultural heritage while embracing contemporary aesthetics.
+              </p>
+              <p>
+                Together, we curate experiences that celebrate authenticity, collaboration, and creativity. From concept to installation, every member of the Sahaj team contributes to ensuring that each artwork carries meaning, purpose, and lasting value.
+              </p>
+
+              <p>
+                We don't simply create art we craft stories that become a part of the spaces people live, work, and connect in.
               </p>
             </div>
           </Reveal>
         </div>
-      </section>
+      </section >
+
+      <div className="border-t border-[rgba(255,255,255,0.06)]" />
 
       {/* Team Heading */}
-      <section className="section-ambient relative border-t border-border/40 px-8 pt-0 pb-24 md:px-14 md:pb-40">
+      <section className="section-ambient relative px-8 pt-24 pb-12 md:px-14 md:pt-40 md:pb-16">
         <div className="relative mx-auto max-w-[1200px]">
           <Reveal>
             <h2 className="text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-[1.05] text-[color:var(--gold)]">
@@ -87,12 +81,12 @@ function OurTeam() {
       </section>
 
       {/* Principal Architects */}
-      <section className="relative border-t border-border/40 px-8 py-0 md:px-14">
+      <section className="relative px-8 pt-12 md:px-14 md:pt-16">
         <div className="relative mx-auto max-w-[1000px] space-y-24">
           {PRINCIPALS.map((person, i) => (
             <div key={person.name} className={`grid gap-12 items-center ${i % 2 === 0 ? "md:grid-cols-[1fr_1.5fr]" : "md:grid-cols-[1.5fr_1fr]"}`}>
               <Reveal delay={i * 100} className={i % 2 === 1 ? "md:order-2" : ""}>
-                <div className="rounded-sm border border-border bg-card/30 overflow-hidden">
+                <div className="rounded-sm border border-border overflow-hidden">
                   <img
                     src={person.img}
                     alt={person.name}
@@ -120,15 +114,15 @@ function OurTeam() {
         </div>
       </section>
 
+      <div className="border-t border-[rgba(255,255,255,0.06)]" />
+
       {/* Team Grid */}
-      <section className="section-ambient relative border-t border-border/40 px-8 py-24 md:px-14 md:py-40">
-        <div className="bloom" />
-        <div className="absolute inset-0 glow-warm opacity-30" />
+      <section className="section-ambient relative px-8 py-24 md:px-14 md:py-40">
         <div className="relative mx-auto max-w-[1200px]">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
             {TEAM_GRID.map((member, i) => (
               <Reveal key={member.name} delay={i * 80}>
-                <div className="group border border-border rounded-sm overflow-hidden bg-card/20 transition-all duration-500 hover:border-[color:var(--gold)]">
+                <div className="group border border-border rounded-sm overflow-hidden transition-all duration-500 hover:border-[color:var(--gold)]">
                   <div className="overflow-hidden">
                     <img
                       src={member.img}
@@ -152,9 +146,10 @@ function OurTeam() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/30 px-8 py-4 md:px-14">
+      <div className="border-t border-[rgba(255,255,255,0.06)]" />
+      <footer className="px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
-          <p className="font-display text-xl tracking-[0.3em] text-[#C8A86E]">
+          <p className="font-display text-lg md:text-xl tracking-[0.3em] text-[#C8A86E]">
             SAHAJ GALLERY
           </p>
           <img
@@ -164,7 +159,7 @@ function OurTeam() {
           />
         </div>
       </footer>
-    </main>
+    </main >
   );
 }
 

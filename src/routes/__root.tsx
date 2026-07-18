@@ -105,7 +105,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="ambient-overlay" />
       <div className="relative z-10">
         <Suspense
           fallback={

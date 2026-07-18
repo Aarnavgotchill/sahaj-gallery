@@ -428,6 +428,7 @@ const GALLERY_CSS = `
   --muted: #b0a4be;
   --ease-cin: cubic-bezier(0.77,0,0.175,1);
   --ease-soft: cubic-bezier(0.4,0,0.2,1);
+  --section-spacing: 156px;
   flex:1;min-height:0;
   display:flex;flex-direction:column;
   background:var(--color-background);
@@ -438,7 +439,7 @@ const GALLERY_CSS = `
 #gallery-root .gallery-content{
   flex:1;min-height:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:156px 20px 50px;
+  padding:var(--section-spacing) 20px var(--section-spacing);
   gap:0;
 }
 .gallery-nav-wrap[data-gallery] {
@@ -669,7 +670,8 @@ const GALLERY_CSS = `
 }
 @media(min-width:768px) and (max-width:1023px){
   #gallery-root #l1{height:360px}
-  #gallery-root .gallery-content{gap:0;padding:156px 20px 50px}
+  #gallery-root{--section-spacing:140px}
+  #gallery-root .gallery-content{gap:0}
   #gallery-root .essentials-box{width:48px;height:48px}
   #gallery-root .essentials-box span{font-size:16px}
   #gallery-root .essentials-grid{gap:18px}
@@ -677,7 +679,8 @@ const GALLERY_CSS = `
 @media screen and (max-width: 768px) and (orientation: portrait){
   .gallery-viewport{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   #gallery-root{flex:none}
-  #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;padding:100px 0;gap:0}
+  #gallery-root{--section-spacing:100px}
+  #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;gap:0}
   #gallery-root #l1{height:auto;padding:0;flex:none}
   #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center;background:var(--bg) center/cover no-repeat}
   #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
@@ -721,19 +724,6 @@ const GALLERY_CSS = `
   text-align:center;
   padding:0 32px;
   animation:intro-fade 2s ease-in-out forwards;
-}
-
-/* ─── Strip Floating Animation ─── */
-@keyframes strip-float{
-  0%,100%{transform:translateY(0) translateX(0)}
-  25%{transform:translateY(-3px) translateX(1px)}
-  50%{transform:translateY(-5px) translateX(-2px)}
-  75%{transform:translateY(-1px) translateX(2px)}
-}
-#gallery-root .strip.float{
-  animation:strip-float var(--strip-float-dur,7s) ease-in-out infinite;
-  animation-delay:var(--strip-float-delay,0s);
-  will-change:transform;
 }
 
 /* ─── 1. Glass Artwork Panel — glass reflection overlay ─── */
@@ -918,9 +908,6 @@ function Work() {
   const floatDurationsRef = useRef<number[]>([]);
   const shimmerDelaysRef = useRef<number[]>([]);
   const shimmerDurationsRef = useRef<number[]>([]);
-  const stripFloatDelaysRef = useRef<number[]>([]);
-  const stripFloatDurationsRef = useRef<number[]>([]);
-
   const videoRef = useRef<HTMLVideoElement>(null);
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
   const fadeFrameRef = useRef<number | null>(null);
@@ -1477,13 +1464,6 @@ function Work() {
     return () => { clearTimeout(enterTimer); clearTimeout(floatTimer); setEntranceArtworks(false); setEntranceDone(false); setFloatingActive(false); };
   }, [galleryOpen, c, e]);
 
-  // ── Strip float delays (initialized once on mount) ──
-  useEffect(() => {
-    const count = CATEGORIES.length;
-    stripFloatDelaysRef.current = Array.from({ length: count }, () => Math.random() * 5);
-    stripFloatDurationsRef.current = Array.from({ length: count }, () => 6 + Math.random() * 3);
-  }, []);
-
   // ── Mouse spotlight ──
   const handleMouseMoveSpotlight = useCallback((e: React.MouseEvent) => {
     setSpotlightPos({ x: e.clientX, y: e.clientY });
@@ -1516,7 +1496,7 @@ function Work() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            opacity: (introVisible && bgReady) ? 1 : 0,
+            opacity: introVisible ? 1 : 0,
             transition: "opacity 0.55s ease",
             pointerEvents: introVisible ? "all" : "none",
           }}
@@ -1525,6 +1505,8 @@ function Work() {
             ref={videoRef}
             src={introSrc}
             playsInline
+            muted
+            autoPlay
             preload="auto"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
@@ -1581,15 +1563,7 @@ function Work() {
         <div className="gallery-nav-wrap" data-gallery>
           {!showIntro && <Nav />}
         </div>
-        <div id="gallery-root" className="film-grain" onMouseMove={handleMouseMoveSpotlight} onMouseLeave={handleMouseLeaveSpotlight}>
-          <div className="gallery-vignette" />
-          {/* Floating particles */}
-          <div className="particle-dot" style={{ width: "2px", height: "2px", background: "rgba(201,169,110,0.12)", left: "15%", bottom: "-10px", animation: "particle-rise 25s linear infinite", animationDelay: "0s" }} />
-          <div className="particle-dot" style={{ width: "1.5px", height: "1.5px", background: "rgba(236,230,220,0.1)", left: "35%", bottom: "-10px", animation: "particle-rise 30s linear infinite", animationDelay: "5s" }} />
-          <div className="particle-dot" style={{ width: "2.5px", height: "2.5px", background: "rgba(201,169,110,0.08)", left: "55%", bottom: "-10px", animation: "particle-rise 28s linear infinite", animationDelay: "10s" }} />
-          <div className="particle-dot" style={{ width: "1px", height: "1px", background: "rgba(255,255,255,0.08)", left: "70%", bottom: "-10px", animation: "particle-rise 35s linear infinite", animationDelay: "3s" }} />
-          <div className="particle-dot" style={{ width: "2px", height: "2px", background: "rgba(201,169,110,0.1)", left: "85%", bottom: "-10px", animation: "particle-rise 22s linear infinite", animationDelay: "7s" }} />
-          <div className="particle-dot" style={{ width: "1.5px", height: "1.5px", background: "rgba(180,160,200,0.08)", left: "25%", bottom: "-10px", animation: "particle-rise 32s linear infinite", animationDelay: "12s" }} />
+        <div id="gallery-root" onMouseMove={handleMouseMoveSpotlight} onMouseLeave={handleMouseLeaveSpotlight}>
           <div
             className={`mouse-spotlight ${spotlightVisible ? "visible" : ""}`}
             style={{
@@ -1601,18 +1575,14 @@ function Work() {
             <div className="w-full">
               <div id="l1" className={`${galleryOpen ? "out" : ""}`}>
                 <div className="strip-row">
-                  {CATEGORIES.map((cat, i) => {
-                    const stripFloatDel = stripFloatDelaysRef.current[i];
-                    const stripFloatDur = stripFloatDurationsRef.current[i];
+                   {CATEGORIES.map((cat, i) => {
                     return (
                       <div key={cat.id} className="sahaj-panel-wrap">
                         <div className={`panel-wrap ${panelsAnimated ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
                           <div
-                            className={`strip ${panelsAnimated ? "float" : ""}`}
+                            className="strip"
                             data-category={cat.id}
                             style={{
-                              ["--strip-float-dur" as string]: stripFloatDur ? `${stripFloatDur.toFixed(1)}s` : "7s",
-                              ["--strip-float-delay" as string]: stripFloatDel ? `${stripFloatDel.toFixed(1)}s` : "0s",
                               background: `linear-gradient(rgba(65,49,82,0.35),rgba(65,49,82,0.35)),url(${({
                                 S: stripS,
                                 A: stripA,
@@ -1677,7 +1647,7 @@ function Work() {
           {!showIntro && (
             <footer className="gallery-footer border-t border-border/30 px-8 py-4 md:px-14">
               <div className="flex items-center justify-between">
-                <p className="font-display text-xl tracking-[0.3em] text-left text-[#C8A86E]">
+                <p className="font-display text-lg md:text-xl tracking-[0.3em] text-left text-[#C8A86E]">
                   SAHAJ GALLERY
                 </p>
                 <img

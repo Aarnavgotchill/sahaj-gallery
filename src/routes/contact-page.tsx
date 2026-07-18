@@ -53,7 +53,7 @@ function Contact() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col overflow-x-hidden">
+    <main className="min-h-screen text-foreground flex flex-col overflow-x-hidden">
       <div className="border-b border-border/30">
         <Nav />
       </div>
@@ -72,7 +72,7 @@ function Contact() {
         <Reveal delay={150} className="flex items-start pt-4 md:pt-[100px]">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full rounded-sm border border-border bg-card/30 p-6 backdrop-blur-sm md:p-10"
+            className="w-full rounded-sm border border-border p-6 md:p-10"
           >
             <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground">
               Personal Information
@@ -172,7 +172,7 @@ function Contact() {
       </div>
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
-          <p className="font-display text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
+          <p className="font-display text-lg md:text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
           <img
             src={ndhLogo}
             alt="NDH House"

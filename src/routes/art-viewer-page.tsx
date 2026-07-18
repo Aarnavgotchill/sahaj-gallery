@@ -33,7 +33,7 @@ function ArtViewerPage() {
         </div>
         <footer className="border-t border-border/30 px-8 py-4 md:px-14">
           <div className="flex items-center justify-between">
-            <p className="font-display text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
+            <p className="font-display text-lg md:text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
             <img src={ndhLogo} alt="NDH House" className="h-12 w-auto opacity-80" />
           </div>
         </footer>
@@ -100,7 +100,7 @@ function ArtViewerPage() {
           }}
         >
           <div className="flex items-center justify-between">
-            <p className="font-display text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
+            <p className="font-display text-lg md:text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>
             <img src={ndhLogo} alt="NDH House" className="h-12 w-auto opacity-80" />
           </div>
         </footer>

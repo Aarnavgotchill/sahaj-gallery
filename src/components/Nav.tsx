@@ -8,7 +8,11 @@ const links = [
   { href: "/sahaj", label: "SAHAJ" },
 ];
 
-export function Nav() {
+interface NavProps {
+  home?: boolean;
+}
+
+export function Nav({ home }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -33,7 +37,9 @@ export function Nav() {
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${
         scrolled
           ? "backdrop-blur-2xl bg-background/40 border-b border-border/30"
-          : "bg-transparent"
+          : home
+            ? "bg-background/20"
+            : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 md:px-14 md:py-6">

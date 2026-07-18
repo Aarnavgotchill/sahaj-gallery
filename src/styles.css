@@ -41,9 +41,12 @@
   scroll-behavior: smooth;
 }
 
+html, body {
+  background: #443356 !important;
+}
+
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-background);
   color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -55,7 +58,7 @@ body {
 }
 
 .kicker {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--color-muted-foreground);
@@ -68,7 +71,7 @@ body {
 }
 
 .glow-warm {
-  background: radial-gradient(ellipse at 40% 0%, rgba(201, 169, 110, 0.05) 0%, transparent 65%);
+  background: transparent !important;
 }
 
 /* Scroll reveal animation */
@@ -292,32 +295,22 @@ img {
 
 /* Persistent dark ambient overlay */
 .ambient-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(160, 120, 200, 0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 60% at 80% 100%, rgba(120, 80, 160, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 20% 60%, rgba(100, 60, 140, 0.03) 0%, transparent 50%);
+  display: none !important;
 }
 
-/* Enhanced vignette — darker, more cinematic */
+/* Enhanced vignette */
 .vignette {
-  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.7) 100%);
+  background: transparent !important;
 }
 
-/* Soft bloom lighting — warm gold bloom from top */
+/* Soft bloom lighting */
 .bloom {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201, 169, 110, 0.06) 0%, transparent 70%);
+  display: none !important;
 }
 
-/* Cool bloom — subtle blue-purple ambient */
+/* Cool bloom */
 .bloom-cool {
-  background: radial-gradient(ellipse 70% 60% at 80% 100%, rgba(90, 60, 160, 0.05) 0%, transparent 60%);
+  background: transparent !important;
 }
 
 /* Typography glow — elegant text luminance */
@@ -346,18 +339,12 @@ img {
 .letterbox::before { top: 0; height: 0; }
 .letterbox::after { bottom: 0; height: 0; }
 
-/* Dark ambient section overlay — for section dividers */
+/* Section ambient overlay - removed for uniform background */
 .section-ambient {
   position: relative;
 }
 .section-ambient::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 100% 40% at 50% 0%, rgba(100, 70, 140, 0.2) 0%, transparent 100%),
-    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(120, 80, 160, 0.1) 0%, transparent 100%);
-  pointer-events: none;
+  content: none !important;
 }
 
 /* Artwork image subtle desaturation for muted gallery feel */
@@ -437,75 +424,15 @@ video {
 }
 
 .film-grain::after {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
-  animation: grain-shift 12s steps(5) infinite;
-  will-change: transform;
+  content: none !important;
 }
 
-/* Floating particles */
-@keyframes particle-rise {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  8% { opacity: 0.2; }
-  85% { opacity: 0.15; }
-  100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
-}
+/* Particle dots, spotlights, vignettes - removed for uniform background */
+.particle-dot { display: none !important; }
+.gallery-spotlight { display: none !important; }
+.gallery-vignette { display: none !important; }
+.mouse-spotlight { display: none !important; }
 
-.particle-dot {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2;
-  will-change: transform, opacity;
-}
 
-/* Cinematic spotlight behind gallery section */
-.gallery-spotlight {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: min(120vw, 900px);
-  height: min(120vw, 900px);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(201, 169, 110, 0.04) 0%, rgba(201, 169, 110, 0.01) 30%, transparent 60%);
-  pointer-events: none;
-  z-index: 1;
-  will-change: transform;
-}
-
-/* Vignette enhancement for gallery page */
-.gallery-vignette {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
-}
-
-/* Mouse spotlight */
-.mouse-spotlight {
-  position: fixed;
-  width: min(80vw, 500px);
-  height: min(80vw, 500px);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 3;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(201, 169, 110, 0.03) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  will-change: transform, left, top;
-}
-
-.mouse-spotlight.visible {
-  opacity: 1;
-}
 
 
