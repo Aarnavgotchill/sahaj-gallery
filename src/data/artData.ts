@@ -166,7 +166,7 @@ const pages: Record<string, ArtistData> = {
       year: "2024",
       medium: "Artwork",
       dimensions: "",
-      image: img(`j-art-${i + 1}`),
+      image: "https://img.magnific.com/free-vector/torn-style-coming-soon-promo-template-social-media-post_1017-55783.jpg?semt=ais_hybrid&w=740&q=80",
       width: W,
       height: H,
     })),

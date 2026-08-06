@@ -185,26 +185,15 @@ const THE_REFLECTION_ART: EyeArtwork[] = [
   ...mkPlaceholders(1, "Reflection Series", "R E F L E C T I O N", "#206a8a", 10),
 ];
 
-// J  Cherry Blossom - images from sahaj panel/5J
-const CB_J_IMGS = [
-  r2.sahajPanel("5J/1J.webp"),
-  r2.sahajPanel("5J/2J.webp"),
-  r2.sahajPanel("5J/3J.webp"),
-  r2.sahajPanel("5J/4J.webp"),
-  r2.sahajPanel("5J/5J.webp"),
-  r2.sahajPanel("5J/6J.webp"),
-  r2.sahajPanel("5J/7J.webp"),
-  r2.sahajPanel("5J/8J.webp"),
-  r2.sahajPanel("5J/9J.webp"),
-  r2.sahajPanel("5J/10J.webp"),
-];
-const CHERRY_BLOSSOM_ART: EyeArtwork[] = CB_J_IMGS.map((img, i) => ({
+// J  Cherry Blossom - Coming Soon
+const COMING_SOON_JPG = "https://img.magnific.com/free-vector/torn-style-coming-soon-promo-template-social-media-post_1017-55783.jpg?semt=ais_hybrid&w=740&q=80";
+const CHERRY_BLOSSOM_ART: EyeArtwork[] = Array.from({ length: 10 }, (_, i) => ({
   title: `Cherry Blossom ${i + 1}`,
   sub: `C H E R R Y  B L O S S O M  ${String(i + 1).padStart(2, "0")}`,
-  desc: "artwork",
+  desc: "coming soon",
   dim: " ",
   glow: "#d08080",
-  image: img,
+  image: COMING_SOON_JPG,
 }));
 
 const CATEGORIES = [
@@ -439,7 +428,7 @@ const GALLERY_CSS = `
 #gallery-root .gallery-content{
   flex:1;min-height:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:var(--section-spacing) 20px var(--section-spacing);
+  padding:calc(var(--section-spacing) + 24px) 20px calc(var(--section-spacing) - 82px);
   gap:0;
 }
 .gallery-nav-wrap[data-gallery] {
@@ -681,16 +670,34 @@ const GALLERY_CSS = `
   #gallery-root{flex:none}
   #gallery-root{--section-spacing:100px}
   #gallery-root .gallery-content{flex:none;min-height:auto;justify-content:flex-start;gap:0}
-  #gallery-root #l1{height:auto;padding:0;flex:none}
-  #gallery-root .strip-row{flex-direction:column;width:100%;padding:0;gap:24px;height:auto;align-items:center;background:var(--bg) center/cover no-repeat}
-  #gallery-root .sahaj-panel-wrap{height:auto;width:auto;flex:none;display:block}
-  #gallery-root .panel-wrap{height:auto;width:100%;opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
+  #gallery-root #l1{height:auto;padding:0;margin:0;flex:none;width:100%}
+  #gallery-root .strip-row{
+    flex-direction:row;flex-wrap:nowrap;justify-content:center;
+    width:100%;height:56vh;max-height:none;
+    padding-inline:12px;padding-block:0;gap:10px;align-items:stretch;
+    margin-bottom:32px;
+    background:none;
+  }
+  #gallery-root .sahaj-panel-wrap{height:100%;width:clamp(52px,15.5vw,84px);flex:0 0 auto;display:block;position:relative}
+  #gallery-root .panel-wrap{height:100%;width:100%;opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
   #gallery-root .panel-wrap.in{opacity:1;transform:translateY(0)}
-  #gallery-root .strip{width:88vw;max-width:420px;height:auto;aspect-ratio:3/1;max-height:none;min-height:100px;border-radius:8px;position:relative;overflow:hidden;cursor:pointer;border:1.2px solid transparent;background-size:cover !important;background-position:center;flex-shrink:0;transition:transform .35s ease,filter .35s ease,box-shadow .35s ease,border-color .35s ease;margin:0 auto}
+  #gallery-root .strip{
+    width:100%;height:100%;max-height:none;min-height:0;aspect-ratio:auto;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:20px;position:relative;overflow:hidden;cursor:pointer;
+    border:1px solid transparent;
+    background-size:cover !important;background-position:center;flex-shrink:0;
+    transition:transform .5s cubic-bezier(.22,1,.36,1),filter .5s cubic-bezier(.22,1,.36,1),box-shadow .5s cubic-bezier(.22,1,.36,1),border-color .5s ease;
+  }
+  #gallery-root .strip::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(23,19,36,.2);z-index:2;pointer-events:none;transition:opacity .5s ease}
+  #gallery-root .sahaj-panel-wrap.centered .strip{transform:scale(1.02);box-shadow:0 0 22px rgba(201,169,110,.18)}
+  #gallery-root .sahaj-panel-wrap.centered .strip::after{opacity:0}
+  #gallery-root .sahaj-panel-wrap:not(.centered) .strip{transform:scale(.98)}
+  #gallery-root .sahaj-panel-wrap:not(.centered) .strip::after{opacity:.75}
   #gallery-root .strip:active{transform:scale(0.97)}
-  #gallery-root .strip-letter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
+  #gallery-root .strip-letter{position:static;transform:none;font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
   #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
-  #gallery-root .essentials-section{padding:0 0 48px;margin-top:28px;text-align:center}
+  #gallery-root .essentials-section{padding:0 0 48px;margin-top:0;text-align:center}
   #gallery-root .essentials-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:280px;margin:0 auto;justify-items:center;align-items:center}
   #gallery-root .essentials-box-wrap{opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
   #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
@@ -897,12 +904,14 @@ function Work() {
   const [focusIdx, setFocusIdx] = useState<number | null>(null);
   const [entranceArtworks, setEntranceArtworks] = useState(false);
   const [floatingActive, setFloatingActive] = useState(false);
+  const [activeStripIdx, setActiveStripIdx] = useState(0);
 
   // SAHAJ transition overlay refs
   const overlayRef = useRef<HTMLDivElement>(null);
   const overlayWordmarkRef = useRef<HTMLDivElement>(null);
   const essentialsOverlayRef = useRef<HTMLDivElement>(null);
   const animTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const stripRowRef = useRef<HTMLDivElement>(null);
 
   const floatDelaysRef = useRef<number[]>([]);
   const floatDurationsRef = useRef<number[]>([]);
@@ -1446,6 +1455,39 @@ function Work() {
     };
   }, [galleryOpen, navImg]);
 
+  // ── Mobile portrait: track which strip is centered in the snap row ──
+  useEffect(() => {
+    const row = stripRowRef.current;
+    if (!row) return;
+    const update = () => {
+      const panels = Array.from(
+        row.querySelectorAll<HTMLElement>(".sahaj-panel-wrap"),
+      );
+      if (!panels.length) return;
+      const target = row.scrollLeft + row.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      panels.forEach((el, i) => {
+        const left =
+          el.getBoundingClientRect().left - row.getBoundingClientRect().left;
+        const center = left + el.offsetWidth / 2;
+        const dist = Math.abs(center - target);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      setActiveStripIdx(best);
+    };
+    update();
+    row.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      row.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
   // ── Random float & shimmer delays ──
   useEffect(() => {
     if (!galleryOpen) return;
@@ -1574,10 +1616,10 @@ function Work() {
           <div className="gallery-content">
             <div className="w-full">
               <div id="l1" className={`${galleryOpen ? "out" : ""}`}>
-                <div className="strip-row">
+                <div className="strip-row" ref={stripRowRef}>
                    {CATEGORIES.map((cat, i) => {
                     return (
-                      <div key={cat.id} className="sahaj-panel-wrap">
+                      <div key={cat.id} className={`sahaj-panel-wrap ${i === activeStripIdx ? "centered" : ""}`}>
                         <div className={`panel-wrap ${panelsAnimated ? "in" : ""}`} style={{ transitionDelay: `${i * 100}ms` }}>
                           <div
                             className="strip"

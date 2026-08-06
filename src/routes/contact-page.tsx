@@ -18,6 +18,24 @@ const inquiryTypes = [
   "General Inquiry",
 ] as const;
 
+const qrLinks = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/sahajgallery/",
+    src: "/qr/instagram.png",
+  },
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/919510788933",
+    src: "/qr/whatsapp.png",
+  },
+  {
+    label: "Leave a Review",
+    href: "https://g.page/r/CTOJ5URhNfzKEBM/review",
+    src: "/qr/review.png",
+  },
+] as const;
+
 function Contact() {
   const [isAdmin, setIsAdmin] = useState(
     () => sessionStorage.getItem("sahaj_admin") === "true",
@@ -169,6 +187,41 @@ function Contact() {
             </div>
           </form>
         </Reveal>
+      </div>
+      <div className="px-8 md:px-14 pb-16 md:pb-24">
+        <Reveal className="text-center">
+          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground">
+            Scan to Connect
+          </p>
+          <h2 className="mt-3 font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.2]">
+            Sahaj, <em className="italic text-[var(--gold)]">in your hands</em>
+          </h2>
+        </Reveal>
+        <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
+          {qrLinks.map((qr, i) => (
+            <Reveal key={qr.label} delay={i * 120}>
+              <a
+                href={qr.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex flex-col items-center border border-border/30 p-6 text-center transition-colors duration-500 hover:border-[var(--gold)]"
+              >
+                <span className="flex h-32 w-32 items-center justify-center rounded-sm bg-white p-2">
+                  <img
+                    src={qr.src}
+                    alt={`${qr.label} QR code`}
+                    draggable={false}
+                    className="h-full w-full select-none"
+                    onContextMenu={(e) => e.preventDefault()}
+                  />
+                </span>
+                <span className="mt-5 text-[10px] tracking-[0.3em] uppercase text-[var(--gold)]">
+                  {qr.label}
+                </span>
+              </a>
+            </Reveal>
+          ))}
+        </div>
       </div>
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">

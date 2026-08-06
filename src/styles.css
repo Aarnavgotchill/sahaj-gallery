@@ -382,9 +382,7 @@ img {
   transform: scale(1);
 }
 
-video {
-  background: #000;
-}
+
 
 /* ─── Loading → Page Entrance Transition (first visit only) ─── */
 

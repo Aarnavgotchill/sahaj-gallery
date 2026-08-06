@@ -47,3 +47,6 @@ src/assets/**
 !src/assets/*.tsx
 
 .vercel
+
+# ShipStudio metadata
+.shipstudio/
