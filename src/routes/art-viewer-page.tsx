@@ -5,8 +5,10 @@ import { getPageContent } from "@/data/artData";
 import ArtistHero from "@/components/art/ArtistHero";
 import ArtworkGallery from "@/components/art/ArtworkGallery";
 import ArtNav from "@/components/art/ArtNav";
+import { usePortraitNoScroll } from "@/lib/portrait";
 
 function ArtViewerPage() {
+  usePortraitNoScroll();
   const { slug } = useSearch({ from: "/art-viewer" });
   const routerState = useRouterState();
   const fromTransition = !!(routerState.location.state as Record<string, unknown>)?.sahajTransition;

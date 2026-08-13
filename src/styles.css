@@ -291,6 +291,21 @@ img {
   background: var(--color-muted);
 }
 
+/* Portrait: hide scrollbar + disable scroll animation on all pages except home */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  html.portrait-no-scroll {
+    scroll-behavior: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html.portrait-no-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  html.portrait-no-scroll * {
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ─── Cinematic Ambient System ─── */
 
 /* Persistent dark ambient overlay */

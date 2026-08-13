@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import GalleryLoadingBar from "@/components/GalleryLoadingBar";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
+import { usePortraitNoScroll } from "@/lib/portrait";
 import {
   ndhLogo4K as ndhLogo,
   sahajTransparentLogo as sahajLogo,
@@ -16,6 +17,7 @@ import {
 } from "@/assets/assets";
 
 function Sahaj() {
+  usePortraitNoScroll();
   const [contentReady, setContentReady] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
 

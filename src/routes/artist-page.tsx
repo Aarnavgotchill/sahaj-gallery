@@ -6,6 +6,7 @@ import {
   sahajTransparentLogo,
   ndhLogo4K,
 } from "@/assets/assets";
+import { usePortraitNoScroll } from "@/lib/portrait";
 
 export { getPageContent, getAllSlugs };
 export type { ArtistPageData };
@@ -678,6 +679,7 @@ function ArtworkCard({
 /* ─── Main Page Component ─── */
 
 export function ArtistPage({ slug }: { slug: string }) {
+  usePortraitNoScroll();
   const navigate = useNavigate();
   const data = getPageContent(slug);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);

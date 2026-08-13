@@ -4,8 +4,10 @@ import { ndhLogo4K as ndhLogo } from "@/assets/assets";
 import { getEssentialsEntry } from "@/data/essentialsData";
 import EssentialsNav from "@/components/essentials/EssentialsNav";
 import ArtworkGallery from "@/components/art/ArtworkGallery";
+import { usePortraitNoScroll } from "@/lib/portrait";
 
 function EssentialsViewerPage() {
+  usePortraitNoScroll();
   const { e } = useSearch({ from: "/essentials-viewer" });
   const entry = getEssentialsEntry(e);
   const [loading, setLoading] = useState(true);

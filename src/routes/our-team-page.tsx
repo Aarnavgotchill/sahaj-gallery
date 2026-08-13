@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
+import { usePortraitNoScroll } from "@/lib/portrait";
 import { ndhLogo4K as ndhLogo, sahajTransparentLogo as sahajLogo } from "@/assets/assets";
 
 const CS = "https://img.magnific.com/free-vector/coming-soon-text-abstract-sunrise-dark-background-with-motion-effect_157027-1073.jpg?semt=ais_hybrid&w=740&q=80";
@@ -35,6 +36,7 @@ const PRINCIPALS = [
 ];
 
 function OurTeam() {
+  usePortraitNoScroll();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

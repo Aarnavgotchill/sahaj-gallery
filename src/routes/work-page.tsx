@@ -3,6 +3,7 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import GalleryLoadingBar from "@/components/GalleryLoadingBar";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
+import { usePortraitNoScroll } from "@/lib/portrait";
 
 import { r2 } from "@/config/R2_URL";
 
@@ -880,6 +881,7 @@ const GALLERY_CSS = `
 
 /* ─── COMPONENT ─── */
 function Work() {
+  usePortraitNoScroll();
   const navigate = useNavigate();
   const { c, e } = useSearch({ from: "/work" });
 

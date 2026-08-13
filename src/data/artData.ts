@@ -54,7 +54,7 @@ const pages: Record<string, ArtistData> = {
     nationality: "Indian",
     birthYear: "1991",
     tagline: "LIGHT AND SHADOW IN COMPOSITE SPACE",
-    heroImage: "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/2A%20Webp/hero.webp",
+    heroImage: "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Vega%20Chhaya.webp",
     biography: [
       "Anita Correa works at the intersection of painting and architectural drawing, exploring how light carves space and shadow defines form.",
       "Her practice documents the forgotten geometries of domestic interiors — courtyards, verandahs, lattice screens — translating them into layered abstractions.",

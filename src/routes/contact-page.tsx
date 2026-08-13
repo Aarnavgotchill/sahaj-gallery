@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { ndhLogo4K as ndhLogo } from "@/assets/assets";
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
+import { usePortraitNoScroll } from "@/lib/portrait";
 
 const AdminPortal = lazy(() =>
   import("@/components/AdminPortal").then((m) => ({ default: m.AdminPortal })),
@@ -37,6 +38,7 @@ const qrLinks = [
 ] as const;
 
 function Contact() {
+  usePortraitNoScroll();
   const [isAdmin, setIsAdmin] = useState(
     () => sessionStorage.getItem("sahaj_admin") === "true",
   );
