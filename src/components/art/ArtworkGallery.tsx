@@ -57,6 +57,15 @@ export default function ArtworkGallery({
     margin: "-40px 0px", // fires when section is 40px inside the viewport
   });
 
+  // Portrait users: no scroll-triggered animation on any page except home —
+  // the grid appears immediately once images are decoded.
+  const isPortrait =
+    typeof window !== "undefined" &&
+    window.matchMedia("(orientation: portrait) and (max-width: 768px)").matches;
+  const isHome =
+    typeof window !== "undefined" && window.location.pathname === "/";
+  const skipScrollGate = isPortrait && !isHome;
+
   // The animation plays only when BOTH conditions are met:
   //   - inView:      gallery section has entered the viewport
   //   - galleryReady: every above-fold image has been decoded
@@ -64,7 +73,7 @@ export default function ArtworkGallery({
   // This is the exact Vadehra pattern:
   //   "gallery section becomes visible in scroll → artwork is already rendered →
   //    the entire grid gently lifts into frame with staggered cards"
-  const showGallery = galleryReady && inView;
+  const showGallery = galleryReady && (skipScrollGate || inView);
 
   return (
     <section
