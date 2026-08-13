@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback, lazy, Suspense } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
-import * as ambient from "@/lib/ambient";
+
 
 const AdminPortal = lazy(() =>
   import("@/components/AdminPortal").then((m) => ({ default: m.AdminPortal })),
@@ -43,33 +43,46 @@ function Index() {
   const phoneRef = useRef<HTMLInputElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const heroRef = useRef<HTMLVideoElement>(null);
+  const lastProgress = useRef(0);
+
+  // ── Apply fade state to hero video: volume lowers with scroll, full silence
+  //    once the hero is out of view (then paused). Never resets to full volume. ──
+  const applyVideoState = useCallback((progress: number) => {
+    const video = heroRef.current;
+    if (!video) return;
+    const vol = Math.max(0, 1 - progress);
+    video.muted = vol <= 0;
+    video.volume = vol;
+    const shouldPlay = progress < 1;
+    if (shouldPlay && video.paused) video.play().catch(() => {});
+    else if (!shouldPlay && !video.paused) video.pause();
+  }, []);
 
   const checkScroll = useCallback(() => {
     const progress = Math.min(1, window.scrollY / window.innerHeight);
-    if (heroRef.current) heroRef.current.volume = 1 - progress;
-    ambient.volume(Math.max(0, 0.6 * (1 - progress)));
-    ambient.play();
-  }, []);
+    lastProgress.current = progress;
+    applyVideoState(progress);
+  }, [applyVideoState]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    ambient.play();
+    applyVideoState(0);
     window.addEventListener("scroll", checkScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", checkScroll);
-      ambient.stop();
     };
-  }, [checkScroll]);
+  }, [checkScroll, applyVideoState]);
 
-  // ── Hero video: autoplay naturally (muted + playsInline + autoPlay) ──
+  // ── Hero video: autoplay with sound at top; on scroll it fades and pauses ──
   useEffect(() => {
     const video = heroRef.current;
     if (!video) return;
     const tryPlay = () => {
-      video.play().then(() => {
-        video.muted = false;
-        video.volume = 1;
-      }).catch(() => { });
+      if (video.readyState < 2) video.load();
+      video
+        .play()
+        .then(() => applyVideoState(lastProgress.current))
+        .catch(() => {});
     };
     // Attempt play on mount; also retry on first user interaction if blocked
     tryPlay();
@@ -84,7 +97,21 @@ function Index() {
       document.removeEventListener("click", onInteraction);
       document.removeEventListener("touchstart", onInteraction);
     };
-  }, []);
+  }, [applyVideoState]);
+
+  // ── Start playback the moment the loading screen begins its exit ──
+  useEffect(() => {
+    const onReady = () => {
+      const video = heroRef.current;
+      if (!video || !video.paused) return;
+      video
+        .play()
+        .then(() => applyVideoState(lastProgress.current))
+        .catch(() => {});
+    };
+    window.addEventListener("homepage:ready", onReady);
+    return () => window.removeEventListener("homepage:ready", onReady);
+  }, [applyVideoState]);
 
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();

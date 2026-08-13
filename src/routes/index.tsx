@@ -5,6 +5,7 @@ import {
   artworkSpotlight1,
   artworkSpotlight2,
   artworkSpotlight3,
+  heroVideo,
 } from "@/assets/assets";
 
 const Page = lazy(() => import("./index-page"));
@@ -23,6 +24,13 @@ function LoadingGate() {
         const img = new Image();
         img.src = src;
       });
+      // Preload the hero video so the first frame is ready the moment the
+      // loading screen fades out (same video for landscape and portrait)
+      const vid = document.createElement("video");
+      vid.preload = "auto";
+      vid.muted = true;
+      vid.src = heroVideo;
+      vid.load();
     }
   }, []);
 
