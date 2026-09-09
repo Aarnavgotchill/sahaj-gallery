@@ -51,7 +51,6 @@ import {
 } from "@/assets/assets";
 
 const WebGLGallery = lazy(() => import("@/components/WebGLGallery"));
-const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
 
 const VALID_CATEGORY_IDS = [
   "eyes",
@@ -654,13 +653,8 @@ const GALLERY_CSS = `
   user-select:none;
 }
 #gallery-root .essentials-box-wrap{
-  opacity:0;transform:translateY(20px);
-  transition:opacity .6s ease-out,transform .6s ease-out;
+  opacity:1;transform:none;
 }
-#gallery-root .essentials-box-wrap.in{
-  opacity:1;transform:translateY(0);
-}
-#gallery-root .btn-catalogue{border-radius:var(--gallery-radius)}
 @media(min-width:768px) and (max-width:1023px){
   #gallery-root #l1{height:360px}
   #gallery-root{--section-spacing:140px}
@@ -701,12 +695,8 @@ const GALLERY_CSS = `
   #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
   #gallery-root .essentials-section{flex:none;padding:0 0 34px;margin-top:28px;text-align:center}
   #gallery-root .essentials-grid{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:clamp(2px,0.6vw,5px);width:100%;margin:0 auto;padding:0 10px}
-  #gallery-root .essentials-box-wrap{flex:1 1 0;max-width:52px;min-width:0;opacity:0;transform:translateY(16px);transition:opacity .5s ease-out,transform .5s ease-out}
-  #gallery-root .essentials-box-wrap.in{opacity:1;transform:translateY(0)}
+  #gallery-root .essentials-box-wrap{flex:1 1 0;max-width:52px;min-width:0;opacity:1;transform:none}
   #gallery-root .essentials-box{width:100%;height:auto;aspect-ratio:1;min-width:0}
-  #gallery-root .gallery-content .btn-catalogue{display:block;margin:0 auto;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1.2px solid rgba(201,169,110,.75);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
-  #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
-  #gallery-root .btn-catalogue-wrap{flex:none;padding:26px 0 14px}
   #gallery-root .gallery-footer{flex:none;margin-top:0;position:relative;bottom:auto}
   #gallery-root #g-stage{padding:0 20px}
   #gallery-root .artwork{padding:0 20px}
@@ -851,16 +841,6 @@ const GALLERY_CSS = `
   animation-delay:var(--entrance-delay,0s);
 }
 
-/* ─── 7. Letter Animation ─── */
-@keyframes letter-entrance{
-  0%{opacity:0;transform:translateY(16px)}
-  100%{opacity:1;transform:translateY(0)}
-}
-#gallery-root .letter-entrance{
-  opacity:0;
-  animation:letter-entrance 0.6s cubic-bezier(.22,1,.36,1) forwards;
-  animation-delay:var(--letter-delay,0s);
-}
 
 /* ─── 8. Active Artwork Focus ─── */
 #gallery-root .art-frame.dim-sibling{
@@ -890,7 +870,6 @@ function Work() {
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
   const [panelsAnimated, setPanelsAnimated] = useState(false);
-  const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [introText, setIntroText] = useState<string | null>(null);
   const [showIntro, setShowIntro] = useState<boolean>(() => !galleryIntroPlayAttempted);
   // Fade state: "in" = video visible, "out" = fading out, false = hidden
@@ -1000,12 +979,6 @@ function Work() {
     document.querySelector(".essentials-section")?.setAttribute(
       "style", "opacity:0;pointer-events:none;transition:opacity 0.2s ease"
     );
-    const catBtn = document.querySelector<HTMLElement>(".btn-catalogue");
-    if (catBtn) {
-      catBtn.style.transition = "opacity 0.2s ease";
-      catBtn.style.opacity = "0";
-      catBtn.style.pointerEvents = "none";
-    }
 
     // ═══════════════════════════════════════════════════════════════
     // Set SAHAJ_ANIM_FROM_PANEL to false to revert to the old
@@ -1013,71 +986,81 @@ function Work() {
     // ═══════════════════════════════════════════════════════════════
 
     if (SAHAJ_ANIM_FROM_PANEL) {
-      // ── NEW: Letters rise from each panel's strip-letter ──
+      // ── GPU-composited: letters rise from panel strips using transform only ──
 
       const stripLetters = document.querySelectorAll<HTMLElement>(".strip-letter");
       const letterEls = wordmark.querySelectorAll<HTMLElement>(".sahaj-letter");
+      const totalWidth = 4 * LETTER_GAP;
+      const headerStartX = (window.innerWidth - totalWidth) / 2;
 
-      // Position each overlay letter at its panel letter's position & size
+      // Position each overlay letter at its panel letter's position (one-time layout)
       letterEls.forEach((el, i) => {
         const panelLetter = stripLetters[i];
         if (!panelLetter) return;
         const rect = panelLetter.getBoundingClientRect();
-        const style = getComputedStyle(panelLetter);
+        const computedSize = parseFloat(getComputedStyle(panelLetter).fontSize);
         el.style.transition = "none";
         el.style.top = `${rect.top}px`;
         el.style.left = `${rect.left}px`;
-        el.style.fontSize = style.fontSize;
+        el.style.fontSize = `${computedSize}px`;
         el.style.transform = "none";
         el.style.opacity = "0";
+        el.style.willChange = "transform, opacity";
+        // Store start metrics for transform calculation
+        el.dataset.startTop = `${rect.top}`;
+        el.dataset.startLeft = `${rect.left}`;
+        el.dataset.startSize = `${computedSize}`;
       });
 
-      // Force layout flush
+      // Force single layout flush
       void wordmark.offsetHeight;
 
       // Fade letters in at their panel positions
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           letterEls.forEach((el) => {
-            el.style.transition = "opacity 0.35s ease";
+            el.style.transition = "opacity 0.25s ease";
             el.style.opacity = "1";
           });
         });
       });
 
-      // Animate letters upward to header, shrinking to final size
+      // Animate letters upward to header using transform (GPU-composited)
       animTimersRef.current.push(setTimeout(() => {
-        const totalWidth = 4 * LETTER_GAP;
-        const startX = (window.innerWidth - totalWidth) / 2;
-
         letterEls.forEach((el, i) => {
+          const startTop = parseFloat(el.dataset.startTop || "0");
+          const startLeft = parseFloat(el.dataset.startLeft || "0");
+          const startSize = parseFloat(el.dataset.startSize || "1");
+
+          const targetTop = HEADER_TOP;
+          const targetLeft = headerStartX + i * LETTER_GAP;
+          const scale = HEADER_FONT / startSize;
+
+          const dx = targetLeft - startLeft;
+          const dy = targetTop - startTop;
+
           el.style.transition =
-            "top 0.85s cubic-bezier(0.22,1,0.36,1), " +
-            "left 0.85s cubic-bezier(0.22,1,0.36,1), " +
-            "font-size 0.85s cubic-bezier(0.22,1,0.36,1), " +
-            "color 0.85s cubic-bezier(0.22,1,0.36,1), " +
-            "-webkit-text-stroke 0.85s cubic-bezier(0.22,1,0.36,1), " +
-            "opacity 0.25s ease 0.55s";
-          el.style.top = `${HEADER_TOP}px`;
-          el.style.left = `${startX + i * LETTER_GAP}px`;
-          el.style.fontSize = `${HEADER_FONT}px`;
+            "transform 0.7s cubic-bezier(0.22,1,0.36,1), " +
+            "opacity 0.2s ease 0.5s";
+          el.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+          el.style.transformOrigin = "top left";
           el.style.color = "#C8A86E";
           el.style.WebkitTextStroke = "0px transparent";
         });
-      }, 450));
+      }, 350));
 
       // Fade overlay background away
       animTimersRef.current.push(setTimeout(() => {
-        overlay.style.transition = "background 0.4s ease";
+        overlay.style.transition = "background 0.35s ease";
         overlay.style.background = "transparent";
-      }, 950));
+      }, 750));
 
       // Fade letters out
       animTimersRef.current.push(setTimeout(() => {
         letterEls.forEach((el) => {
           el.style.opacity = "0";
         });
-      }, 1150));
+      }, 950));
 
       // Navigate
       animTimersRef.current.push(setTimeout(() => {
@@ -1089,7 +1072,7 @@ function Work() {
           replace: true,
           state: { sahajTransition: true },
         });
-      }, 1300));
+      }, 1100));
 
     } else {
       // ── OLD: Wordmark at screen center, flies straight up ──
@@ -1536,11 +1519,11 @@ function Work() {
             position: "fixed",
             inset: 0,
             zIndex: 100,
-            backgroundColor: "transparent",
+            backgroundColor: "#413152",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            opacity: introVisible && bgReady ? 1 : 0,
+            opacity: introVisible ? 1 : 0,
             transition: "opacity 0.55s ease",
             pointerEvents: introVisible ? "all" : "none",
           }}
@@ -1552,7 +1535,13 @@ function Work() {
             muted
             autoPlay
             preload="auto"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: bgReady ? 1 : 0,
+              transition: "opacity 0.3s ease",
+            }}
           />
           {/* Skip button — glassmorphism pill */}
           <button
@@ -1654,14 +1643,10 @@ function Work() {
 
               <section className="essentials-section">
                 <div className="essentials-grid">
-                  {ESSENTIALS_ENTRIES.map((entry, i) => (
+                  {ESSENTIALS_ENTRIES.map((entry) => (
                     <div
                       key={entry.key}
-                      className={`essentials-box-wrap ${essentialsReady ? "in letter-entrance" : ""}`}
-                      style={{
-                        ["--letter-delay" as string]: `${i * 90}ms`,
-                        transitionDelay: `${i * 100}ms`,
-                      } as React.CSSProperties}
+                      className={`essentials-box-wrap ${essentialsReady ? "in" : ""}`}
                     >
                       <div
                         className="essentials-box"
@@ -1674,17 +1659,6 @@ function Work() {
                 </div>
               </section>
 
-              <div className="btn-catalogue-wrap flex justify-center py-8">
-                <button
-                  onClick={() => setCatalogueOpen(true)}
-                  className="btn-catalogue inline-flex items-center gap-3 border border-[var(--gold)] px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background cursor-pointer"
-                >
-                  View Our Full Catalogue
-                  <span className="transition-transform duration-500 group-hover:translate-x-1">
-                    →
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
 
@@ -1919,7 +1893,7 @@ function Work() {
                 WebkitTextStroke: "2px #F0EFEB",
                 userSelect: "none",
                 opacity: 0,
-                willChange: "top, left, font-size, opacity, color",
+                willChange: "transform, opacity",
                 transition: "none",
                 zIndex: 101,
                 fontSize: "clamp(90px, 10vw, 130px)",
@@ -1940,12 +1914,6 @@ function Work() {
         />
       </div>
 
-      {catalogueOpen && (
-        <CataloguePopup
-          open={catalogueOpen}
-          onOpenChange={setCatalogueOpen}
-        />
-      )}
     </>
   );
 }
