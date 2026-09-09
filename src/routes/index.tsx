@@ -57,12 +57,13 @@ function LoadingGate() {
   const handleTransitionStart = useCallback(() => {
     _loadingShown = true;
     setPageVisible(true);
-    // Signal to index-page that hero video should start playing
-    window.dispatchEvent(new CustomEvent("homepage:ready"));
   }, []);
 
   const handleLoaderComplete = useCallback(() => {
     setShowLoader(false);
+    // Begin the hero only after the loader has fully faded away. This keeps
+    // frame zero and the opening audio hidden until the reveal is complete.
+    window.dispatchEvent(new CustomEvent("homepage:ready"));
   }, []);
 
   return (
@@ -82,7 +83,7 @@ function LoadingGate() {
           transition: "opacity 0.7s ease-out",
         }}
       >
-        <Page />
+        <Page playbackEnabled={!isFirstVisit || !showLoader} />
       </div>
     </>
   );

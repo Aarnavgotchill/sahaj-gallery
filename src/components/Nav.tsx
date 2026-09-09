@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { sahajTransparentLogo as logoSahaj } from "@/assets/assets";
+import { primeGalleryIntroAudio } from "@/lib/gallery-intro-audio";
 
 const links = [
   { href: "/", label: "Home" },
@@ -63,6 +64,9 @@ export function Nav({ home }: NavProps) {
             <Link
               key={l.href}
               to={l.href}
+              onClick={() => {
+                if (l.href === "/work") primeGalleryIntroAudio();
+              }}
               className="font-display text-[14px] tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-500 hover:text-foreground"
             >
               {l.label}
@@ -95,7 +99,10 @@ export function Nav({ home }: NavProps) {
             <Link
               key={l.href}
               to={l.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                if (l.href === "/work") primeGalleryIntroAudio();
+                setMenuOpen(false);
+              }}
               className="font-display border-b border-border/30 py-4 text-sm tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-300 hover:text-foreground last:border-0"
             >
               {l.label}

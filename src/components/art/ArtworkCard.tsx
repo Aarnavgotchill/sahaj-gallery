@@ -6,15 +6,19 @@ interface Props {
   artwork: Artwork;
   onOpen: () => void;
   /**
-   * "eager" for above-the-fold cards (i < 6) — browser fetches immediately.
+   * "eager" for the first visible row — browser fetches immediately.
    * "lazy"  for below-fold cards — browser defers until near viewport.
-   * The parent gallery pre-decodes all images anyway; this prop only controls
-   * the HTML hint to the browser's speculative preloader.
    */
   loading?: "eager" | "lazy";
 }
 
 const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3C/svg%3E";
+
+function imageKitUrl(src: string, width: number) {
+  if (!src.includes("ik.imagekit.io")) return src;
+  const separator = src.includes("?") ? "&" : "?";
+  return `${src}${separator}tr=w-${width},q-82,f-auto`;
+}
 
 export default function ArtworkCard({
   artwork,
@@ -30,6 +34,7 @@ export default function ArtworkCard({
       onClick={isPlaceholder ? undefined : onOpen}
       className={`group w-full text-left ${isPlaceholder ? "" : "cursor-pointer"}`}
       aria-label={isPlaceholder ? "Coming Soon" : `Open ${artwork.title}, ${artwork.year} in full screen`}
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
     >
       <div
         className="relative w-full overflow-hidden bg-card"
@@ -58,12 +63,17 @@ export default function ArtworkCard({
           </div>
         ) : (
           <img
-            src={artwork.image}
+            src={imageKitUrl(artwork.image, 960)}
+            srcSet={artwork.image.includes("ik.imagekit.io")
+              ? [480, 720, 960, 1200]
+                  .map((width) => `${imageKitUrl(artwork.image, width)} ${width}w`)
+                  .join(", ")
+              : undefined}
+            sizes="(min-width: 1024px) 384px, (min-width: 640px) 46vw, calc(100vw - 48px)"
             alt={`${artwork.title}, ${artwork.year}, ${artwork.medium}`}
             loading={loading}
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-[1.045]"
-            style={{ transform: "translateZ(0)" }}
           />
         )}
         <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 group-hover:bg-foreground/5" />

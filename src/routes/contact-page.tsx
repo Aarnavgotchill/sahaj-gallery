@@ -19,24 +19,6 @@ const inquiryTypes = [
   "General Inquiry",
 ] as const;
 
-const qrLinks = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/sahajgallery/",
-    src: "/qr/instagram.png",
-  },
-  {
-    label: "WhatsApp",
-    href: "https://wa.me/919510788933",
-    src: "/qr/whatsapp.png",
-  },
-  {
-    label: "Leave a Review",
-    href: "https://g.page/r/CTOJ5URhNfzKEBM/review",
-    src: "/qr/review.png",
-  },
-] as const;
-
 function Contact() {
   usePortraitNoScroll();
   const [isAdmin, setIsAdmin] = useState(
@@ -77,27 +59,40 @@ function Contact() {
       <div className="border-b border-border/30">
         <Nav />
       </div>
-      <div className="flex-1 flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-12 px-8 md:px-14 pt-28 md:pt-32 pb-[26px]">
-        <Reveal className="flex items-center justify-start">
-          <div className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.2]">
-            <p className="text-left">
-              Send us a message.{" "}
-              <em className="italic text-[var(--gold)]">
-                We'd love to hear
-              </em>
+      <section className="flex-1 px-5 pb-16 pt-32 sm:px-8 sm:pt-36 md:px-14 md:pb-24 md:pt-40">
+        <div className="mx-auto grid max-w-[1240px] items-start gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-24">
+        <Reveal className="flex items-center">
+          <div className="mx-auto w-full max-w-[470px] text-center lg:mx-0 lg:text-left">
+            <p className="text-[10px] tracking-[0.42em] uppercase text-muted-foreground">
+              Contact Sahaj Gallery
             </p>
-            <p className="text-left md:text-center">from you.</p>
+            <h1 className="mt-5 font-display text-[clamp(2rem,4vw,4rem)] leading-[1.08]">
+              Begin a thoughtful
+              <em className="mt-1 block italic text-[var(--gold)]">conversation.</em>
+            </h1>
+            <p className="mx-auto mt-7 max-w-[430px] text-[15px] leading-[1.9] text-muted-foreground lg:mx-0">
+              Whether you are discovering an artwork, planning a visit, or exploring a collaboration, our team would be pleased to hear from you.
+            </p>
+            <div className="mt-10 border-t border-border/40 pt-8 text-[14px] leading-[1.9] text-muted-foreground">
+              <p className="text-[10px] tracking-[0.32em] uppercase text-[var(--gold)]">Visit or reach us</p>
+              <p className="mt-4">Ahmedabad, Gujarat</p>
+              <a className="block transition-colors hover:text-[var(--gold)]" href="tel:+919510788933">+91 95107 88933</a>
+              <a className="block transition-colors hover:text-[var(--gold)]" href="mailto:contact@sahajgallery.com">contact@sahajgallery.com</a>
+            </div>
           </div>
         </Reveal>
-        <Reveal delay={150} className="flex items-start pt-4 md:pt-[100px]">
+        <Reveal delay={150} className="flex items-center">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full rounded-sm border border-border p-6 md:p-10"
+            className="w-full rounded-sm border border-border/60 bg-card/15 p-6 shadow-[0_24px_80px_rgba(20,10,32,0.12)] sm:p-8 md:p-10"
           >
-            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground">
-              Personal Information
-            </p>
-            <div className="mt-6 space-y-4">
+            <div className="border-b border-border/40 pb-6">
+              <div>
+                <p className="text-[10px] tracking-[0.38em] uppercase text-muted-foreground">Inquiry</p>
+                <h2 className="mt-2 font-display text-2xl text-foreground">Tell us what brings you here</h2>
+              </div>
+            </div>
+            <div className="mt-7 grid gap-x-8 gap-y-6 md:grid-cols-2">
               <div>
                 <label
                   htmlFor="name"
@@ -162,7 +157,7 @@ function Contact() {
                   ))}
                 </select>
               </div>
-              <div>
+              <div className="md:col-span-2">
                 <label
                   htmlFor="message"
                   className="block text-[10px] tracking-[0.3em] uppercase text-muted-foreground"
@@ -171,16 +166,16 @@ function Contact() {
                 </label>
                 <textarea
                   id="message"
-                  rows={3}
+                  rows={4}
                   {...register("message", { required: true })}
                   className="mt-2 w-full resize-none border-0 border-b border-border bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors duration-500 focus:border-[var(--gold)]"
                 />
               </div>
             </div>
-            <div className="mt-6 text-center">
+            <div className="mt-8 text-center md:text-left">
               <button
                 type="submit"
-                className="group relative inline-flex items-center gap-3 overflow-hidden border border-[var(--gold)] px-6 md:px-12 py-4 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background"
+                className="group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden border border-[var(--gold)] px-6 py-4 text-[11px] tracking-[0.3em] uppercase text-[var(--gold)] transition-all duration-500 hover:bg-[var(--gold)] hover:text-background md:w-auto md:px-12"
               >
                 <span className="relative z-10">Send Inquiry</span>
                 <Send className="relative z-10 h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
@@ -189,42 +184,8 @@ function Contact() {
             </div>
           </form>
         </Reveal>
-      </div>
-      <div className="px-8 md:px-14 pb-16 md:pb-24">
-        <Reveal className="text-center">
-          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground">
-            Scan to Connect
-          </p>
-          <h2 className="mt-3 font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.2]">
-            Sahaj, <em className="italic text-[var(--gold)]">in your hands</em>
-          </h2>
-        </Reveal>
-        <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
-          {qrLinks.map((qr, i) => (
-            <Reveal key={qr.label} delay={i * 120}>
-              <a
-                href={qr.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex flex-col items-center border border-border/30 p-6 text-center transition-colors duration-500 hover:border-[var(--gold)]"
-              >
-                <span className="flex h-32 w-32 items-center justify-center rounded-sm bg-white p-2">
-                  <img
-                    src={qr.src}
-                    alt={`${qr.label} QR code`}
-                    draggable={false}
-                    className="h-full w-full select-none"
-                    onContextMenu={(e) => e.preventDefault()}
-                  />
-                </span>
-                <span className="mt-5 text-[10px] tracking-[0.3em] uppercase text-[var(--gold)]">
-                  {qr.label}
-                </span>
-              </a>
-            </Reveal>
-          ))}
         </div>
-      </div>
+      </section>
       <footer className="border-t border-border/30 px-8 py-4 md:px-14">
         <div className="flex items-center justify-between">
           <p className="font-display text-lg md:text-xl tracking-[0.3em] text-[#C8A86E]">SAHAJ GALLERY</p>

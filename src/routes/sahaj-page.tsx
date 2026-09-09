@@ -105,7 +105,7 @@ function Sahaj() {
             <h2 className="mx-auto mt-8 max-w-3xl font-display text-[clamp(1.1rem,4vw,25px)] leading-[1.4] text-[color:var(--gold)] md:mt-10">
               SAHAJ Gallery is the artistic extension of NDH House
             </h2>
-            <p className="mx-auto mt-6 text-[clamp(1.05rem,1.2vw,1.2rem)] leading-[1.9] text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-[880px] text-[clamp(1rem,1.15vw,1.15rem)] leading-[1.9] text-muted-foreground">
               Founded on the belief that meaningful spaces are enriched by
               stories, culture, and art. Emerging from an architectural
               practice, SAHAJ serves as a gallery and creative destination
@@ -135,16 +135,17 @@ function Sahaj() {
       </section>
 
       {/* PARTNERSHIP STORY */}
-      <section className="section-ambient relative border-t border-border/40 px-8 pt-12 pb-16 md:px-14 md:pt-20 md:pb-32">
-        <div className="relative mx-auto max-w-[1100px]">
-          <div className="flex flex-col gap-12 md:grid md:grid-cols-2 md:gap-16 lg:gap-24">
-            <Reveal>
+      <section className="section-ambient relative border-t border-border/40 px-8 py-20 md:px-14 md:py-28">
+        <div className="relative mx-auto max-w-[1180px]">
+          <div className="grid items-stretch gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
+            <Reveal className="flex items-center">
+              <div className="mx-auto w-full max-w-[520px] text-center md:text-left">
               <p className="kicker">The Collaboration</p>
-              <h2 className="mt-8 font-display text-[clamp(1rem,1.4vw,1.4rem)] leading-[1.2] text-[color:var(--gold)] md:whitespace-nowrap">
+              <h2 className="mt-6 font-display text-[clamp(1.15rem,1.55vw,1.5rem)] leading-[1.35] text-[color:var(--gold)]">
                 STUDIO SHIKSHAPATRI <em className="italic">×</em> KARIGARI
                 STUDIO
               </h2>
-              <div className="mt-10 space-y-5 text-[14px] leading-loose text-muted-foreground">
+              <div className="mt-8 space-y-6 text-[15px] leading-[1.9] text-muted-foreground">
                 <p>
                   SAHAJ Gallery collaborates with artists, designers, and
                   creative studios to bring distinctive art forms into
@@ -152,17 +153,17 @@ function Sahaj() {
                 </p>
                 <p>
                   <span className="font-semibold text-foreground/90">
-                    Studio Shikshapatri – Calligraphy Series
+                    Studio Shikshapatri — Calligraphy Series
                   </span>
                   <br />
-                  Creates narrative driven artworks that blend Gujarati and broader Indian traditions and cultural elements.
+                  Creates narrative-driven artworks that blend Gujarati and broader Indian traditions and cultural elements.
                   This thematic approach was chosen to make the artworks more relatable and accessible,
                   enabling viewers to connect with them more deeply through familiar stories, Heritage,
                   and cultural references.
                 </p>
                 <p>
                   <span className="font-semibold text-foreground/90">
-                    Karigari Studio – Mosaic Series
+                    Karigari Studio — Mosaic Series
                   </span>
                   <br />
                   An exploration of craftsmanship and materiality through
@@ -175,6 +176,7 @@ function Sahaj() {
                   combining the expertise of skilled artists with thoughtful
                   design sensibilities.
                 </p>
+              </div>
               </div>
             </Reveal>
             <Reveal delay={200}>
@@ -209,7 +211,7 @@ function Sahaj() {
                   </div>
                 </div>
                 <p className="text-center text-[12px] tracking-[0.25em] uppercase text-muted-foreground">
-                  Collobration with sahaj
+                  Collaboration with Sahaj
                 </p>
               </div>
             </Reveal>

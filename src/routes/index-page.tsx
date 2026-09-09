@@ -34,7 +34,7 @@ const services = [
   },
 ];
 
-function Index() {
+function Index({ playbackEnabled = true }: { playbackEnabled?: boolean }) {
   const [isAdmin, setIsAdmin] = useState(
     () => sessionStorage.getItem("sahaj_admin") === "true",
   );
@@ -44,6 +44,7 @@ function Index() {
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const heroRef = useRef<HTMLVideoElement>(null);
   const lastProgress = useRef(0);
+  const audioUnlocked = useRef(false);
 
   // ── Apply fade state to hero video: volume lowers with scroll, full silence
   //    once the hero is out of view (then paused). Never resets to full volume. ──
@@ -51,12 +52,14 @@ function Index() {
     const video = heroRef.current;
     if (!video) return;
     const vol = Math.max(0, 1 - progress);
-    video.muted = vol <= 0;
+    // Browsers reject sound-on autoplay. Keep the opening visual playing muted
+    // until a real user gesture allows us to enable its soundtrack.
+    video.muted = !audioUnlocked.current || vol <= 0;
     video.volume = vol;
-    const shouldPlay = progress < 1;
+    const shouldPlay = playbackEnabled && progress < 1;
     if (shouldPlay && video.paused) video.play().catch(() => {});
     else if (!shouldPlay && !video.paused) video.pause();
-  }, []);
+  }, [playbackEnabled]);
 
   const checkScroll = useCallback(() => {
     const progress = Math.min(1, window.scrollY / window.innerHeight);
@@ -66,7 +69,14 @@ function Index() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    applyVideoState(0);
+    if (playbackEnabled) applyVideoState(0);
+    else {
+      const video = heroRef.current;
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
+    }
     window.addEventListener("scroll", checkScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", checkScroll);
@@ -79,15 +89,20 @@ function Index() {
     if (!video) return;
     const tryPlay = () => {
       if (video.readyState < 2) video.load();
+      if (!audioUnlocked.current) video.muted = true;
       video
         .play()
         .then(() => applyVideoState(lastProgress.current))
         .catch(() => {});
     };
     // Attempt play on mount; also retry on first user interaction if blocked
-    tryPlay();
+    if (playbackEnabled) tryPlay();
     const onInteraction = () => {
-      if (video.paused) tryPlay();
+      audioUnlocked.current = true;
+      if (playbackEnabled) {
+        applyVideoState(lastProgress.current);
+        if (video.paused) tryPlay();
+      }
       document.removeEventListener("click", onInteraction);
       document.removeEventListener("touchstart", onInteraction);
     };
@@ -97,13 +112,13 @@ function Index() {
       document.removeEventListener("click", onInteraction);
       document.removeEventListener("touchstart", onInteraction);
     };
-  }, [applyVideoState]);
+  }, [applyVideoState, playbackEnabled]);
 
-  // ── Start playback the moment the loading screen begins its exit ──
+  // ── Start playback only after the loading screen has fully disappeared ──
   useEffect(() => {
     const onReady = () => {
       const video = heroRef.current;
-      if (!video || !video.paused) return;
+      if (!video || !playbackEnabled || !video.paused) return;
       video
         .play()
         .then(() => applyVideoState(lastProgress.current))
@@ -111,7 +126,7 @@ function Index() {
     };
     window.addEventListener("homepage:ready", onReady);
     return () => window.removeEventListener("homepage:ready", onReady);
-  }, [applyVideoState]);
+  }, [applyVideoState, playbackEnabled]);
 
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -163,7 +178,6 @@ function Index() {
           <video
             ref={heroRef}
             src={heroVideo}
-            autoPlay
             loop
             playsInline
             muted
@@ -226,8 +240,8 @@ function Index() {
           </Reveal>
 
           {/* ROW 1: Image left, text right  Burrows Beneath the Cracks */}
-          <div className="relative mx-auto flex flex-col md:grid max-w-[1400px] items-center gap-10 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.8fr]">
-            <Reveal className="flex justify-center">
+          <div className="relative mx-auto flex flex-col md:grid max-w-[1240px] items-center gap-10 pb-20 md:gap-20 md:pb-40 md:grid-cols-2">
+            <Reveal className="flex w-full justify-center">
               <div onContextMenu={(e) => e.preventDefault()}>
                 <img
                   src={art1}
@@ -238,8 +252,8 @@ function Index() {
                 />
               </div>
             </Reveal>
-            <Reveal delay={200}>
-              <div className="space-y-5 text-left">
+            <Reveal delay={200} className="flex w-full justify-center">
+              <div className="w-full max-w-[520px] space-y-5 text-left">
                 <h3 className="font-display text-[clamp(1.2rem,2vw,1.8rem)] text-[var(--gold)] leading-snug">
                   Burrows Beneath the Cracks
                 </h3>
@@ -264,9 +278,9 @@ function Index() {
           </div>
 
           {/* ROW 2: Text left, image right  Coffee on Canvas */}
-          <div className="relative mx-auto flex flex-col-reverse md:grid max-w-[1400px] items-center gap-10 pb-20 md:gap-16 md:pb-40 md:grid-cols-[1fr_1.5fr]">
-            <Reveal delay={200}>
-              <div className="space-y-5 text-left">
+          <div className="relative mx-auto flex flex-col-reverse md:grid max-w-[1240px] items-center gap-10 pb-20 md:gap-20 md:pb-40 md:grid-cols-2">
+            <Reveal delay={200} className="flex w-full justify-center">
+              <div className="w-full max-w-[520px] space-y-5 text-left">
                 <h3 className="font-display text-[clamp(1.2rem,2vw,1.8rem)] text-[var(--gold)] leading-snug">
                   Coffee on Canvas
                 </h3>
@@ -277,18 +291,14 @@ function Index() {
                   recall its taste, the richness of its soil, the altitude where
                   it was grown, and the story behind every bean.
                   More than just artwork, it captures the memories, rituals, and
-                  emotions that make coffee special. For someone who truly loves
-                  coffee, this is one of the most personal canvases they can
-                  have in their space.  To experience it in person and explore the story behind every
-                  shade, do visit us at our gallery.
+                  emotions that make coffee special.
                 </p>
                 <p className="font-sans text-[15px] leading-loose text-muted-foreground">
                   More than just artwork, it captures the memories, rituals, and
                   emotions that make coffee special. For someone who truly loves
                   coffee, this is one of the most personal canvases they can
-                  have in their space.  To experience it in person and explore the story behind every
+                  have in their space. To experience it in person and explore the story behind every
                   shade, do visit us at our gallery.
-
                 </p>
 
                 <p className="font-display text-[15px] leading-relaxed text-muted-foreground/70 italic">
@@ -296,7 +306,7 @@ function Index() {
                 </p>
               </div>
             </Reveal>
-            <Reveal className="w-full flex justify-end md:-mr-16">
+            <Reveal className="flex w-full justify-center">
               <div
                 className="w-full"
                 onContextMenu={(e) => e.preventDefault()}
@@ -313,7 +323,7 @@ function Index() {
           </div>
 
           {/* ROW 3: Image left, text right  Ayodhya Alok */}
-          <div className="relative mx-auto flex flex-col md:grid max-w-[1400px] items-center gap-10 pb-20 md:gap-16 md:pb-0 md:grid-cols-[1.5fr_1fr]">
+          <div className="relative mx-auto flex flex-col md:grid max-w-[1240px] items-center gap-10 pb-20 md:gap-20 md:pb-0 md:grid-cols-2">
             <Reveal className="w-full">
               <div
                 className="w-full flex justify-center"
@@ -328,8 +338,8 @@ function Index() {
                 />
               </div>
             </Reveal>
-            <Reveal delay={200}>
-              <div className="space-y-5 text-left">
+            <Reveal delay={200} className="flex w-full justify-center">
+              <div className="w-full max-w-[520px] space-y-5 text-left">
                 <h3 className="font-display text-[clamp(1.2rem,2vw,1.8rem)] text-[var(--gold)] leading-snug">
                   Ayodhya Alok
                 </h3>

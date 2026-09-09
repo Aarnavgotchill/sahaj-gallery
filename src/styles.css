@@ -53,6 +53,36 @@ body {
   overflow-x: hidden;
 }
 
+/* Editorial prose alignment
+   Keep display text and interface labels untouched while giving readable
+   content the even left/right edges used throughout the gallery identity. */
+:where(
+  main p:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="text-center"]):not([class*="text-right"]),
+  main li,
+  main blockquote
+) {
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: break-word;
+  word-break: normal;
+  word-spacing: normal;
+}
+
+/* Explicit alignment utilities always remain authoritative. */
+:where(main p.text-center) {
+  text-align: center;
+  text-align-last: center;
+  hyphens: none;
+}
+
+:where(main p.text-right) {
+  text-align: right;
+  text-align-last: right;
+}
+
 .font-display {
   font-family: var(--font-display);
 }
@@ -142,7 +172,7 @@ body {
   animation: pop-in-out 3s ease-out forwards;
 }
 
-/* Pop in from above, hold 5s, then disappear */
+/* Pop in from above, hold for the extended cinematic beat, then disappear */
 @keyframes pop-in-out-5s {
   0% {
     opacity: 0;
@@ -152,7 +182,7 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-  80% {
+  89% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -164,7 +194,7 @@ body {
 
 .animate-pop-in-out-5s {
   opacity: 0;
-  animation: pop-in-out-5s 5s ease-out forwards;
+  animation: pop-in-out-5s 9s ease-out forwards;
 }
 
 /* Fade up with delay — appears after text disappears */

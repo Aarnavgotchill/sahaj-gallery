@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { X } from "lucide-react";
 
@@ -16,12 +16,26 @@ export default function ArtNav() {
   const navigate = useNavigate();
   const { slug } = useSearch({ from: "/art-viewer" });
   const [scrolled, setScrolled] = useState(false);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
+    const updateHeader = () => {
+      frameRef.current = null;
+      const nextScrolled = window.scrollY > 40;
+      setScrolled((current) => current === nextScrolled ? current : nextScrolled);
+    };
+    const onScroll = () => {
+      if (frameRef.current === null) {
+        frameRef.current = window.requestAnimationFrame(updateHeader);
+      }
+    };
+
+    updateHeader();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
+    };
   }, []);
 
   const goTo = useCallback(
@@ -39,7 +53,7 @@ export default function ArtNav() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${
           scrolled
-            ? "backdrop-blur-2xl bg-background/40 border-b border-border/30"
+            ? "bg-background/95 border-b border-border/30"
             : "bg-transparent"
         }`}
       >

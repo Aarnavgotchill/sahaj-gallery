@@ -4,43 +4,15 @@ import { Nav } from "@/components/Nav";
 import GalleryLoadingBar from "@/components/GalleryLoadingBar";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
 import { usePortraitNoScroll } from "@/lib/portrait";
+import { takePrimedGalleryIntroAudio } from "@/lib/gallery-intro-audio";
 
 import { r2 } from "@/config/R2_URL";
 import { galleryIntroVideoLandscape, galleryIntroVideoPortrait } from "@/assets/assets";
 
 const INTRO_VIDEO_LANDSCAPE = galleryIntroVideoLandscape;
 const INTRO_VIDEO_PORTRAIT = galleryIntroVideoPortrait;
-const BG_AUDIO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/ReelAudio-80306.mp3";
 
-const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
-
-declare global {
-  interface Window {
-    __sahaj_gallery_bg_audio?: HTMLAudioElement;
-  }
-}
-
-let galleryAudioSingleton: HTMLAudioElement | null = null;
-let galleryAudioPlaybackStarted = false;
-let galleryAudioListenerBound = false;
 let galleryIntroPlayAttempted = false;
-let galleryIntroVideoListenersBound = false;
-
-function ensureGalleryAudio(): HTMLAudioElement {
-  if (galleryAudioSingleton) return galleryAudioSingleton;
-
-  const audio = new Audio(BG_AUDIO_URL);
-  audio.preload = "auto";
-  audio.loop = false;
-  audio.volume = 1.0;
-  galleryAudioSingleton = audio;
-
-  if (typeof window !== "undefined") {
-    window.__sahaj_gallery_bg_audio = audio;
-  }
-
-  return audio;
-}
 
 import { CATEGORY_TO_SLUG } from "@/config/artPages";
 import {
@@ -658,6 +630,17 @@ const GALLERY_CSS = `
   opacity:1;transform:none;
 }
 #gallery-root .btn-catalogue{border-radius:var(--gallery-radius)}
+#gallery-root .btn-catalogue-wrap{display:flex;justify-content:center;padding:20px 0 0}
+#gallery-root .btn-catalogue{
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  min-width:260px;padding:14px 28px;
+  border:1.2px solid rgba(201,169,110,.75);
+  background:transparent;color:var(--accent);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;
+  transition:background .4s ease,color .4s ease,box-shadow .4s ease,transform .4s ease;
+}
+#gallery-root .btn-catalogue:hover{background:var(--accent);color:var(--color-background);box-shadow:0 12px 32px rgba(201,169,110,.14);transform:translateY(-2px)}
+#gallery-root .btn-catalogue svg{width:15px;height:15px;fill:currentColor}
 @media(min-width:768px) and (max-width:1023px){
   #gallery-root #l1{height:360px}
   #gallery-root{--section-spacing:140px}
@@ -696,13 +679,13 @@ const GALLERY_CSS = `
   #gallery-root .strip:active{transform:scale(0.97)}
   #gallery-root .strip-letter{position:static;transform:none;font-family:'Gambetta',Georgia,serif;font-weight:500;font-size:clamp(48px,16vw,80px);color:transparent;-webkit-text-stroke:1.5px #F0EFEB;line-height:1;user-select:none;z-index:10}
   #gallery-root .strip-num{position:absolute;top:8px;right:10px;font-size:7px;font-weight:200;letter-spacing:.28em;color:rgba(201,169,110,.25);z-index:10}
-  #gallery-root .essentials-section{flex:none;padding:0 0 34px;margin-top:28px;text-align:center}
+  #gallery-root .essentials-section{flex:none;padding:0 0 18px;margin-top:24px;text-align:center}
   #gallery-root .essentials-grid{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:clamp(2px,0.6vw,5px);width:100%;margin:0 auto;padding:0 10px}
   #gallery-root .essentials-box-wrap{flex:1 1 0;max-width:52px;min-width:0;opacity:1;transform:none}
   #gallery-root .essentials-box{width:100%;height:auto;aspect-ratio:1;min-width:0}
   #gallery-root .gallery-content .btn-catalogue{display:block;margin:0 auto;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1.2px solid rgba(201,169,110,.75);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
   #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
-  #gallery-root .btn-catalogue-wrap{flex:none;padding:26px 0 14px}
+  #gallery-root .btn-catalogue-wrap{flex:none;padding:20px 0 10px}
   #gallery-root .gallery-footer{flex:none;margin-top:0;position:relative;bottom:auto}
   #gallery-root #g-stage{padding:0 20px}
   #gallery-root .artwork{padding:0 20px}
@@ -876,7 +859,6 @@ function Work() {
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
   const [panelsAnimated, setPanelsAnimated] = useState(false);
-  const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [introText, setIntroText] = useState<string | null>(null);
   const [showIntro, setShowIntro] = useState<boolean>(() => !galleryIntroPlayAttempted);
   // Fade state: "in" = video visible, "out" = fading out, false = hidden
@@ -906,8 +888,7 @@ function Work() {
   const shimmerDelaysRef = useRef<number[]>([]);
   const shimmerDurationsRef = useRef<number[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
-  const fadeFrameRef = useRef<number | null>(null);
+  const introAudioRef = useRef<HTMLAudioElement | null>(null);
   const introFinishedRef = useRef(false);
   const galleryOpen = !!c || !!e;
 
@@ -1156,64 +1137,6 @@ function Work() {
     }
   }, []);
 
-  // ── Background audio: create once and reuse for the current page visit ──
-  useEffect(() => {
-    const audio = ensureGalleryAudio();
-    bgAudioRef.current = audio;
-
-    const cleanupResumeListeners = () => {
-      document.removeEventListener("click", resumeAudio);
-      document.removeEventListener("touchstart", resumeAudio);
-      document.removeEventListener("keydown", resumeAudio);
-    };
-
-    const resumeAudio = () => {
-      void audio.play().catch(() => { });
-      cleanupResumeListeners();
-    };
-
-    const handleAudioEnded = () => {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 0;
-    };
-
-    if (!galleryAudioListenerBound) {
-      audio.addEventListener("ended", handleAudioEnded);
-      galleryAudioListenerBound = true;
-    }
-
-    if (galleryAudioPlaybackStarted) return;
-
-    galleryAudioPlaybackStarted = true;
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        cleanupResumeListeners();
-        document.addEventListener("click", resumeAudio, { once: true });
-        document.addEventListener("touchstart", resumeAudio, { once: true });
-        document.addEventListener("keydown", resumeAudio, { once: true });
-      });
-    }
-
-    return () => {
-      cleanupResumeListeners();
-      if (fadeFrameRef.current !== null) {
-        cancelAnimationFrame(fadeFrameRef.current);
-        fadeFrameRef.current = null;
-      }
-      if (bgAudioRef.current === audio) {
-        bgAudioRef.current = null;
-      }
-
-      if (typeof window !== "undefined" && window.location.pathname !== "/work") {
-        audio.pause();
-        audio.currentTime = 0;
-        audio.volume = 0;
-      }
-    };
-  }, []);
-
   // ── Preload background assets before intro becomes visible ──
   useEffect(() => {
     let cancelled = false;
@@ -1252,43 +1175,11 @@ function Work() {
     };
   }, []);
 
-  // ── Volume fade helper: gradually reduce from current to 0.20 over ~500ms ──
-  const fadeAudioToAmbient = useCallback(() => {
-    const audio = bgAudioRef.current;
-    if (!audio) return;
-
-    if (fadeFrameRef.current !== null) {
-      cancelAnimationFrame(fadeFrameRef.current);
-      fadeFrameRef.current = null;
-    }
-
-    const targetVol = 0.20;
-    const durationMs = 500;
-    const startVol = audio.volume;
-    const start = performance.now();
-
-    const tick = (now: number) => {
-      const progress = Math.min(1, (now - start) / durationMs);
-      const nextVol = startVol + (targetVol - startVol) * progress;
-      audio.volume = Math.max(targetVol, Math.min(1, nextVol));
-
-      if (progress < 1) {
-        fadeFrameRef.current = requestAnimationFrame(tick);
-      } else {
-        audio.volume = targetVol;
-        fadeFrameRef.current = null;
-      }
-    };
-
-    fadeFrameRef.current = requestAnimationFrame(tick);
-  }, []);
-
   // ── Transition from intro → gallery (natural or skip) ──
   const finishIntro = useCallback(() => {
     if (introFinishedRef.current) return;
     introFinishedRef.current = true;
 
-    fadeAudioToAmbient();
     // Fade the intro overlay out, then unmount
     setIntroVisible(false);
     const t = setTimeout(() => {
@@ -1297,20 +1188,18 @@ function Work() {
       setEssentialsReady(true);
     }, 550); // matches CSS transition duration
     return () => clearTimeout(t);
-  }, [fadeAudioToAmbient]);
-
-  const handleIntroEnd = useCallback(() => {
-    finishIntro();
-  }, [finishIntro]);
+  }, []);
 
   const handleSkip = useCallback(() => {
-    if (videoRef.current) videoRef.current.pause();
-    // Stop background audio completely — user chose to skip
-    const audio = bgAudioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 0;
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.volume = 0;
+    }
+    if (introAudioRef.current) {
+      introAudioRef.current.pause();
+      introAudioRef.current.currentTime = 0;
+      introAudioRef.current.volume = 0;
+      introAudioRef.current = null;
     }
     finishIntro();
   }, [finishIntro]);
@@ -1382,32 +1271,83 @@ function Work() {
   }, [showIntro]);
 
   useEffect(() => {
-    if (!showIntro || galleryIntroPlayAttempted || !videoRef.current) return;
+    if (!showIntro || !videoRef.current) return;
 
     const video = videoRef.current;
-    galleryIntroPlayAttempted = true;
+    const primedAudio = takePrimedGalleryIntroAudio();
+    introAudioRef.current = primedAudio;
+    video.muted = !!primedAudio;
+    video.volume = 1;
 
-    if (!galleryIntroVideoListenersBound) {
-      const handleVideoEnded = () => {
-        if (!introFinishedRef.current) {
-          finishIntro();
-        }
-      };
-      const handleVideoError = () => {
-        if (!introFinishedRef.current) {
-          finishIntro();
-        }
-      };
-
-      video.addEventListener("ended", handleVideoEnded);
-      video.addEventListener("error", handleVideoError);
-      galleryIntroVideoListenersBound = true;
+    if (primedAudio) {
+      primedAudio.currentTime = video.currentTime;
+      primedAudio.volume = 1;
     }
+
+    // The intro is 10.33s. Fade its embedded, frame-synchronised audio over
+    // the final 1.5s so picture and sound finish together without a hard cut.
+    const handleTimeUpdate = () => {
+      if (!Number.isFinite(video.duration)) return;
+      const remaining = video.duration - video.currentTime;
+      const volume = remaining < 1.5 ? Math.max(0, remaining / 1.5) : 1;
+      video.volume = volume;
+      if (primedAudio) {
+        if (Math.abs(primedAudio.currentTime - video.currentTime) > 0.2) {
+          primedAudio.currentTime = video.currentTime;
+        }
+        primedAudio.volume = volume;
+      }
+    };
+    const stopAudio = () => {
+      if (!primedAudio) return;
+      primedAudio.pause();
+      primedAudio.currentTime = 0;
+      primedAudio.volume = 0;
+      if (introAudioRef.current === primedAudio) introAudioRef.current = null;
+    };
+    const handleVideoEnded = () => {
+      stopAudio();
+      finishIntro();
+    };
+    const handleVideoError = () => {
+      stopAudio();
+      finishIntro();
+    };
+    const retryWithSound = () => {
+      video.currentTime = 0;
+      video.muted = false;
+      video.volume = 1;
+      void video.play().then(() => {
+        galleryIntroPlayAttempted = true;
+      }).catch(() => {});
+      document.removeEventListener("pointerdown", retryWithSound);
+      document.removeEventListener("keydown", retryWithSound);
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("ended", handleVideoEnded);
+    video.addEventListener("error", handleVideoError);
 
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => { });
+      playPromise
+        .then(() => {
+          galleryIntroPlayAttempted = true;
+        })
+        .catch(() => {
+          document.addEventListener("pointerdown", retryWithSound, { once: true });
+          document.addEventListener("keydown", retryWithSound, { once: true });
+        });
     }
+
+    return () => {
+      stopAudio();
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("ended", handleVideoEnded);
+      video.removeEventListener("error", handleVideoError);
+      document.removeEventListener("pointerdown", retryWithSound);
+      document.removeEventListener("keydown", retryWithSound);
+    };
   }, [showIntro, finishIntro]);
 
   useEffect(() => {
@@ -1545,7 +1485,6 @@ function Work() {
             ref={videoRef}
             src={introSrc}
             playsInline
-            muted
             autoPlay
             preload="auto"
             style={{
@@ -1678,6 +1617,19 @@ function Work() {
                   ))}
                 </div>
               </section>
+
+              <div className="btn-catalogue-wrap">
+                <a
+                  className="btn-catalogue"
+                  href="https://api.whatsapp.com/send/?phone=919510788933&text=Hi,%20Please%20share%20the%20catalog%20link!"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Request the Sahaj Gallery catalogue on WhatsApp"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.84 9.84 0 0 0-8.4 14.95L2 22l5.2-1.62A9.9 9.9 0 1 0 12.04 2Zm0 17.98a8 8 0 0 1-4.08-1.12l-.29-.17-3.08.96 1-3-.2-.31a7.97 7.97 0 1 1 6.65 3.64Zm4.38-5.97c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.19a7.22 7.22 0 0 1-1.34-1.66c-.14-.24-.01-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.39 1.37.5.58.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"/></svg>
+                  Request Catalogue
+                </a>
+              </div>
 
             </div>
           </div>
@@ -1934,12 +1886,6 @@ function Work() {
         />
       </div>
 
-      {catalogueOpen && (
-        <CataloguePopup
-          open={catalogueOpen}
-          onOpenChange={setCatalogueOpen}
-        />
-      )}
     </>
   );
 }

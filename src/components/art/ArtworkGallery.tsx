@@ -32,18 +32,20 @@ export default function ArtworkGallery({
   const [galleryReady, setGalleryReady] = useState(false);
 
   useEffect(() => {
-    const aboveFold = artworks.slice(0, 6);
+    let cancelled = false;
+    setGalleryReady(false);
+    const aboveFold = artworks.slice(0, 3);
     const safetyTimer = setTimeout(() => setGalleryReady(true), 4000);
 
     Promise.all(aboveFold.map((a) => decodeImage(a.image))).then(() => {
       clearTimeout(safetyTimer);
-      setGalleryReady(true);
+      if (!cancelled) setGalleryReady(true);
     });
 
-    // Warm below-fold images in background so they're ready before the user scrolls
-    artworks.slice(6).forEach((a) => decodeImage(a.image));
-
-    return () => clearTimeout(safetyTimer);
+    return () => {
+      cancelled = true;
+      clearTimeout(safetyTimer);
+    };
   }, [artworks]);
 
   // ── Step 2: Viewport trigger ───────────────────────────────────────────────
@@ -101,7 +103,7 @@ export default function ArtworkGallery({
               key={artwork.id}
               artwork={artwork}
               onOpen={() => open(i)}
-              loading={i < 6 ? "eager" : "lazy"}
+              loading={i < 3 ? "eager" : "lazy"}
             />
           ))}
         </motion.div>
