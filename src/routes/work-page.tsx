@@ -6,9 +6,10 @@ import { useImagePreloader } from "@/hooks/useImagePreloader";
 import { usePortraitNoScroll } from "@/lib/portrait";
 
 import { r2 } from "@/config/R2_URL";
+import { galleryIntroVideoLandscape, galleryIntroVideoPortrait } from "@/assets/assets";
 
-const INTRO_VIDEO_LANDSCAPE = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/Video%20Project%2019.mp4";
-const INTRO_VIDEO_PORTRAIT = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/potrait%20user.mp4";
+const INTRO_VIDEO_LANDSCAPE = galleryIntroVideoLandscape;
+const INTRO_VIDEO_PORTRAIT = galleryIntroVideoPortrait;
 const BG_AUDIO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/ReelAudio-80306.mp3";
 
 declare global {
@@ -1239,7 +1240,7 @@ function Work() {
       if (video.readyState >= 2) {
         onReady();
       } else {
-        video.addEventListener("loadeddata", onReady, { once: true });
+        video.addEventListener("canplay", onReady, { once: true });
         const timer = setTimeout(onReady, 5000);
         return () => {
           cancelled = true;
@@ -1539,7 +1540,7 @@ function Work() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            opacity: introVisible ? 1 : 0,
+            opacity: introVisible && bgReady ? 1 : 0,
             transition: "opacity 0.55s ease",
             pointerEvents: introVisible ? "all" : "none",
           }}

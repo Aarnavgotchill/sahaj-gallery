@@ -17,6 +17,9 @@ const handsOfSahajVideo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/T
 
 const heroVideo = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/hero.webm";
 
+const galleryIntroVideoLandscape = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/Video%20Project%2019.mp4";
+const galleryIntroVideoPortrait = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Home%20Page/Video/potrait%20user.mp4";
+
 export {
   artworkSpotlight1,
   artworkSpotlight2,
@@ -35,4 +38,6 @@ export {
   dhrutiTestimonialVideo,
   handsOfSahajVideo,
   heroVideo,
+  galleryIntroVideoLandscape,
+  galleryIntroVideoPortrait,
 };

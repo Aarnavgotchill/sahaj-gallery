@@ -6,6 +6,8 @@ import {
   artworkSpotlight2,
   artworkSpotlight3,
   heroVideo,
+  galleryIntroVideoLandscape,
+  galleryIntroVideoPortrait,
 } from "@/assets/assets";
 
 const Page = lazy(() => import("./index-page"));
@@ -31,6 +33,17 @@ function LoadingGate() {
       vid.muted = true;
       vid.src = heroVideo;
       vid.load();
+
+      // Preload the gallery intro video so navigating to /work plays it
+      // instantly instead of buffering (metadata-only fetch keeps it cheap)
+      const introSrc = window.matchMedia("(orientation: portrait)").matches
+        ? galleryIntroVideoPortrait
+        : galleryIntroVideoLandscape;
+      const introVid = document.createElement("video");
+      introVid.preload = "auto";
+      introVid.muted = true;
+      introVid.src = introSrc;
+      introVid.load();
     }
   }, []);
 
