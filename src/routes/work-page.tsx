@@ -12,6 +12,8 @@ const INTRO_VIDEO_LANDSCAPE = galleryIntroVideoLandscape;
 const INTRO_VIDEO_PORTRAIT = galleryIntroVideoPortrait;
 const BG_AUDIO_URL = "https://pub-e294075bc84a4927a3c47ae0aa8972d9.r2.dev/Sahaj%20Panel/Video/ReelAudio-80306.mp3";
 
+const CataloguePopup = lazy(() => import("@/components/CataloguePopup"));
+
 declare global {
   interface Window {
     __sahaj_gallery_bg_audio?: HTMLAudioElement;
@@ -655,6 +657,7 @@ const GALLERY_CSS = `
 #gallery-root .essentials-box-wrap{
   opacity:1;transform:none;
 }
+#gallery-root .btn-catalogue{border-radius:var(--gallery-radius)}
 @media(min-width:768px) and (max-width:1023px){
   #gallery-root #l1{height:360px}
   #gallery-root{--section-spacing:140px}
@@ -697,6 +700,9 @@ const GALLERY_CSS = `
   #gallery-root .essentials-grid{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:clamp(2px,0.6vw,5px);width:100%;margin:0 auto;padding:0 10px}
   #gallery-root .essentials-box-wrap{flex:1 1 0;max-width:52px;min-width:0;opacity:1;transform:none}
   #gallery-root .essentials-box{width:100%;height:auto;aspect-ratio:1;min-width:0}
+  #gallery-root .gallery-content .btn-catalogue{display:block;margin:0 auto;width:calc(100vw - 48px);max-width:380px;padding:14px 20px;border:1.2px solid rgba(201,169,110,.75);background:transparent;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .4s ease,color .4s ease}
+  #gallery-root .gallery-content .btn-catalogue:active{background:var(--gold);color:var(--color-background)}
+  #gallery-root .btn-catalogue-wrap{flex:none;padding:26px 0 14px}
   #gallery-root .gallery-footer{flex:none;margin-top:0;position:relative;bottom:auto}
   #gallery-root #g-stage{padding:0 20px}
   #gallery-root .artwork{padding:0 20px}
@@ -870,6 +876,7 @@ function Work() {
   const [useWebGL, setUseWebGL] = useState(false);
   const [essentialsReady, setEssentialsReady] = useState(false);
   const [panelsAnimated, setPanelsAnimated] = useState(false);
+  const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [introText, setIntroText] = useState<string | null>(null);
   const [showIntro, setShowIntro] = useState<boolean>(() => !galleryIntroPlayAttempted);
   // Fade state: "in" = video visible, "out" = fading out, false = hidden
@@ -979,6 +986,12 @@ function Work() {
     document.querySelector(".essentials-section")?.setAttribute(
       "style", "opacity:0;pointer-events:none;transition:opacity 0.2s ease"
     );
+    const catBtn = document.querySelector<HTMLElement>(".btn-catalogue");
+    if (catBtn) {
+      catBtn.style.transition = "opacity 0.2s ease";
+      catBtn.style.opacity = "0";
+      catBtn.style.pointerEvents = "none";
+    }
 
     // ═══════════════════════════════════════════════════════════════
     // Set SAHAJ_ANIM_FROM_PANEL to false to revert to the old
@@ -1592,7 +1605,14 @@ function Work() {
         </div>
       )}
 
-      <div className="gallery-viewport" style={{ opacity: 1 }}>
+      <div
+        className="gallery-viewport"
+        style={{
+          opacity: showIntro ? 0 : 1,
+          visibility: showIntro ? "hidden" : "visible",
+          transition: "opacity 0.5s ease",
+        }}
+      >
         <div className="gallery-nav-wrap" data-gallery>
           {!showIntro && <Nav />}
         </div>
@@ -1914,6 +1934,12 @@ function Work() {
         />
       </div>
 
+      {catalogueOpen && (
+        <CataloguePopup
+          open={catalogueOpen}
+          onOpenChange={setCatalogueOpen}
+        />
+      )}
     </>
   );
 }
