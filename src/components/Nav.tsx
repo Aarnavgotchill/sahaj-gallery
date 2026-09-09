@@ -51,10 +51,10 @@ export function Nav({ home }: NavProps) {
             className="h-11 w-auto md:h-[58px]"
           />
           <div className="flex flex-col">
-<span className="font-micross whitespace-nowrap text-base tracking-[0.3em] text-[#C8A86E] md:text-lg">
+            <span className="font-micross whitespace-nowrap text-base tracking-[0.3em] text-white md:text-lg">
                 SAHAJ GALLERY
               </span>
-            <span className="font-micross text-[10px] tracking-[0.2em] uppercase text-foreground/80" style={{ height: "24px", lineHeight: "24px" }}>
+            <span className="font-micross text-[10px] tracking-[0.2em] uppercase text-white" style={{ height: "24px", lineHeight: "24px" }}>
               Art in Architecture
             </span>
           </div>
@@ -67,7 +67,7 @@ export function Nav({ home }: NavProps) {
               onClick={() => {
                 if (l.href === "/work") primeGalleryIntroAudio();
               }}
-              className="font-display text-[14px] tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-500 hover:text-foreground"
+              className="font-display text-[14px] tracking-[0.28em] uppercase text-white transition-colors duration-500 hover:text-[var(--gold)]"
             >
               {l.label}
             </Link>
@@ -103,7 +103,7 @@ export function Nav({ home }: NavProps) {
                 if (l.href === "/work") primeGalleryIntroAudio();
                 setMenuOpen(false);
               }}
-              className="font-display border-b border-border/30 py-4 text-sm tracking-[0.28em] uppercase text-muted-foreground transition-colors duration-300 hover:text-foreground last:border-0"
+              className="font-display border-b border-border/30 py-4 text-sm tracking-[0.28em] uppercase text-white transition-colors duration-300 hover:text-[var(--gold)] last:border-0"
             >
               {l.label}
             </Link>
